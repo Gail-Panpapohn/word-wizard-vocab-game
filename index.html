@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🐝 Word Wizard | เกมทาย Advanced Vocabulary</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%90%9D%3C/text%3E%3C/svg%3E">
+<title>🦫 Word Wizard | Advanced Vocabulary Guessing Game</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A6%AB%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700;800&family=Kanit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -235,15 +235,15 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
 <div id="app">
 
   <div class="topbar">
-    <div class="brand"><span class="logo">🐝</span> Word Wizard</div>
+    <div class="brand"><span class="logo">🦫</span> Word Wizard</div>
     <div id="playerChip" class="player-chip hidden"></div>
   </div>
 
   <!-- ===================== SCREEN: LOADING ===================== -->
   <section id="screen-loading" class="card hidden">
-    <div class="badge">🍯 กำลังเตรียมเกม</div>
-    <h1>กำลังโหลดคลังคำศัพท์...</h1>
-    <p class="lead">รอสักครู่นะ กำลังดึงคำศัพท์ล่าสุดจาก Google Sheet 🐝✨</p>
+    <div class="badge">🍯 Getting things ready</div>
+    <h1>Loading vocabulary...</h1>
+    <p class="lead">Just a moment, fetching the latest words from Google Sheets 🦫✨</p>
   </section>
 
   <!-- ===================== SCREEN: REGISTER ===================== -->
@@ -251,95 +251,95 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
     <div class="hero-art" aria-hidden="true">
       <div class="hero-hill"></div>
       <div class="hero-ring"></div>
-      <div class="hero-bee">🐝</div>
+      <div class="hero-bee">🦫</div>
     </div>
-    <div class="badge">📝 ลงทะเบียนก่อนเริ่มเล่น</div>
-    <h1>ยินดีต้อนรับสู่ Word Wizard! 🍯✨</h1>
-    <p class="lead">ทดสอบคำศัพท์ Advanced Vocabulary กว่า 60 คำ ผ่าน 6 มินิเกมสุดน่ารัก — กรอกข้อมูลก่อนเริ่มเล่นนะ คะแนนของคุณจะถูกบันทึกลง Google Sheet อัตโนมัติ</p>
+    <div class="badge">📝 Register before you play</div>
+    <h1>Welcome to Word Wizard! 🍯✨</h1>
+    <p class="lead">Test 60+ Advanced Vocabulary words across 6 adorable mini-games — fill in your details before you start, and your score will be saved to Google Sheets automatically.</p>
     <div class="tip-bubble">
-      <span class="tb-ic">🐝</span>
-      <span class="tb-text"><b>ผึ้งน้อยแนะนำ:</b> เลือกด่านที่อยากเล่นได้เองในเมนูถัดไป หรือกด "เล่นทั้งหมด" เพื่อขึ้นกระดานผู้นำ 🏆</span>
+      <span class="tb-ic">🦫</span>
+      <span class="tb-text"><b>Capybara's tip:</b> Pick any game mode you like on the next screen, or hit "Play All" to climb the leaderboard 🏆</span>
     </div>
 
     <div class="field" id="f-name">
-      <label>ชื่อ - นามสกุล</label>
-      <input type="text" id="in-name" placeholder="เช่น สมชาย ใจดี" autocomplete="name">
-      <div class="err">กรุณากรอกชื่อ-นามสกุล</div>
+      <label>Full Name</label>
+      <input type="text" id="in-name" placeholder="e.g. John Smith" autocomplete="name">
+      <div class="err">Please enter your full name</div>
     </div>
     <div class="field" id="f-sid">
-      <label>รหัสนักศึกษา</label>
-      <input type="text" id="in-sid" placeholder="เช่น 6512345678" inputmode="numeric">
-      <div class="err">กรุณากรอกรหัสนักศึกษา</div>
+      <label>Student ID</label>
+      <input type="text" id="in-sid" placeholder="e.g. 6512345678" inputmode="numeric">
+      <div class="err">Please enter your student ID</div>
     </div>
     <div class="field" id="f-email">
-      <label>อีเมล</label>
-      <input type="email" id="in-email" placeholder="เช่น student@email.com" autocomplete="email">
-      <div class="err">กรุณากรอกอีเมลให้ถูกต้อง</div>
+      <label>Email</label>
+      <input type="email" id="in-email" placeholder="e.g. student@email.com" autocomplete="email">
+      <div class="err">Please enter a valid email address</div>
     </div>
 
-    <button class="btn btn-primary" id="btn-register">🚀 เริ่มเล่นเกม</button>
+    <button class="btn btn-primary" id="btn-register">🚀 Start Playing</button>
   </section>
 
   <!-- ===================== SCREEN: MENU ===================== -->
   <section id="screen-menu" class="card hidden">
     <div class="hero-art" aria-hidden="true" style="height:88px; margin-bottom:4px;">
       <div class="hero-hill" style="width:150px; height:60px;"></div>
-      <div class="hero-bee" style="font-size:46px;">🐝</div>
+      <div class="hero-bee" style="font-size:46px;">🦫</div>
     </div>
-    <div class="badge">🎮 เลือกโหมดเกม</div>
-    <h1 id="menu-greet">พร้อมลุยหรือยัง?</h1>
-    <p class="lead">แต่ละด่านสุ่มคำถาม 10 ข้อจากคลังคำศัพท์ทั้งหมด เลือกด่านที่อยากเล่น หรือเล่นครบทุกด่านเพื่อขึ้นกระดานผู้นำ 🏆</p>
+    <div class="badge">🎮 Choose a Game Mode</div>
+    <h1 id="menu-greet">Ready to play?</h1>
+    <p class="lead">Each mode randomly picks 10 questions from the full word bank. Play any single mode, or clear them all to climb the leaderboard 🏆</p>
 
     <div class="mode-grid">
       <div class="mode-card all" data-mode="all">
         <span class="ic">🌟</span>
-        <h3>เล่นทั้งหมด (แนะนำ)</h3>
-        <span>ครบทุกด่านต่อเนื่อง ได้คะแนนรวมขึ้นกระดานผู้นำ</span>
+        <h3>Play All (Recommended)</h3>
+        <span>All modes back-to-back — total score counts for the leaderboard</span>
       </div>
       <div class="mode-card" data-mode="mcq">
         <span class="ic">🎯</span>
-        <h3>ทายความหมาย</h3>
-        <span>เลือกความหมายภาษาไทยที่ถูกต้อง</span>
+        <h3>Guess the Meaning</h3>
+        <span>Choose the correct Thai meaning</span>
       </div>
       <div class="mode-card" data-mode="fill">
         <span class="ic">✍️</span>
-        <h3>เติมคำในช่องว่าง</h3>
-        <span>เลือกรูปคำ (adj/adv/n/v) ให้ตรงกับประโยค</span>
+        <h3>Fill in the Blank</h3>
+        <span>Pick the word form (adj/adv/n/v) that fits the sentence</span>
       </div>
       <div class="mode-card" data-mode="tf">
         <span class="ic">✅</span>
-        <h3>ถูกหรือผิด</h3>
-        <span>ดูคำ-ความหมายคู่กัน แล้วทายว่าใช่หรือไม่</span>
+        <h3>True or False</h3>
+        <span>See a word-meaning pair and decide if it's a match</span>
       </div>
       <div class="mode-card" data-mode="scramble">
         <span class="ic">🔤</span>
-        <h3>เรียงตัวอักษร</h3>
-        <span>ดูคำใบ้ความหมาย แล้วเรียงตัวอักษรให้ถูก</span>
+        <h3>Word Scramble</h3>
+        <span>Read the meaning hint, then unscramble the letters</span>
       </div>
       <div class="mode-card" data-mode="sort">
         <span class="ic">🗂️</span>
-        <h3>จัดหมวดหมู่</h3>
-        <span>เลือกว่าคำนี้อยู่หมวดคุณลักษณะไหน</span>
+        <h3>Sort by Category</h3>
+        <span>Decide which trait category this word belongs to</span>
       </div>
       <div class="mode-card" data-mode="match">
         <span class="ic">🧩</span>
-        <h3>จับคู่คำศัพท์</h3>
-        <span>เกมความจำ จับคู่คำอังกฤษ-ไทย แข่งกับเวลา</span>
+        <h3>Memory Match</h3>
+        <span>Match English words with their meanings against the clock</span>
       </div>
     </div>
 
-    <button class="btn btn-ghost" id="btn-leaderboard">🏆 ดูกระดานผู้นำ</button>
+    <button class="btn btn-ghost" id="btn-leaderboard">🏆 View Leaderboard</button>
   </section>
 
   <!-- ===================== SCREEN: MCQ ===================== -->
   <section id="screen-mcq" class="card hidden">
     <div class="hud">
-      <div class="stat">🎯 ทายความหมาย</div>
+      <div class="stat">🎯 Guess the Meaning</div>
       <div class="stat" id="mcq-count">1/10</div>
       <div class="stat">🔥 <span id="mcq-streak">0</span></div>
     </div>
     <div class="progressbar"><div id="mcq-progress" style="width:0%"></div></div>
-    <p class="q-sub">คำศัพท์นี้แปลว่าอะไร?</p>
+    <p class="q-sub">What does this word mean?</p>
     <div class="q-word" id="mcq-word">word</div>
     <div class="opt-grid" id="mcq-options"></div>
     <div class="feedback" id="mcq-feedback"></div>
@@ -348,12 +348,12 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
   <!-- ===================== SCREEN: FILL ===================== -->
   <section id="screen-fill" class="card hidden">
     <div class="hud">
-      <div class="stat">✍️ เติมคำในช่องว่าง</div>
+      <div class="stat">✍️ Fill in the Blank</div>
       <div class="stat" id="fill-count">1/10</div>
       <div class="stat">🔥 <span id="fill-streak">0</span></div>
     </div>
     <div class="progressbar"><div id="fill-progress" style="width:0%"></div></div>
-    <div class="hint-box" id="fill-hint">💡 ความหมายราก: -</div>
+    <div class="hint-box" id="fill-hint">💡 Root meaning: -</div>
     <div class="fill-sentence" id="fill-sentence"></div>
     <div class="opt-grid" id="fill-options"></div>
     <div class="feedback" id="fill-feedback"></div>
@@ -362,20 +362,20 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
   <!-- ===================== SCREEN: TRUE/FALSE ===================== -->
   <section id="screen-tf" class="card hidden">
     <div class="hud">
-      <div class="stat">✅ ถูกหรือผิด</div>
+      <div class="stat">✅ True or False</div>
       <div class="stat" id="tf-count">1/10</div>
       <div class="stat">🔥 <span id="tf-streak">0</span></div>
     </div>
     <div class="progressbar"><div id="tf-progress" style="width:0%"></div></div>
-    <p class="q-sub">คำและความหมายนี้ตรงกันหรือไม่?</p>
+    <p class="q-sub">Do this word and meaning match?</p>
     <div class="tf-statement">
       <div class="tf-word" id="tf-word">word</div>
-      <div class="tf-eq">แปลว่า</div>
-      <div class="tf-meaning" id="tf-meaning">ความหมาย</div>
+      <div class="tf-eq">means</div>
+      <div class="tf-meaning" id="tf-meaning">meaning</div>
     </div>
     <div class="tf-buttons">
-      <button class="tf-btn tf-true" id="tf-btn-true">✅ ถูก</button>
-      <button class="tf-btn tf-false" id="tf-btn-false">❌ ผิด</button>
+      <button class="tf-btn tf-true" id="tf-btn-true">✅ True</button>
+      <button class="tf-btn tf-false" id="tf-btn-false">❌ False</button>
     </div>
     <div class="feedback" id="tf-feedback"></div>
   </section>
@@ -383,27 +383,27 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
   <!-- ===================== SCREEN: SCRAMBLE ===================== -->
   <section id="screen-scramble" class="card hidden">
     <div class="hud">
-      <div class="stat">🔤 เรียงตัวอักษร</div>
+      <div class="stat">🔤 Word Scramble</div>
       <div class="stat" id="scramble-count">1/10</div>
       <div class="stat">🔥 <span id="scramble-streak">0</span></div>
     </div>
     <div class="progressbar"><div id="scramble-progress" style="width:0%"></div></div>
-    <div class="hint-box" id="scramble-hint">💡 ความหมาย: -</div>
+    <div class="hint-box" id="scramble-hint">💡 Meaning: -</div>
     <div class="scramble-letters" id="scramble-letters"></div>
-    <input type="text" id="scramble-input" class="scramble-input" placeholder="พิมพ์คำตอบที่นี่..." autocomplete="off" autocapitalize="off" spellcheck="false">
-    <button class="btn btn-primary" id="scramble-submit">✏️ ตรวจคำตอบ</button>
+    <input type="text" id="scramble-input" class="scramble-input" placeholder="Type your answer here..." autocomplete="off" autocapitalize="off" spellcheck="false">
+    <button class="btn btn-primary" id="scramble-submit">✏️ Check Answer</button>
     <div class="feedback" id="scramble-feedback"></div>
   </section>
 
   <!-- ===================== SCREEN: SORT ===================== -->
   <section id="screen-sort" class="card hidden">
     <div class="hud">
-      <div class="stat">🗂️ จัดหมวดหมู่</div>
+      <div class="stat">🗂️ Sort by Category</div>
       <div class="stat" id="sort-count">1/10</div>
       <div class="stat">🔥 <span id="sort-streak">0</span></div>
     </div>
     <div class="progressbar"><div id="sort-progress" style="width:0%"></div></div>
-    <p class="q-sub">คำนี้จัดอยู่ในหมวดคุณลักษณะไหน?</p>
+    <p class="q-sub">Which trait category does this word belong to?</p>
     <div class="q-word" id="sort-word">word</div>
     <div class="sort-options" id="sort-options"></div>
     <div class="feedback" id="sort-feedback"></div>
@@ -412,7 +412,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
   <!-- ===================== SCREEN: MATCH ===================== -->
   <section id="screen-match" class="card hidden">
     <div class="hud">
-      <div class="stat">🧩 จับคู่คำศัพท์</div>
+      <div class="stat">🧩 Memory Match</div>
       <div class="stat">✅ <span id="match-found">0</span>/<span id="match-total">8</span></div>
       <div class="stat">⏱️ <span id="match-timer">0</span>s</div>
     </div>
@@ -422,8 +422,8 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
 
   <!-- ===================== SCREEN: RESULT ===================== -->
   <section id="screen-result" class="card hidden">
-    <div class="badge" id="result-badge">🏁 สรุปผล</div>
-    <h1 id="result-title">เก่งมาก!</h1>
+    <div class="badge" id="result-badge">🏁 Results</div>
+    <h1 id="result-title">Great job!</h1>
     <div class="stars" id="result-stars">⭐⭐⭐</div>
 
     <div class="score-ring">
@@ -434,30 +434,30 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
           <stop offset="0%" stop-color="#FF8FA3"/><stop offset="100%" stop-color="#FFB100"/>
         </linearGradient></defs>
       </svg>
-      <div class="pct"><b id="result-pct">0%</b><span>ความแม่นยำ</span></div>
+      <div class="pct"><b id="result-pct">0%</b><span>Accuracy</span></div>
     </div>
 
     <div class="result-grid">
-      <div class="result-stat"><b id="result-correct">0</b><span>ตอบถูก</span></div>
-      <div class="result-stat"><b id="result-total">0</b><span>คำถามทั้งหมด</span></div>
-      <div class="result-stat"><b id="result-time">0s</b><span>เวลาที่ใช้</span></div>
+      <div class="result-stat"><b id="result-correct">0</b><span>Correct</span></div>
+      <div class="result-stat"><b id="result-total">0</b><span>Total Questions</span></div>
+      <div class="result-stat"><b id="result-time">0s</b><span>Time Taken</span></div>
     </div>
 
-    <p class="lead" id="result-sub" style="margin-bottom:8px;">กำลังบันทึกคะแนนของคุณ...</p>
+    <p class="lead" id="result-sub" style="margin-bottom:8px;">Saving your score...</p>
 
     <div id="leaderboard-box" class="hidden">
-      <h2>🏆 กระดานผู้นำ (Top 10)</h2>
-      <table class="lb-table"><thead><tr><th>#</th><th>ชื่อ</th><th>คะแนน</th><th>เวลา</th></tr></thead>
+      <h2>🏆 Leaderboard (Top 10)</h2>
+      <table class="lb-table"><thead><tr><th>#</th><th>Name</th><th>Score</th><th>Time</th></tr></thead>
       <tbody id="lb-body"></tbody></table>
     </div>
 
     <div class="btn-row" style="margin-top:20px;">
-      <button class="btn btn-ghost" id="btn-again">🔁 เล่นอีกครั้ง</button>
-      <button class="btn btn-primary" id="btn-menu">🏠 กลับเมนู</button>
+      <button class="btn btn-ghost" id="btn-again">🔁 Play Again</button>
+      <button class="btn btn-primary" id="btn-menu">🏠 Back to Menu</button>
     </div>
   </section>
 
-  <footer>ทำด้วย 💛 สำหรับผู้เรียน Advanced Vocabulary · <a href="admin.html" style="color:inherit;">หน้าแอดมิน 🔧</a></footer>
+  <footer>Made with 💛 for Advanced Vocabulary learners · <a href="admin.html" style="color:inherit;">Admin Panel 🔧</a></footer>
 </div>
 
 <script>
@@ -472,10 +472,10 @@ const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLHoJfl_apCjSRKp68-
    แก้ตรงใน Sheet ก็ได้ทันที) — ชุดข้อมูลด้านล่างนี้เป็นแค่ "fallback" สำรองไว้
    เผื่อดึงจาก Sheet ไม่สำเร็จ (เช่น เน็ตมีปัญหา) เกมจะยังเล่นได้ปกติ
 ===================================================================== */
-const POS_TH = {adj:'คำคุณศัพท์ (adj.)', adv:'คำกริยาวิเศษณ์ (adv.)', n:'คำนาม (n.)', v:'คำกริยา (v.)'};
-const CAT_NAME = {A:"🌟 คุณธรรม/ความดี", B:"🧠 ความฉลาด/การคิด", C:"💪 ความเข้มแข็ง/มุ่งมั่น", D:"🤝 สังคม/บุคลิกภาพ", E:"⚠️ ลักษณะด้านลบ"};
+const POS_TH = {adj:'Adjective (adj.)', adv:'Adverb (adv.)', n:'Noun (n.)', v:'Verb (v.)'};
+const CAT_NAME = {A:"🌟 Virtue/Goodness", B:"🧠 Intelligence/Thinking", C:"💪 Strength/Determination", D:"🤝 Social/Personality", E:"⚠️ Negative Traits"};
 const CAT_KEYS = Object.keys(CAT_NAME);
-const MODE_LABEL_TH = {mcq:'ทายความหมาย', fill:'เติมคำ', tf:'ถูก-ผิด', scramble:'เรียงคำ', sort:'จัดหมวด', match:'จับคู่', all:'เล่นทั้งหมด'};
+const MODE_LABEL_TH = {mcq:'Meaning Match', fill:'Fill Blank', tf:'True/False', scramble:'Scramble', sort:'Sort', match:'Matching', all:'Play All'};
 
 const FALLBACK_WORDS = [{en:"equanimous",th:"ใจเย็น สงบนิ่งแม้เผชิญความกดดัน",cat:"WF"},{en:"expansive",th:"กว้างขวาง เปิดกว้าง ใจกว้าง",cat:"WF"},{en:"fastidious",th:"พิถีพิถัน ละเอียดรอบคอบมาก",cat:"WF"},{en:"gallant",th:"กล้าหาญและสง่างามแบบสุภาพบุรุษ",cat:"WF"},{en:"hale",th:"แข็งแรงกระฉับกระเฉง (โดยเฉพาะวัยชรา)",cat:"WF"},{en:"ingenious",th:"ฉลาด มีไหวพริบ คิดค้นเก่ง",cat:"WF"},{en:"intuitive",th:"หยั่งรู้ได้เองโดยสัญชาตญาณ",cat:"WF"},{en:"luminary",th:"บุคคลผู้ทรงอิทธิพล เป็นแรงบันดาลใจ",cat:"WF"},{en:"mettleful",th:"กล้าหาญ เข้มแข็งทางจิตใจ",cat:"WF"},{en:"erudite",th:"ปราดเปรื่อง คงแก่เรียน",cat:"WF"},{en:"noble-hearted",th:"ใจสูงส่ง มีคุณธรรม",cat:"WF"},{en:"perspicacious",th:"เฉียบแหลม มองทะลุปรุโปร่ง",cat:"WF"},{en:"poised",th:"สง่างามและสุขุมนิ่ง",cat:"WF"},{en:"redoubtable",th:"น่าเกรงขาม แข็งแกร่งจนน่ายำเกรง",cat:"WF"},{en:"virtuous",th:"มีคุณธรรม ดีงาม",cat:"WF"},{en:"validate",th:"ยืนยัน / ทำให้ถูกต้อง / รับรองความถูกต้อง",cat:"WF"},{en:"virtuous",th:"มีคุณธรรม",cat:"A"},{en:"righteous",th:"ชอบธรรม",cat:"A"},{en:"benevolent",th:"เมตตา",cat:"A"},{en:"altruistic",th:"เสียสละ",cat:"A"},{en:"honest",th:"ซื่อสัตย์",cat:"A"},{en:"ethical",th:"มีจริยธรรม",cat:"A"},{en:"principled",th:"มีหลักการ",cat:"A"},{en:"moral",th:"มีศีลธรรม",cat:"A"},{en:"honorable",th:"มีเกียรติ",cat:"A"},{en:"trustworthy",th:"น่าเชื่อถือ",cat:"A"},{en:"intelligent",th:"ฉลาด",cat:"B"},{en:"ingenious",th:"ช่างคิด",cat:"B"},{en:"perceptive",th:"หยั่งรู้",cat:"B"},{en:"insightful",th:"ลึกซึ้ง",cat:"B"},{en:"astute",th:"เฉียบแหลม",cat:"B"},{en:"shrewd",th:"เจ้าเล่ห์อย่างฉลาด",cat:"B"},{en:"analytical",th:"วิเคราะห์เก่ง",cat:"B"},{en:"rational",th:"มีเหตุผล",cat:"B"},{en:"logical",th:"มีตรรกะ",cat:"B"},{en:"discerning",th:"แยกแยะเก่ง",cat:"B"},{en:"resilient",th:"ฟื้นตัวเก่ง",cat:"C"},{en:"determined",th:"มุ่งมั่น",cat:"C"},{en:"persistent",th:"ไม่ยอมแพ้",cat:"C"},{en:"tenacious",th:"ดื้อดึงเชิงบวก",cat:"C"},{en:"resolute",th:"เด็ดเดี่ยว",cat:"C"},{en:"steadfast",th:"แน่วแน่",cat:"C"},{en:"courageous",th:"กล้าหาญ",cat:"C"},{en:"fearless",th:"ไม่กลัว",cat:"C"},{en:"bold",th:"กล้าตัดสินใจ",cat:"C"},{en:"indomitable",th:"ไม่ยอมแพ้ (แข็งแกร่งมาก)",cat:"C"},{en:"sociable",th:"เข้ากับคนง่าย",cat:"D"},{en:"outgoing",th:"เปิดเผย",cat:"D"},{en:"charismatic",th:"มีเสน่ห์",cat:"D"},{en:"affable",th:"เป็นมิตร",cat:"D"},{en:"amiable",th:"น่าคบ",cat:"D"},{en:"diplomatic",th:"สุภาพรอบคอบ",cat:"D"},{en:"tactful",th:"มีไหวพริบ",cat:"D"},{en:"courteous",th:"สุภาพ",cat:"D"},{en:"respectful",th:"ให้เกียรติ",cat:"D"},{en:"approachable",th:"เข้าถึงง่าย",cat:"D"},{en:"arrogant",th:"หยิ่ง",cat:"E"},{en:"selfish",th:"เห็นแก่ตัว",cat:"E"},{en:"manipulative",th:"ชักจูงผู้อื่นในทางไม่ดี",cat:"E"},{en:"dishonest",th:"ไม่ซื่อสัตย์",cat:"E"},{en:"reckless",th:"ประมาท",cat:"E"},{en:"impulsive",th:"หุนหันพลันแล่น",cat:"E"},{en:"stubborn",th:"ดื้อ",cat:"E"},{en:"cynical",th:"มองโลกแง่ร้าย",cat:"E"},{en:"hostile",th:"เป็นศัตรู",cat:"E"},{en:"greedy",th:"โลภ",cat:"E"}];
 const FALLBACK_BLANKS = [
@@ -580,7 +580,7 @@ $('btn-register').addEventListener('click', ()=>{
   postToSheet({ action:'register', name, studentId:sid, email });
 
   renderPlayerChip();
-  $('menu-greet').textContent = `พร้อมลุยหรือยัง คุณ${firstName(name)}? 🚀`;
+  $('menu-greet').textContent = `Ready to go, ${firstName(name)}? 🚀`;
   show('screen-menu');
 });
 
@@ -642,7 +642,7 @@ function afterVocabReady(){
   if(saved){
     player = JSON.parse(saved);
     renderPlayerChip();
-    $('menu-greet').textContent = `ยินดีต้อนรับกลับมา คุณ${firstName(player.name)}! 🎉`;
+    $('menu-greet').textContent = `Welcome back, ${firstName(player.name)}! 🎉`;
     show('screen-menu');
   } else {
     show('screen-register');
@@ -729,12 +729,12 @@ function answerMCQ(btn, isCorrect){
   if(isCorrect){
     btn.classList.add('correct'); session.correct++; mcqState.streak++;
     playTone(true);
-    $('mcq-feedback').textContent='✅ ถูกต้อง! เก่งมาก';
+    $('mcq-feedback').textContent='✅ Correct! Great job';
     $('mcq-feedback').className='feedback show ok';
   } else {
     btn.classList.add('wrong'); mcqState.streak=0;
     playTone(false);
-    $('mcq-feedback').textContent='❌ ยังไม่ถูก ไปข้อต่อไปกันนะ';
+    $('mcq-feedback').textContent='❌ Not quite, let\'s move on';
     $('mcq-feedback').className='feedback show no';
   }
   setTimeout(renderMCQ, 900);
@@ -757,7 +757,7 @@ function renderFill(){
   $('fill-count').textContent = `${i+1}/${qs.length}`;
   $('fill-streak').textContent = fillState.streak;
   $('fill-progress').style.width = `${(i/qs.length)*100}%`;
-  $('fill-hint').textContent = `💡 ความหมายราก: ${q.hint}  |  ต้องการ: ${POS_TH[q.pos]||q.pos}`;
+  $('fill-hint').textContent = `💡 Root meaning: ${q.hint}  |  Need: ${POS_TH[q.pos]||q.pos}`;
   $('fill-sentence').innerHTML = q.s.replace('___', '<span class="blank">?</span>');
   $('fill-feedback').className='feedback';
 
@@ -782,12 +782,12 @@ function answerFill(btn, isCorrect, q, chosen){
   if(isCorrect){
     btn.classList.add('correct'); session.correct++; fillState.streak++;
     playTone(true);
-    $('fill-feedback').textContent='✅ เก่งมาก! คำตอบถูกต้อง';
+    $('fill-feedback').textContent='✅ Nice! That\'s correct';
     $('fill-feedback').className='feedback show ok';
   } else {
     btn.classList.add('wrong'); fillState.streak=0;
     playTone(false);
-    $('fill-feedback').textContent=`❌ คำตอบที่ถูกคือ "${q.a[0]}"`;
+    $('fill-feedback').textContent=`❌ The correct answer is "${q.a[0]}"`;
     $('fill-feedback').className='feedback show no';
   }
   setTimeout(renderFill, 1100);
@@ -833,12 +833,12 @@ function answerTF(isTrueStatement, userSaidTrue){
   if(correct){
     session.correct++; tfState.streak++;
     playTone(true);
-    $('tf-feedback').textContent = '✅ ถูกต้อง! เก่งมาก';
+    $('tf-feedback').textContent = '✅ Correct! Great job';
     $('tf-feedback').className = 'feedback show ok';
   } else {
     tfState.streak = 0;
     playTone(false);
-    $('tf-feedback').textContent = isTrueStatement ? '❌ จริงๆ แล้วคู่นี้ถูกต้องนะ' : '❌ คู่นี้ความหมายไม่ตรงกันนะ';
+    $('tf-feedback').textContent = isTrueStatement ? '❌ Actually, this pair is correct' : '❌ These meanings don\'t match';
     $('tf-feedback').className = 'feedback show no';
   }
   setTimeout(renderTF, 1000);
@@ -869,7 +869,7 @@ function renderScramble(){
   $('scramble-count').textContent = `${i+1}/${qs.length}`;
   $('scramble-streak').textContent = scrambleState.streak;
   $('scramble-progress').style.width = `${(i/qs.length)*100}%`;
-  $('scramble-hint').textContent = `💡 ความหมาย: ${q.th}`;
+  $('scramble-hint').textContent = `💡 Meaning: ${q.th}`;
   $('scramble-feedback').className = 'feedback';
 
   const letters = shuffleWord(q.en.toLowerCase());
@@ -896,12 +896,12 @@ function submitScramble(){
   if(isCorrect){
     session.correct++; scrambleState.streak++;
     playTone(true);
-    $('scramble-feedback').textContent = '✅ ถูกต้อง! สุดยอดไปเลย';
+    $('scramble-feedback').textContent = '✅ Correct! Awesome';
     $('scramble-feedback').className = 'feedback show ok';
   } else {
     scrambleState.streak = 0;
     playTone(false);
-    $('scramble-feedback').textContent = `❌ คำตอบที่ถูกคือ "${q.en}"`;
+    $('scramble-feedback').textContent = `❌ The correct answer is "${q.en}"`;
     $('scramble-feedback').className = 'feedback show no';
   }
   setTimeout(renderScramble, 1200);
@@ -943,12 +943,12 @@ function answerSort(btn, isCorrect, q){
   if(isCorrect){
     btn.classList.add('correct'); session.correct++; sortState.streak++;
     playTone(true);
-    $('sort-feedback').textContent='✅ ถูกต้อง! จัดหมวดเก่งมาก';
+    $('sort-feedback').textContent='✅ Correct! Great sorting';
     $('sort-feedback').className='feedback show ok';
   } else {
     btn.classList.add('wrong'); sortState.streak=0;
     playTone(false);
-    $('sort-feedback').textContent=`❌ ที่ถูกคือหมวด "${CAT_NAME[q.cat]}"`;
+    $('sort-feedback').textContent=`❌ The correct category is "${CAT_NAME[q.cat]}"`;
     $('sort-feedback').className='feedback show no';
   }
   setTimeout(renderSort, 1100);
@@ -1044,7 +1044,7 @@ function finishSession(){
 
   document.querySelector('.score-ring').classList.remove('hidden');
   document.querySelector('.result-grid').classList.remove('hidden');
-  $('result-title').textContent = pct>=85 ? 'สุดยอดไปเลย! 🎉' : pct>=60 ? 'เก่งมาก ทำได้ดี! 👏' : 'ไม่เป็นไร ลองใหม่อีกครั้งนะ 💪';
+  $('result-title').textContent = pct>=85 ? 'Amazing work! 🎉' : pct>=60 ? 'Great job! 👏' : 'No worries, try again! 💪';
   $('result-stars').textContent = pct>=85 ? '⭐⭐⭐' : pct>=60 ? '⭐⭐' : '⭐';
   $('result-pct').textContent = `${pct}%`;
   $('result-correct').textContent = session.correct;
@@ -1054,19 +1054,19 @@ function finishSession(){
   const circumference = 402;
   ring.style.strokeDashoffset = circumference - (circumference*pct/100);
   $('leaderboard-box').classList.add('hidden');
-  $('result-sub').textContent = 'กำลังบันทึกคะแนนของคุณ...';
+  $('result-sub').textContent = 'Saving your score...';
 
   show('screen-result');
   if(pct>=60) launchConfetti();
 
   postToSheet({ action:'score', name:player.name, studentId:player.sid, score:session.correct, total:session.total, percent:pct, timeSpent, mode:session.mode||'' })
-    .then(()=>{ $('result-sub').textContent='บันทึกคะแนนเรียบร้อยแล้ว ✅'; loadLeaderboard(); })
-    .catch(()=>{ $('result-sub').textContent = SCRIPT_URL.includes('PASTE_') ? 'ยังไม่ได้ตั้งค่า Google Sheet (ดูไฟล์คู่มือ)' : 'บันทึกคะแนนไม่สำเร็จ ลองใหม่ภายหลัง'; });
+    .then(()=>{ $('result-sub').textContent='Score saved successfully ✅'; loadLeaderboard(); })
+    .catch(()=>{ $('result-sub').textContent = SCRIPT_URL.includes('PASTE_') ? 'Google Sheet not set up yet (see setup guide)' : 'Failed to save score, please try again later'; });
 }
 
 function showResultLeaderboardOnly(){
   show('screen-result');
-  $('result-title').textContent='กระดานผู้นำ 🏆';
+  $('result-title').textContent='Leaderboard 🏆';
   $('result-stars').textContent='';
   document.querySelector('.score-ring').classList.add('hidden');
   document.querySelector('.result-grid').classList.add('hidden');
