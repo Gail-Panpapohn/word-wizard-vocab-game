@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🔧 Word Wizard | หน้าแอดมิน</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A7%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700;800&family=Kanit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --yolk:#FFC93C; --honey:#FFB100; --cream:#FFF7DE; --butter:#FFE9A8;
+  --pink:#FF8FA3; --pink-deep:#FF6B8B; --sky:#5FC9F3; --leaf:#7ED957; --leaf-deep:#4CAF50;
+  --berry:#FF6B6B; --ink:#5A3E00; --ink-soft:#8A6A2B; --white:#FFFFFF;
+  --radius:22px; --shadow-pop:5px 6px 0 rgba(90,62,0,.18);
+  --shadow-pop-sm:3px 4px 0 rgba(90,62,0,.16);
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html,body{height:100%;}
+body{
+  font-family:'Kanit',sans-serif;
+  min-height:100vh;
+  background:linear-gradient(160deg, var(--cream), var(--butter) 55%, var(--yolk));
+  background-attachment:fixed;
+  color:var(--ink);
+}
+#app{max-width:920px; margin:0 auto; padding:22px 16px 60px;}
+.hidden{display:none !important;}
+
+.topbar{display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; flex-wrap:wrap; gap:10px;}
+.brand{display:flex; align-items:center; gap:10px; font-family:'Mali',cursive; font-weight:700; font-size:1.4rem;}
+.brand .logo{font-size:1.8rem;}
+.back-link{font-size:.85rem; color:var(--ink); text-decoration:none; background:var(--white); border:2px solid var(--ink); padding:6px 14px; border-radius:999px; box-shadow:var(--shadow-pop-sm); font-weight:600;}
+
+.card{ background:var(--white); border:4px solid var(--ink); border-radius:var(--radius); padding:26px 24px; box-shadow:var(--shadow-pop); margin-bottom:18px; }
+h1{font-family:'Mali',cursive; font-size:1.7rem; font-weight:800; margin-bottom:8px;}
+h2{font-family:'Mali',cursive; font-size:1.25rem; font-weight:700; margin-bottom:10px;}
+p.lead{color:var(--ink-soft); font-size:.92rem; line-height:1.6; margin-bottom:14px;}
+.badge{display:inline-flex; align-items:center; gap:6px; background:var(--yolk); border:3px solid var(--ink); padding:4px 12px; border-radius:999px; font-size:.75rem; font-weight:700; margin-bottom:10px;}
+
+.field{margin-bottom:14px;}
+.field label{display:block; font-size:.85rem; font-weight:600; margin-bottom:6px;}
+.field input[type=password], .field input[type=text]{
+  width:100%; padding:12px 14px; border-radius:14px; border:3px solid var(--ink);
+  background:var(--cream); font-family:'Kanit',sans-serif; font-size:1rem; outline:none;
+}
+.field input:focus{border-color:var(--pink-deep); background:#fff;}
+
+.btn{
+  appearance:none; cursor:pointer; font-family:'Mali',cursive; font-weight:700;
+  border-radius:16px; padding:12px 20px; font-size:1rem; border:3px solid var(--ink);
+  transition:transform .1s ease; display:inline-flex; align-items:center; gap:6px;
+}
+.btn:active{transform:translate(3px,4px); box-shadow:none !important;}
+.btn-primary{background:linear-gradient(135deg,var(--pink),var(--honey)); color:#fff; box-shadow:var(--shadow-pop-sm);}
+.btn-ghost{background:var(--white); color:var(--ink); box-shadow:var(--shadow-pop-sm);}
+.btn:disabled{opacity:.45; cursor:not-allowed;}
+
+.stat-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:6px;}
+@media(max-width:640px){.stat-grid{grid-template-columns:repeat(2,1fr);}}
+.stat-box{background:var(--cream); border:3px solid var(--ink); border-radius:16px; padding:14px 10px; text-align:center;}
+.stat-box b{display:block; font-family:'Mali',cursive; font-size:1.5rem;}
+.stat-box span{font-size:.72rem; color:var(--ink-soft); font-weight:600;}
+
+.tabs{display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;}
+.tab-btn{
+  font-family:'Mali',cursive; font-weight:700; padding:10px 18px; border-radius:999px; border:3px solid var(--ink);
+  background:var(--cream); cursor:pointer; font-size:.95rem;
+}
+.tab-btn.active{background:var(--yolk); box-shadow:var(--shadow-pop-sm);}
+.tab-panel.hidden{display:none;}
+
+.dropzone{
+  border:3px dashed var(--honey); border-radius:18px; padding:26px; text-align:center; cursor:pointer;
+  background:var(--cream); margin-bottom:14px; transition:.15s;
+}
+.dropzone:hover{background:#fff;}
+.dropzone.drag{background:var(--butter); border-color:var(--pink-deep);}
+.dropzone .ic{font-size:2rem; margin-bottom:6px;}
+.dropzone small{display:block; color:var(--ink-soft); margin-top:4px;}
+
+table.preview{width:100%; border-collapse:collapse; font-size:.85rem; margin-bottom:14px;}
+table.preview th{background:var(--yolk); color:var(--ink); font-weight:700; padding:8px 10px; text-align:left; position:sticky; top:0;}
+table.preview td{padding:7px 10px; border-bottom:1px solid var(--cream);}
+.preview-wrap{max-height:320px; overflow:auto; border:3px solid var(--ink); border-radius:14px; margin-bottom:14px;}
+
+.progress-wrap{margin:14px 0; display:none;}
+.progress-wrap.show{display:block;}
+.progressbar{height:14px; background:var(--cream); border:2px solid var(--ink); border-radius:999px; overflow:hidden;}
+.progressbar > div{height:100%; background:linear-gradient(90deg,var(--pink),var(--honey)); transition:width .3s;}
+.progress-label{font-size:.85rem; margin-top:6px; font-weight:600; color:var(--ink-soft);}
+
+.result-box{margin-top:14px; padding:14px 16px; border-radius:14px; border:3px solid var(--ink); font-weight:600; font-size:.92rem; display:none;}
+.result-box.show{display:block;}
+.result-box.ok{background:var(--leaf); color:#fff;}
+.result-box.err{background:var(--berry); color:#fff;}
+
+code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85em;}
+.hint-note{font-size:.8rem; color:var(--ink-soft); background:#FFF3D0; border:2px dashed var(--honey); padding:10px 14px; border-radius:12px; margin-bottom:14px;}
+</style>
+</head>
+<body>
+<div id="app">
+
+  <div class="topbar">
+    <div class="brand"><span class="logo">🔧</span> Word Wizard — แอดมิน</div>
+    <a class="back-link" href="index.html">🐝 กลับไปหน้าเกม</a>
+  </div>
+
+  <!-- ===================== GATE ===================== -->
+  <section id="gate" class="card">
+    <div class="badge">🔐 สำหรับแอดมินเท่านั้น</div>
+    <h1>ใส่รหัสผ่านแอดมิน</h1>
+    <p class="lead">รหัสผ่านนี้ตั้งไว้ในไฟล์ Code.gs (ตัวแปร <code>ADMIN_KEY</code>) — ถ้ายังไม่เคยตั้ง ให้เปิดไฟล์ดูค่าเริ่มต้น หรือขอจากผู้ที่ตั้งค่าระบบให้</p>
+    <div class="field">
+      <label>รหัสผ่าน</label>
+      <input type="password" id="admin-key" placeholder="กรอกรหัสผ่านแอดมิน" autocomplete="off">
+    </div>
+    <button class="btn btn-primary" id="btn-unlock">🔓 เข้าสู่ระบบ</button>
+    <p id="gate-error" class="hidden" style="color:var(--berry); font-weight:600; margin-top:10px;">รหัสผ่านไม่ถูกต้อง หรือเชื่อมต่อ Google Sheet ไม่สำเร็จ ลองใหม่อีกครั้ง</p>
+  </section>
+
+  <!-- ===================== MAIN (hidden until unlocked) ===================== -->
+  <div id="main" class="hidden">
+
+    <section class="card">
+      <h2>📊 ภาพรวมคลังข้อมูลตอนนี้</h2>
+      <div class="stat-grid" id="stat-grid">
+        <div class="stat-box"><b id="stat-words">-</b><span>คำศัพท์</span></div>
+        <div class="stat-box"><b id="stat-blanks">-</b><span>ประโยคเติมคำ</span></div>
+        <div class="stat-box"><b id="stat-reg">-</b><span>ผู้ลงทะเบียน</span></div>
+        <div class="stat-box"><b id="stat-scores">-</b><span>ครั้งที่เล่นจบ</span></div>
+      </div>
+      <button class="btn btn-ghost" id="btn-refresh-stats" style="margin-top:10px;">🔄 รีเฟรชตัวเลข</button>
+    </section>
+
+    <section class="card">
+      <div class="badge">📥 เพิ่มข้อมูลเกมผ่านไฟล์ CSV / Excel</div>
+      <h1>อัปโหลดคำศัพท์ใหม่</h1>
+      <p class="lead">เลือกประเภทข้อมูลที่จะเพิ่ม แล้วอัปโหลดไฟล์ .csv หรือ .xlsx ตามรูปแบบคอลัมน์ที่กำหนด (ดาวน์โหลดไฟล์ตัวอย่างได้ด้านล่าง)</p>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="words">🎯 คำศัพท์ทั่วไป</button>
+        <button class="tab-btn" data-tab="blanks">✍️ ประโยคเติมคำ</button>
+      </div>
+
+      <!-- TAB: WORDS -->
+      <div class="tab-panel" id="tab-words">
+        <div class="hint-note">
+          คอลัมน์ที่ต้องมี: <code>word</code>, <code>meaning</code>, <code>category</code><br>
+          category ใส่ได้: <code>A</code>=คุณธรรม, <code>B</code>=ความฉลาด, <code>C</code>=ความเข้มแข็ง, <code>D</code>=สังคม, <code>E</code>=ด้านลบ หรือเว้นว่างไว้/<code>WF</code> สำหรับคำทั่วไป (จะไม่ถูกใช้ในโหมด "จัดหมวดหมู่" แต่ใช้ในโหมดอื่นได้ปกติ)
+        </div>
+        <button class="btn btn-ghost" id="btn-template-words" style="margin-bottom:14px;">⬇️ ดาวน์โหลดไฟล์ตัวอย่าง (words_template.csv)</button>
+        <div class="dropzone" id="dropzone-words">
+          <div class="ic">📄</div>
+          <b>ลากไฟล์มาวาง หรือคลิกเพื่อเลือกไฟล์</b>
+          <small>รองรับ .csv และ .xlsx</small>
+        </div>
+        <input type="file" id="file-words" accept=".csv,.xlsx" class="hidden">
+        <div class="preview-wrap hidden" id="preview-wrap-words">
+          <table class="preview" id="preview-table-words"></table>
+        </div>
+        <button class="btn btn-primary hidden" id="btn-submit-words">🚀 เพิ่มคำศัพท์ทั้งหมดนี้</button>
+        <div class="progress-wrap" id="progress-words">
+          <div class="progressbar"><div id="progress-words-bar" style="width:0%"></div></div>
+          <div class="progress-label" id="progress-words-label"></div>
+        </div>
+        <div class="result-box" id="result-words"></div>
+      </div>
+
+      <!-- TAB: BLANKS -->
+      <div class="tab-panel hidden" id="tab-blanks">
+        <div class="hint-note">
+          คอลัมน์ที่ต้องมี: <code>family</code>, <code>meaning</code>, <code>sentence</code>, <code>answers</code>, <code>pos</code><br>
+          <code>sentence</code> ต้องมี <code>___</code> (ขีดล่าง 3 ตัว) แทนช่องว่างที่ต้องเติม, <code>answers</code> ใส่คำตอบที่ยอมรับได้หลายแบบคั่นด้วย <code>|</code> เช่น <code>nobility|nobleness</code>, <code>pos</code> ใส่ adj/adv/n/v
+        </div>
+        <button class="btn btn-ghost" id="btn-template-blanks" style="margin-bottom:14px;">⬇️ ดาวน์โหลดไฟล์ตัวอย่าง (blanks_template.csv)</button>
+        <div class="dropzone" id="dropzone-blanks">
+          <div class="ic">📄</div>
+          <b>ลากไฟล์มาวาง หรือคลิกเพื่อเลือกไฟล์</b>
+          <small>รองรับ .csv และ .xlsx</small>
+        </div>
+        <input type="file" id="file-blanks" accept=".csv,.xlsx" class="hidden">
+        <div class="preview-wrap hidden" id="preview-wrap-blanks">
+          <table class="preview" id="preview-table-blanks"></table>
+        </div>
+        <button class="btn btn-primary hidden" id="btn-submit-blanks">🚀 เพิ่มประโยคทั้งหมดนี้</button>
+        <div class="progress-wrap" id="progress-blanks">
+          <div class="progressbar"><div id="progress-blanks-bar" style="width:0%"></div></div>
+          <div class="progress-label" id="progress-blanks-label"></div>
+        </div>
+        <div class="result-box" id="result-blanks"></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>📝 แก้ไข/ลบข้อมูลทีละรายการ</h2>
+      <p class="lead">
+        หน้านี้รองรับการ "เพิ่ม" ข้อมูลจำนวนมากเท่านั้น ถ้าต้องการแก้ไขหรือลบคำที่มีอยู่แล้ว
+        ให้เปิด Google Sheet โดยตรงแล้วแก้ในชีต <code>VocabWords</code> หรือ <code>FillBlanks</code> ได้เลย —
+        การเปลี่ยนแปลงจะมีผลกับเกมทันทีในการโหลดครั้งถัดไป (ไม่ต้อง deploy ใหม่)
+      </p>
+    </section>
+  </div>
+
+  <p style="text-align:center; font-size:.75rem; color:var(--ink-soft); margin-top:10px;">
+    ⚠️ หน้านี้ป้องกันด้วยรหัสผ่านอย่างง่ายเท่านั้น (ส่งผ่าน URL) เหมาะสำหรับใช้ในห้องเรียน ไม่ควรใช้เก็บข้อมูลสำคัญจริงจัง
+  </p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+/* ต้องตรงกับ SCRIPT_URL ในไฟล์ index.html */
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLHoJfl_apCjSRKp68-50FxawW-w0oB9BG0dfKMaFGQB4y3YmgtEgc91eC1lm8cIDk_g/exec";
+const CHUNK_SIZE = 8; // แถวยาว (ประโยค + คำตอบหลายแบบ + ภาษาไทย) ทำให้ URL ยาวได้ถึง ~6000 ตัวอักษรต่อ 8 แถว จึงคุมไว้ที่ 8 เพื่อไม่ให้ชน request-line limit ทั่วไป (~8KB)
+
+let adminKey = '';
+let parsedRows = { words: [], blanks: [] };
+
+const $ = (id) => document.getElementById(id);
+
+/* =====================================================================
+   JSONP helper — ทุก action (อ่านและเขียน) ผ่าน GET + JSONP เท่านั้น เพราะ
+   fetch() ไปยัง Apps Script web app ข้าม origin อ่าน response ไม่ได้จริง
+===================================================================== */
+function jsonp(params){
+  return new Promise((resolve, reject)=>{
+    const cbName = 'wwAdminCb_' + Date.now() + '_' + Math.floor(Math.random()*100000);
+    let done = false;
+    const cleanup = ()=>{ delete window[cbName]; if(tag.parentNode) tag.remove(); };
+    window[cbName] = (data)=>{ done = true; cleanup(); resolve(data); };
+    const qs = Object.keys(params).map(k => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`).join('&');
+    const tag = document.createElement('script');
+    tag.src = `${SCRIPT_URL}?${qs}&callback=${cbName}&_t=${Date.now()}`;
+    tag.onerror = ()=>{ if(!done){ cleanup(); reject(new Error('โหลดสคริปต์ไม่สำเร็จ')); } };
+    document.body.appendChild(tag);
+    setTimeout(()=>{ if(!done){ cleanup(); reject(new Error('หมดเวลารอการตอบกลับ')); } }, 8000);
+  });
+}
+
+/* =====================================================================
+   GATE
+===================================================================== */
+$('btn-unlock').addEventListener('click', async ()=>{
+  const key = $('admin-key').value.trim();
+  if(!key) return;
+  $('btn-unlock').disabled = true; $('btn-unlock').textContent = '⏳ กำลังตรวจสอบ...';
+  try{
+    const data = await jsonp({ action:'admin_stats' });
+    adminKey = key;
+    $('gate').classList.add('hidden');
+    $('main').classList.remove('hidden');
+    renderStats(data);
+  }catch(err){
+    $('gate-error').classList.remove('hidden');
+  }finally{
+    $('btn-unlock').disabled = false; $('btn-unlock').textContent = '🔓 เข้าสู่ระบบ';
+  }
+});
+
+function renderStats(data){
+  $('stat-words').textContent = data.words ?? '-';
+  $('stat-blanks').textContent = data.blanks ?? '-';
+  $('stat-reg').textContent = data.registrations ?? '-';
+  $('stat-scores').textContent = data.scores ?? '-';
+}
+$('btn-refresh-stats').addEventListener('click', async ()=>{
+  try{ renderStats(await jsonp({ action:'admin_stats' })); }catch(err){}
+});
+
+/* =====================================================================
+   TABS
+===================================================================== */
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.add('hidden'));
+    btn.classList.add('active');
+    $('tab-' + btn.dataset.tab).classList.remove('hidden');
+  });
+});
+
+/* =====================================================================
+   CSV / XLSX PARSING
+===================================================================== */
+function parseCSV(text){
+  const rows = [];
+  let row = [], field = '', inQuotes = false;
+  for(let i=0; i<text.length; i++){
+    const c = text[i], next = text[i+1];
+    if(inQuotes){
+      if(c === '"' && next === '"'){ field += '"'; i++; }
+      else if(c === '"'){ inQuotes = false; }
+      else field += c;
+    } else {
+      if(c === '"') inQuotes = true;
+      else if(c === ','){ row.push(field); field = ''; }
+      else if(c === '\n' || c === '\r'){
+        if(field.length || row.length){ row.push(field); rows.push(row); row = []; field = ''; }
+        if(c === '\r' && next === '\n') i++;
+      } else field += c;
+    }
+  }
+  if(field.length || row.length){ row.push(field); rows.push(row); }
+  return rows.filter(r => r.some(c => c.trim() !== ''));
+}
+function rowsToObjects(rows){
+  if(!rows.length) return [];
+  const headers = rows[0].map(h => h.trim().toLowerCase());
+  return rows.slice(1).map(r=>{
+    const obj = {};
+    headers.forEach((h,i)=> obj[h] = (r[i] ?? '').toString().trim());
+    return obj;
+  });
+}
+function parseFile(file){
+  return new Promise((resolve, reject)=>{
+    const isXlsx = /\.xlsx$/i.test(file.name);
+    const reader = new FileReader();
+    reader.onerror = ()=> reject(new Error('อ่านไฟล์ไม่สำเร็จ'));
+    if(isXlsx){
+      reader.onload = (e)=>{
+        try{
+          const wb = XLSX.read(new Uint8Array(e.target.result), {type:'array'});
+          const sheet = wb.Sheets[wb.SheetNames[0]];
+          const rows = XLSX.utils.sheet_to_json(sheet, {header:1, defval:''});
+          resolve(rowsToObjects(rows.map(r => r.map(c => String(c)))));
+        }catch(err){ reject(err); }
+      };
+      reader.readAsArrayBuffer(file);
+    } else {
+      reader.onload = (e)=>{
+        try{ resolve(rowsToObjects(parseCSV(e.target.result))); }
+        catch(err){ reject(err); }
+      };
+      reader.readAsText(file, 'UTF-8');
+    }
+  });
+}
+
+/* =====================================================================
+   WORDS TAB
+===================================================================== */
+setupDropzone('dropzone-words', 'file-words', async (file)=>{
+  const objs = await parseFile(file);
+  parsedRows.words = objs.map(o => ({ word:o.word||'', meaning:o.meaning||o.meaning_th||'', category:(o.category||'WF').toUpperCase() }))
+    .filter(r => r.word && r.meaning);
+  renderPreview('words', parsedRows.words, ['word','meaning','category']);
+});
+$('btn-submit-words').addEventListener('click', ()=> submitRows('words'));
+$('btn-template-words').addEventListener('click', ()=> downloadTemplate(
+  'words_template.csv', 'word,meaning,category\ngregarious,ชอบเข้าสังคม ชอบอยู่เป็นกลุ่ม,D\nmeticulous,พิถีพิถันมาก ละเอียดมาก,B\n'
+));
+
+/* =====================================================================
+   BLANKS TAB
+===================================================================== */
+setupDropzone('dropzone-blanks', 'file-blanks', async (file)=>{
+  const objs = await parseFile(file);
+  parsedRows.blanks = objs.map(o => ({
+    family:o.family||'', meaning:o.meaning||o.meaning_th||'', sentence:o.sentence||'',
+    answers:o.answers||o.answer||'', pos:(o.pos||'').toLowerCase()
+  })).filter(r => r.family && r.sentence.includes('___') && r.answers);
+  renderPreview('blanks', parsedRows.blanks, ['family','meaning','sentence','answers','pos']);
+});
+$('btn-submit-blanks').addEventListener('click', ()=> submitRows('blanks'));
+$('btn-template-blanks').addEventListener('click', ()=> downloadTemplate(
+  'blanks_template.csv',
+  'family,meaning,sentence,answers,pos\ngregarious,ชอบเข้าสังคม ชอบอยู่เป็นกลุ่ม,She is very ___ and loves parties.,gregarious,adj\ngregarious,ชอบเข้าสังคม ชอบอยู่เป็นกลุ่ม,His ___ makes him popular at work.,gregariousness,n\n'
+));
+
+function downloadTemplate(filename, csvContent){
+  const blob = new Blob(['﻿' + csvContent], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+
+function setupDropzone(zoneId, inputId, onFile){
+  const zone = $(zoneId), input = $(inputId);
+  zone.addEventListener('click', ()=> input.click());
+  input.addEventListener('change', ()=>{ if(input.files[0]) handle(input.files[0]); });
+  ['dragover','dragenter'].forEach(ev => zone.addEventListener(ev, (e)=>{ e.preventDefault(); zone.classList.add('drag'); }));
+  ['dragleave','drop'].forEach(ev => zone.addEventListener(ev, (e)=>{ e.preventDefault(); zone.classList.remove('drag'); }));
+  zone.addEventListener('drop', (e)=>{ const f = e.dataTransfer.files[0]; if(f) handle(f); });
+  async function handle(file){
+    zone.querySelector('b').textContent = `📄 ${file.name}`;
+    try{ await onFile(file); }
+    catch(err){ alert('อ่านไฟล์ไม่สำเร็จ: ' + err.message); }
+  }
+}
+
+function renderPreview(kind, rows, cols){
+  const wrap = $(`preview-wrap-${kind}`), table = $(`preview-table-${kind}`);
+  const submitBtn = $(`btn-submit-${kind}`);
+  if(!rows.length){ wrap.classList.add('hidden'); submitBtn.classList.add('hidden'); return; }
+  let html = '<thead><tr>' + cols.map(c=>`<th>${c}</th>`).join('') + '</tr></thead><tbody>';
+  rows.slice(0,200).forEach(r=>{
+    html += '<tr>' + cols.map(c=>`<td>${(r[c]||'').toString().slice(0,80)}</td>`).join('') + '</tr>';
+  });
+  html += '</tbody>';
+  table.innerHTML = html;
+  wrap.classList.remove('hidden');
+  submitBtn.classList.remove('hidden');
+  submitBtn.textContent = `🚀 เพิ่มทั้งหมด ${rows.length} แถว`;
+}
+
+/* =====================================================================
+   CHUNKED SUBMIT — แบ่งส่งทีละก้อนผ่าน JSONP (ยิง fetch/POST จำนวนมากไม่ได้
+   เพราะ URL ยาวเกินไปถ้าส่งทีเดียวทั้งหมด และ Apps Script อ่าน response ของ
+   fetch() ข้าม origin ไม่ได้ตามที่อธิบายไว้ข้างบน)
+===================================================================== */
+async function submitRows(kind){
+  const rows = parsedRows[kind];
+  if(!rows.length) return;
+  const action = kind === 'words' ? 'admin_add_words' : 'admin_add_blanks';
+  const submitBtn = $(`btn-submit-${kind}`);
+  const progressWrap = $(`progress-${kind}`);
+  const bar = $(`progress-${kind}-bar`);
+  const label = $(`progress-${kind}-label`);
+  const resultBox = $(`result-${kind}`);
+
+  submitBtn.disabled = true;
+  progressWrap.classList.add('show');
+  resultBox.classList.remove('show','ok','err');
+
+  const chunks = [];
+  for(let i=0; i<rows.length; i+=CHUNK_SIZE) chunks.push(rows.slice(i, i+CHUNK_SIZE));
+
+  let totalAdded = 0, totalSkipped = 0, hadError = false, errorMsg = '';
+  for(let i=0; i<chunks.length; i++){
+    label.textContent = `กำลังส่งชุดที่ ${i+1}/${chunks.length}...`;
+    try{
+      const res = await jsonp({ action, adminKey, data: JSON.stringify(chunks[i]) });
+      if(res.status === 'ok'){
+        totalAdded += res.added || 0;
+        totalSkipped += res.skipped || 0;
+      } else {
+        hadError = true; errorMsg = res.message || 'ไม่ทราบสาเหตุ';
+      }
+    }catch(err){
+      hadError = true; errorMsg = err.message;
+    }
+    bar.style.width = `${Math.round(((i+1)/chunks.length)*100)}%`;
+  }
+
+  progressWrap.classList.remove('show');
+  submitBtn.disabled = false;
+  resultBox.classList.add('show');
+  if(hadError && totalAdded === 0){
+    resultBox.classList.add('err');
+    resultBox.textContent = `❌ เกิดข้อผิดพลาด: ${errorMsg}`;
+  } else {
+    resultBox.classList.add('ok');
+    resultBox.textContent = `✅ เพิ่มสำเร็จ ${totalAdded} แถว` + (totalSkipped ? ` (ข้าม ${totalSkipped} แถวที่ข้อมูลไม่ครบ)` : '') + (hadError ? ` — บางชุดมีปัญหา: ${errorMsg}` : '');
+  }
+  renderStats(await jsonp({ action:'admin_stats' }).catch(()=>({})));
+}
+</script>
+</body>
+</html>
