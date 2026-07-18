@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔧 Word Wizard | หน้าแอดมิน</title>
+<title>🔧 Word Wizard | ระบบจัดการแอดมิน</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A7%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +13,7 @@
   --yolk:#FFC93C; --honey:#FFB100; --cream:#FFF7DE; --butter:#FFE9A8;
   --pink:#FF8FA3; --pink-deep:#FF6B8B; --sky:#5FC9F3; --leaf:#7ED957; --leaf-deep:#4CAF50;
   --berry:#FF6B6B; --ink:#5A3E00; --ink-soft:#8A6A2B; --white:#FFFFFF;
-  --radius:22px; --shadow-pop:5px 6px 0 rgba(90,62,0,.18);
+  --radius:20px; --shadow-pop:5px 6px 0 rgba(90,62,0,.18);
   --shadow-pop-sm:3px 4px 0 rgba(90,62,0,.16);
 }
 *{box-sizing:border-box; margin:0; padding:0;}
@@ -25,87 +25,135 @@ body{
   background-attachment:fixed;
   color:var(--ink);
 }
-#app{max-width:920px; margin:0 auto; padding:22px 16px 60px;}
+#app{max-width:1180px; margin:0 auto; padding:20px 16px 60px;}
 .hidden{display:none !important;}
 
-.topbar{display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; flex-wrap:wrap; gap:10px;}
+.topbar{display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:10px;}
 .brand{display:flex; align-items:center; gap:10px; font-family:'Mali',cursive; font-weight:700; font-size:1.4rem;}
 .brand .logo{font-size:1.8rem;}
-.back-link{font-size:.85rem; color:var(--ink); text-decoration:none; background:var(--white); border:2px solid var(--ink); padding:6px 14px; border-radius:999px; box-shadow:var(--shadow-pop-sm); font-weight:600;}
+.topbar-actions{display:flex; gap:8px; flex-wrap:wrap;}
+.link-btn{font-size:.82rem; color:var(--ink); text-decoration:none; background:var(--white); border:2px solid var(--ink); padding:6px 14px; border-radius:999px; box-shadow:var(--shadow-pop-sm); font-weight:600; cursor:pointer; font-family:'Kanit',sans-serif;}
 
-.card{ background:var(--white); border:4px solid var(--ink); border-radius:var(--radius); padding:26px 24px; box-shadow:var(--shadow-pop); margin-bottom:18px; }
-h1{font-family:'Mali',cursive; font-size:1.7rem; font-weight:800; margin-bottom:8px;}
-h2{font-family:'Mali',cursive; font-size:1.25rem; font-weight:700; margin-bottom:10px;}
-p.lead{color:var(--ink-soft); font-size:.92rem; line-height:1.6; margin-bottom:14px;}
-.badge{display:inline-flex; align-items:center; gap:6px; background:var(--yolk); border:3px solid var(--ink); padding:4px 12px; border-radius:999px; font-size:.75rem; font-weight:700; margin-bottom:10px;}
+.card{ background:var(--white); border:4px solid var(--ink); border-radius:var(--radius); padding:24px 22px; box-shadow:var(--shadow-pop); margin-bottom:16px; }
+h1{font-family:'Mali',cursive; font-size:1.6rem; font-weight:800; margin-bottom:8px;}
+h2{font-family:'Mali',cursive; font-size:1.2rem; font-weight:700; margin-bottom:10px; display:flex; align-items:center; gap:8px;}
+p.lead{color:var(--ink-soft); font-size:.9rem; line-height:1.6; margin-bottom:14px;}
+.badge{display:inline-flex; align-items:center; gap:6px; background:var(--yolk); border:3px solid var(--ink); padding:4px 12px; border-radius:999px; font-size:.72rem; font-weight:700; margin-bottom:10px;}
 
 .field{margin-bottom:14px;}
-.field label{display:block; font-size:.85rem; font-weight:600; margin-bottom:6px;}
-.field input[type=password], .field input[type=text]{
-  width:100%; padding:12px 14px; border-radius:14px; border:3px solid var(--ink);
-  background:var(--cream); font-family:'Kanit',sans-serif; font-size:1rem; outline:none;
+.field label{display:block; font-size:.82rem; font-weight:600; margin-bottom:6px;}
+.field input[type=password], .field input[type=text], .field select, .field textarea{
+  width:100%; padding:11px 13px; border-radius:12px; border:3px solid var(--ink);
+  background:var(--cream); font-family:'Kanit',sans-serif; font-size:.95rem; outline:none;
 }
-.field input:focus{border-color:var(--pink-deep); background:#fff;}
+.field input:focus, .field select:focus, .field textarea:focus{border-color:var(--pink-deep); background:#fff;}
 
 .btn{
   appearance:none; cursor:pointer; font-family:'Mali',cursive; font-weight:700;
-  border-radius:16px; padding:12px 20px; font-size:1rem; border:3px solid var(--ink);
+  border-radius:14px; padding:10px 18px; font-size:.92rem; border:3px solid var(--ink);
   transition:transform .1s ease; display:inline-flex; align-items:center; gap:6px;
 }
 .btn:active{transform:translate(3px,4px); box-shadow:none !important;}
 .btn-primary{background:linear-gradient(135deg,var(--pink),var(--honey)); color:#fff; box-shadow:var(--shadow-pop-sm);}
 .btn-ghost{background:var(--white); color:var(--ink); box-shadow:var(--shadow-pop-sm);}
+.btn-danger{background:var(--berry); color:#fff; box-shadow:var(--shadow-pop-sm);}
+.btn-sm{padding:6px 12px; font-size:.78rem; border-width:2px; border-radius:10px;}
 .btn:disabled{opacity:.45; cursor:not-allowed;}
 
+/* ============ Top-level nav tabs ============ */
+.nav-tabs{display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;}
+.nav-tab{
+  font-family:'Mali',cursive; font-weight:700; padding:11px 18px; border-radius:16px; border:3px solid var(--ink);
+  background:var(--white); cursor:pointer; font-size:.95rem; box-shadow:var(--shadow-pop-sm);
+}
+.nav-tab.active{background:var(--yolk);}
+.nav-panel.hidden{display:none;}
+
+.sub-tabs{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;}
+.sub-tab{font-family:'Mali',cursive; font-weight:700; padding:8px 16px; border-radius:999px; border:3px solid var(--ink); background:var(--cream); cursor:pointer; font-size:.85rem;}
+.sub-tab.active{background:var(--yolk); box-shadow:var(--shadow-pop-sm);}
+.sub-panel.hidden{display:none;}
+
+/* ============ Stat cards ============ */
 .stat-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:6px;}
-@media(max-width:640px){.stat-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:720px){.stat-grid{grid-template-columns:repeat(2,1fr);}}
 .stat-box{background:var(--cream); border:3px solid var(--ink); border-radius:16px; padding:14px 10px; text-align:center;}
 .stat-box b{display:block; font-family:'Mali',cursive; font-size:1.5rem;}
-.stat-box span{font-size:.72rem; color:var(--ink-soft); font-weight:600;}
+.stat-box span{font-size:.7rem; color:var(--ink-soft); font-weight:600;}
+.stat-box.accent{background:var(--yolk);}
 
-.tabs{display:flex; gap:8px; margin-bottom:16px; flex-wrap:wrap;}
-.tab-btn{
-  font-family:'Mali',cursive; font-weight:700; padding:10px 18px; border-radius:999px; border:3px solid var(--ink);
-  background:var(--cream); cursor:pointer; font-size:.95rem;
-}
-.tab-btn.active{background:var(--yolk); box-shadow:var(--shadow-pop-sm);}
-.tab-panel.hidden{display:none;}
+.mini-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+@media(max-width:820px){.mini-grid{grid-template-columns:1fr;}}
+
+.bar-row{display:flex; align-items:center; gap:8px; margin-bottom:8px; font-size:.82rem;}
+.bar-row .bar-label{width:110px; flex-shrink:0; font-weight:600;}
+.bar-track{flex:1; height:14px; background:var(--cream); border:2px solid var(--ink); border-radius:999px; overflow:hidden;}
+.bar-fill{height:100%; background:linear-gradient(90deg,var(--pink),var(--honey));}
+.bar-count{width:34px; text-align:right; font-weight:700; flex-shrink:0;}
+
+.activity-item{padding:8px 0; border-bottom:1px dashed var(--butter); font-size:.82rem; display:flex; justify-content:space-between; gap:8px;}
+.activity-item:last-child{border-bottom:none;}
+.activity-item .who{font-weight:600;}
+.activity-item .when{color:var(--ink-soft); font-size:.72rem; white-space:nowrap;}
+
+/* ============ Tables ============ */
+.table-toolbar{display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap; align-items:center;}
+.table-toolbar input[type=text]{flex:1; min-width:180px; padding:10px 14px; border-radius:12px; border:3px solid var(--ink); background:var(--cream); font-family:'Kanit',sans-serif;}
+.table-toolbar select{padding:10px 14px; border-radius:12px; border:3px solid var(--ink); background:var(--cream); font-family:'Kanit',sans-serif;}
+.table-wrap{max-height:460px; overflow:auto; border:3px solid var(--ink); border-radius:14px;}
+table.datatable{width:100%; border-collapse:collapse; font-size:.83rem;}
+table.datatable th{background:var(--yolk); color:var(--ink); font-weight:700; padding:9px 10px; text-align:left; position:sticky; top:0; white-space:nowrap;}
+table.datatable td{padding:7px 10px; border-bottom:1px solid var(--cream); vertical-align:middle;}
+table.datatable tr:hover td{background:#FFFCF2;}
+table.datatable input, table.datatable select{width:100%; padding:5px 7px; border-radius:8px; border:2px solid var(--ink); font-family:'Kanit',sans-serif; font-size:.82rem;}
+.row-actions{display:flex; gap:6px; white-space:nowrap;}
+.cat-chip{display:inline-block; padding:2px 8px; border-radius:999px; font-size:.7rem; font-weight:700; border:2px solid var(--ink);}
+.empty-note{padding:24px; text-align:center; color:var(--ink-soft); font-size:.88rem;}
 
 .dropzone{
-  border:3px dashed var(--honey); border-radius:18px; padding:26px; text-align:center; cursor:pointer;
+  border:3px dashed var(--honey); border-radius:16px; padding:22px; text-align:center; cursor:pointer;
   background:var(--cream); margin-bottom:14px; transition:.15s;
 }
 .dropzone:hover{background:#fff;}
 .dropzone.drag{background:var(--butter); border-color:var(--pink-deep);}
-.dropzone .ic{font-size:2rem; margin-bottom:6px;}
+.dropzone .ic{font-size:1.8rem; margin-bottom:4px;}
 .dropzone small{display:block; color:var(--ink-soft); margin-top:4px;}
 
-table.preview{width:100%; border-collapse:collapse; font-size:.85rem; margin-bottom:14px;}
-table.preview th{background:var(--yolk); color:var(--ink); font-weight:700; padding:8px 10px; text-align:left; position:sticky; top:0;}
-table.preview td{padding:7px 10px; border-bottom:1px solid var(--cream);}
-.preview-wrap{max-height:320px; overflow:auto; border:3px solid var(--ink); border-radius:14px; margin-bottom:14px;}
-
+.preview-wrap{max-height:280px; overflow:auto; border:3px solid var(--ink); border-radius:14px; margin-bottom:14px;}
 .progress-wrap{margin:14px 0; display:none;}
 .progress-wrap.show{display:block;}
 .progressbar{height:14px; background:var(--cream); border:2px solid var(--ink); border-radius:999px; overflow:hidden;}
 .progressbar > div{height:100%; background:linear-gradient(90deg,var(--pink),var(--honey)); transition:width .3s;}
 .progress-label{font-size:.85rem; margin-top:6px; font-weight:600; color:var(--ink-soft);}
 
-.result-box{margin-top:14px; padding:14px 16px; border-radius:14px; border:3px solid var(--ink); font-weight:600; font-size:.92rem; display:none;}
-.result-box.show{display:block;}
-.result-box.ok{background:var(--leaf); color:#fff;}
-.result-box.err{background:var(--berry); color:#fff;}
+.result-box, .toast{margin-top:14px; padding:12px 16px; border-radius:14px; border:3px solid var(--ink); font-weight:600; font-size:.88rem; display:none;}
+.result-box.show, .toast.show{display:block;}
+.result-box.ok, .toast.ok{background:var(--leaf); color:#fff;}
+.result-box.err, .toast.err{background:var(--berry); color:#fff;}
+
+.quick-add-row{display:grid; grid-template-columns:1fr 1fr 100px auto; gap:8px; margin-bottom:16px;}
+@media(max-width:760px){.quick-add-row{grid-template-columns:1fr;}}
+.quick-add-row input, .quick-add-row select{padding:10px 12px; border-radius:12px; border:3px solid var(--ink); background:var(--cream); font-family:'Kanit',sans-serif;}
+.quick-add-blank{display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:10px;}
+@media(max-width:760px){.quick-add-blank{grid-template-columns:1fr;}}
 
 code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85em;}
-.hint-note{font-size:.8rem; color:var(--ink-soft); background:#FFF3D0; border:2px dashed var(--honey); padding:10px 14px; border-radius:12px; margin-bottom:14px;}
+.hint-note{font-size:.78rem; color:var(--ink-soft); background:#FFF3D0; border:2px dashed var(--honey); padding:10px 14px; border-radius:12px; margin-bottom:14px;}
+.settings-row{display:flex; justify-content:space-between; align-items:center; gap:12px; padding:12px 0; border-bottom:1px dashed var(--butter);}
+.settings-row:last-child{border-bottom:none;}
+.settings-row .label{font-weight:600; font-size:.88rem;}
+.settings-row .value{font-size:.82rem; color:var(--ink-soft); word-break:break-all; text-align:right;}
 </style>
 </head>
 <body>
 <div id="app">
 
   <div class="topbar">
-    <div class="brand"><span class="logo">🔧</span> Word Wizard — แอดมิน</div>
-    <a class="back-link" href="index.html">🐝 กลับไปหน้าเกม</a>
+    <div class="brand"><span class="logo">🔧</span> Word Wizard — ระบบจัดการแอดมิน</div>
+    <div class="topbar-actions">
+      <a class="link-btn" href="index.html">🐝 กลับไปหน้าเกม</a>
+      <button class="link-btn hidden" id="btn-logout">🚪 ออกจากระบบ</button>
+    </div>
   </div>
 
   <!-- ===================== GATE ===================== -->
@@ -118,111 +166,234 @@ code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85e
       <input type="password" id="admin-key" placeholder="กรอกรหัสผ่านแอดมิน" autocomplete="off">
     </div>
     <button class="btn btn-primary" id="btn-unlock">🔓 เข้าสู่ระบบ</button>
-    <p id="gate-error" class="hidden" style="color:var(--berry); font-weight:600; margin-top:10px;">รหัสผ่านไม่ถูกต้อง หรือเชื่อมต่อ Google Sheet ไม่สำเร็จ ลองใหม่อีกครั้ง</p>
+    <p id="gate-error" class="hidden" style="color:var(--berry); font-weight:600; margin-top:10px;"></p>
   </section>
 
-  <!-- ===================== MAIN (hidden until unlocked) ===================== -->
+  <!-- ===================== MAIN ===================== -->
   <div id="main" class="hidden">
 
-    <section class="card">
-      <h2>📊 ภาพรวมคลังข้อมูลตอนนี้</h2>
-      <div class="stat-grid" id="stat-grid">
-        <div class="stat-box"><b id="stat-words">-</b><span>คำศัพท์</span></div>
-        <div class="stat-box"><b id="stat-blanks">-</b><span>ประโยคเติมคำ</span></div>
-        <div class="stat-box"><b id="stat-reg">-</b><span>ผู้ลงทะเบียน</span></div>
-        <div class="stat-box"><b id="stat-scores">-</b><span>ครั้งที่เล่นจบ</span></div>
-      </div>
-      <button class="btn btn-ghost" id="btn-refresh-stats" style="margin-top:10px;">🔄 รีเฟรชตัวเลข</button>
-    </section>
+    <div class="nav-tabs">
+      <button class="nav-tab active" data-nav="overview">📊 ภาพรวม</button>
+      <button class="nav-tab" data-nav="vocab">📚 คลังคำศัพท์</button>
+      <button class="nav-tab" data-nav="regs">📝 ผู้ลงทะเบียน</button>
+      <button class="nav-tab" data-nav="scores">🏆 คะแนน</button>
+      <button class="nav-tab" data-nav="settings">⚙️ ตั้งค่า</button>
+    </div>
 
-    <section class="card">
-      <div class="badge">📥 เพิ่มข้อมูลเกมผ่านไฟล์ CSV / Excel</div>
-      <h1>อัปโหลดคำศัพท์ใหม่</h1>
-      <p class="lead">เลือกประเภทข้อมูลที่จะเพิ่ม แล้วอัปโหลดไฟล์ .csv หรือ .xlsx ตามรูปแบบคอลัมน์ที่กำหนด (ดาวน์โหลดไฟล์ตัวอย่างได้ด้านล่าง)</p>
+    <!-- ============ OVERVIEW ============ -->
+    <div class="nav-panel" id="nav-overview">
+      <section class="card">
+        <h2>📊 ภาพรวมระบบ</h2>
+        <div class="stat-grid" id="ov-stat-grid">
+          <div class="stat-box accent"><b id="ov-words">-</b><span>คำศัพท์</span></div>
+          <div class="stat-box accent"><b id="ov-blanks">-</b><span>ประโยคเติมคำ</span></div>
+          <div class="stat-box"><b id="ov-reg">-</b><span>ผู้ลงทะเบียน</span></div>
+          <div class="stat-box"><b id="ov-scores">-</b><span>ครั้งที่เล่นจบ</span></div>
+          <div class="stat-box"><b id="ov-avg">-</b><span>คะแนนเฉลี่ย</span></div>
+          <div class="stat-box"><b id="ov-today-reg">-</b><span>ลงทะเบียนวันนี้</span></div>
+          <div class="stat-box"><b id="ov-today-score">-</b><span>เล่นจบวันนี้</span></div>
+          <div class="stat-box"><b id="ov-modes">-</b><span>โหมดที่เปิดให้เล่น</span></div>
+        </div>
+        <button class="btn btn-ghost" id="btn-refresh-overview" style="margin-top:10px;">🔄 รีเฟรชข้อมูล</button>
+      </section>
 
-      <div class="tabs">
-        <button class="tab-btn active" data-tab="words">🎯 คำศัพท์ทั่วไป</button>
-        <button class="tab-btn" data-tab="blanks">✍️ ประโยคเติมคำ</button>
-      </div>
-
-      <!-- TAB: WORDS -->
-      <div class="tab-panel" id="tab-words">
-        <div class="hint-note">
-          คอลัมน์ที่ต้องมี: <code>word</code>, <code>meaning</code>, <code>category</code><br>
-          category ใส่ได้: <code>A</code>=คุณธรรม, <code>B</code>=ความฉลาด, <code>C</code>=ความเข้มแข็ง, <code>D</code>=สังคม, <code>E</code>=ด้านลบ หรือเว้นว่างไว้/<code>WF</code> สำหรับคำทั่วไป (จะไม่ถูกใช้ในโหมด "จัดหมวดหมู่" แต่ใช้ในโหมดอื่นได้ปกติ)
-        </div>
-        <button class="btn btn-ghost" id="btn-template-words" style="margin-bottom:14px;">⬇️ ดาวน์โหลดไฟล์ตัวอย่าง (words_template.csv)</button>
-        <div class="dropzone" id="dropzone-words">
-          <div class="ic">📄</div>
-          <b>ลากไฟล์มาวาง หรือคลิกเพื่อเลือกไฟล์</b>
-          <small>รองรับ .csv และ .xlsx</small>
-        </div>
-        <input type="file" id="file-words" accept=".csv,.xlsx" class="hidden">
-        <div class="preview-wrap hidden" id="preview-wrap-words">
-          <table class="preview" id="preview-table-words"></table>
-        </div>
-        <button class="btn btn-primary hidden" id="btn-submit-words">🚀 เพิ่มคำศัพท์ทั้งหมดนี้</button>
-        <div class="progress-wrap" id="progress-words">
-          <div class="progressbar"><div id="progress-words-bar" style="width:0%"></div></div>
-          <div class="progress-label" id="progress-words-label"></div>
-        </div>
-        <div class="result-box" id="result-words"></div>
+      <div class="mini-grid">
+        <section class="card">
+          <h2>🎮 สัดส่วนโหมดที่เล่น</h2>
+          <div id="mode-bars"><p class="empty-note">ยังไม่มีข้อมูล</p></div>
+        </section>
+        <section class="card">
+          <h2>🏆 Top 5 ผู้เล่น</h2>
+          <div id="top-players"><p class="empty-note">ยังไม่มีข้อมูล</p></div>
+        </section>
       </div>
 
-      <!-- TAB: BLANKS -->
-      <div class="tab-panel hidden" id="tab-blanks">
-        <div class="hint-note">
-          คอลัมน์ที่ต้องมี: <code>family</code>, <code>meaning</code>, <code>sentence</code>, <code>answers</code>, <code>pos</code><br>
-          <code>sentence</code> ต้องมี <code>___</code> (ขีดล่าง 3 ตัว) แทนช่องว่างที่ต้องเติม, <code>answers</code> ใส่คำตอบที่ยอมรับได้หลายแบบคั่นด้วย <code>|</code> เช่น <code>nobility|nobleness</code>, <code>pos</code> ใส่ adj/adv/n/v
-        </div>
-        <button class="btn btn-ghost" id="btn-template-blanks" style="margin-bottom:14px;">⬇️ ดาวน์โหลดไฟล์ตัวอย่าง (blanks_template.csv)</button>
-        <div class="dropzone" id="dropzone-blanks">
-          <div class="ic">📄</div>
-          <b>ลากไฟล์มาวาง หรือคลิกเพื่อเลือกไฟล์</b>
-          <small>รองรับ .csv และ .xlsx</small>
-        </div>
-        <input type="file" id="file-blanks" accept=".csv,.xlsx" class="hidden">
-        <div class="preview-wrap hidden" id="preview-wrap-blanks">
-          <table class="preview" id="preview-table-blanks"></table>
-        </div>
-        <button class="btn btn-primary hidden" id="btn-submit-blanks">🚀 เพิ่มประโยคทั้งหมดนี้</button>
-        <div class="progress-wrap" id="progress-blanks">
-          <div class="progressbar"><div id="progress-blanks-bar" style="width:0%"></div></div>
-          <div class="progress-label" id="progress-blanks-label"></div>
-        </div>
-        <div class="result-box" id="result-blanks"></div>
+      <div class="mini-grid">
+        <section class="card">
+          <h2>🕐 ลงทะเบียนล่าสุด</h2>
+          <div id="recent-regs"><p class="empty-note">ยังไม่มีข้อมูล</p></div>
+        </section>
+        <section class="card">
+          <h2>🕐 เล่นจบล่าสุด</h2>
+          <div id="recent-scores"><p class="empty-note">ยังไม่มีข้อมูล</p></div>
+        </section>
       </div>
-    </section>
+    </div>
 
-    <section class="card">
-      <h2>📝 แก้ไข/ลบข้อมูลทีละรายการ</h2>
-      <p class="lead">
-        หน้านี้รองรับการ "เพิ่ม" ข้อมูลจำนวนมากเท่านั้น ถ้าต้องการแก้ไขหรือลบคำที่มีอยู่แล้ว
-        ให้เปิด Google Sheet โดยตรงแล้วแก้ในชีต <code>VocabWords</code> หรือ <code>FillBlanks</code> ได้เลย —
-        การเปลี่ยนแปลงจะมีผลกับเกมทันทีในการโหลดครั้งถัดไป (ไม่ต้อง deploy ใหม่)
-      </p>
-    </section>
+    <!-- ============ VOCABULARY ============ -->
+    <div class="nav-panel hidden" id="nav-vocab">
+      <section class="card">
+        <div class="sub-tabs">
+          <button class="sub-tab active" data-sub="words">🎯 คำศัพท์ทั่วไป</button>
+          <button class="sub-tab" data-sub="blanks">✍️ ประโยคเติมคำ</button>
+          <button class="sub-tab" data-sub="upload">📥 อัปโหลดเป็นชุด (CSV/Excel)</button>
+        </div>
+
+        <!-- SUB: WORDS TABLE -->
+        <div class="sub-panel" id="sub-words">
+          <h2>🎯 คำศัพท์ทั่วไป (VocabWords)</h2>
+          <div class="quick-add-row">
+            <input type="text" id="qa-word" placeholder="คำศัพท์ (word)">
+            <input type="text" id="qa-word-meaning" placeholder="ความหมาย (ไทย)">
+            <select id="qa-word-cat">
+              <option value="WF">WF</option><option value="A">A</option><option value="B">B</option>
+              <option value="C">C</option><option value="D">D</option><option value="E">E</option>
+            </select>
+            <button class="btn btn-primary btn-sm" id="btn-quick-add-word">+ เพิ่ม</button>
+          </div>
+          <div class="table-toolbar">
+            <input type="text" id="search-words" placeholder="🔍 ค้นหาคำศัพท์หรือความหมาย...">
+            <select id="filter-words-cat">
+              <option value="">ทุกหมวด</option>
+              <option value="WF">WF</option><option value="A">A คุณธรรม</option><option value="B">B ความฉลาด</option>
+              <option value="C">C เข้มแข็ง</option><option value="D">D สังคม</option><option value="E">E ด้านลบ</option>
+            </select>
+            <button class="btn btn-ghost btn-sm" id="btn-export-words">⬇️ ส่งออก CSV</button>
+            <button class="btn btn-ghost btn-sm" id="btn-reload-words">🔄</button>
+          </div>
+          <div class="table-wrap"><table class="datatable" id="table-words"></table></div>
+        </div>
+
+        <!-- SUB: BLANKS TABLE -->
+        <div class="sub-panel hidden" id="sub-blanks">
+          <h2>✍️ ประโยคเติมคำ (FillBlanks)</h2>
+          <div class="quick-add-blank">
+            <input type="text" id="qa-family" placeholder="family (เช่น validate)">
+            <input type="text" id="qa-blank-meaning" placeholder="ความหมาย (ไทย)">
+            <input type="text" id="qa-sentence" placeholder="ประโยค ต้องมี ___ เช่น Experts will ___ this.">
+            <input type="text" id="qa-answers" placeholder="คำตอบ (คั่นด้วย | ถ้ามีหลายแบบ)">
+            <select id="qa-pos">
+              <option value="adj">adj</option><option value="adv">adv</option><option value="n">n</option><option value="v">v</option>
+            </select>
+            <button class="btn btn-primary btn-sm" id="btn-quick-add-blank">+ เพิ่ม</button>
+          </div>
+          <div class="table-toolbar">
+            <input type="text" id="search-blanks" placeholder="🔍 ค้นหา family, ประโยค, หรือคำตอบ...">
+            <button class="btn btn-ghost btn-sm" id="btn-export-blanks">⬇️ ส่งออก CSV</button>
+            <button class="btn btn-ghost btn-sm" id="btn-reload-blanks">🔄</button>
+          </div>
+          <div class="table-wrap"><table class="datatable" id="table-blanks"></table></div>
+        </div>
+
+        <!-- SUB: BULK UPLOAD -->
+        <div class="sub-panel hidden" id="sub-upload">
+          <div class="sub-tabs" style="margin-bottom:14px;">
+            <button class="sub-tab active" data-uptab="up-words">🎯 อัปโหลดคำศัพท์</button>
+            <button class="sub-tab" data-uptab="up-blanks">✍️ อัปโหลดประโยคเติมคำ</button>
+          </div>
+
+          <div class="sub-panel" id="up-words">
+            <div class="hint-note">
+              คอลัมน์ที่ต้องมี: <code>word</code>, <code>meaning</code>, <code>category</code><br>
+              category ใส่ได้: <code>A</code>=คุณธรรม, <code>B</code>=ความฉลาด, <code>C</code>=ความเข้มแข็ง, <code>D</code>=สังคม, <code>E</code>=ด้านลบ หรือเว้นว่างไว้/<code>WF</code> สำหรับคำทั่วไป
+            </div>
+            <button class="btn btn-ghost" id="btn-template-words" style="margin-bottom:14px;">⬇️ ดาวน์โหลดไฟล์ตัวอย่าง (words_template.csv)</button>
+            <div class="dropzone" id="dropzone-words">
+              <div class="ic">📄</div><b>ลากไฟล์มาวาง หรือคลิกเพื่อเลือกไฟล์</b><small>รองรับ .csv และ .xlsx</small>
+            </div>
+            <input type="file" id="file-words" accept=".csv,.xlsx" class="hidden">
+            <div class="preview-wrap hidden" id="preview-wrap-words"><table class="datatable" id="preview-table-words"></table></div>
+            <button class="btn btn-primary hidden" id="btn-submit-words">🚀 เพิ่มคำศัพท์ทั้งหมดนี้</button>
+            <div class="progress-wrap" id="progress-words">
+              <div class="progressbar"><div id="progress-words-bar" style="width:0%"></div></div>
+              <div class="progress-label" id="progress-words-label"></div>
+            </div>
+            <div class="result-box" id="result-words"></div>
+          </div>
+
+          <div class="sub-panel hidden" id="up-blanks">
+            <div class="hint-note">
+              คอลัมน์ที่ต้องมี: <code>family</code>, <code>meaning</code>, <code>sentence</code>, <code>answers</code>, <code>pos</code><br>
+              <code>sentence</code> ต้องมี <code>___</code> แทนช่องว่าง, <code>answers</code> คั่นหลายคำตอบด้วย <code>|</code>, <code>pos</code> ใส่ adj/adv/n/v
+            </div>
+            <button class="btn btn-ghost" id="btn-template-blanks" style="margin-bottom:14px;">⬇️ ดาวน์โหลดไฟล์ตัวอย่าง (blanks_template.csv)</button>
+            <div class="dropzone" id="dropzone-blanks">
+              <div class="ic">📄</div><b>ลากไฟล์มาวาง หรือคลิกเพื่อเลือกไฟล์</b><small>รองรับ .csv และ .xlsx</small>
+            </div>
+            <input type="file" id="file-blanks" accept=".csv,.xlsx" class="hidden">
+            <div class="preview-wrap hidden" id="preview-wrap-blanks"><table class="datatable" id="preview-table-blanks"></table></div>
+            <button class="btn btn-primary hidden" id="btn-submit-blanks">🚀 เพิ่มประโยคทั้งหมดนี้</button>
+            <div class="progress-wrap" id="progress-blanks">
+              <div class="progressbar"><div id="progress-blanks-bar" style="width:0%"></div></div>
+              <div class="progress-label" id="progress-blanks-label"></div>
+            </div>
+            <div class="result-box" id="result-blanks"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- ============ REGISTRATIONS ============ -->
+    <div class="nav-panel hidden" id="nav-regs">
+      <section class="card">
+        <h2>📝 รายชื่อผู้ลงทะเบียน</h2>
+        <div class="table-toolbar">
+          <input type="text" id="search-regs" placeholder="🔍 ค้นหาชื่อ, รหัสนักศึกษา, หรืออีเมล...">
+          <button class="btn btn-ghost btn-sm" id="btn-export-regs">⬇️ ส่งออก CSV</button>
+          <button class="btn btn-ghost btn-sm" id="btn-reload-regs">🔄</button>
+        </div>
+        <div class="table-wrap"><table class="datatable" id="table-regs"></table></div>
+      </section>
+    </div>
+
+    <!-- ============ SCORES ============ -->
+    <div class="nav-panel hidden" id="nav-scores">
+      <section class="card">
+        <h2>🏆 ประวัติคะแนนทั้งหมด</h2>
+        <div class="table-toolbar">
+          <input type="text" id="search-scores" placeholder="🔍 ค้นหาชื่อ หรือรหัสนักศึกษา...">
+          <select id="filter-scores-mode">
+            <option value="">ทุกโหมด</option>
+            <option value="mcq">ทายความหมาย</option><option value="fill">เติมคำ</option><option value="tf">ถูก-ผิด</option>
+            <option value="scramble">เรียงคำ</option><option value="sort">จัดหมวด</option><option value="match">จับคู่</option><option value="all">เล่นทั้งหมด</option>
+          </select>
+          <button class="btn btn-ghost btn-sm" id="btn-export-scores">⬇️ ส่งออก CSV</button>
+          <button class="btn btn-ghost btn-sm" id="btn-reload-scores">🔄</button>
+        </div>
+        <div class="table-wrap"><table class="datatable" id="table-scores"></table></div>
+      </section>
+    </div>
+
+    <!-- ============ SETTINGS ============ -->
+    <div class="nav-panel hidden" id="nav-settings">
+      <section class="card">
+        <h2>⚙️ ตั้งค่าและข้อมูลระบบ</h2>
+        <div class="settings-row"><div class="label">Apps Script URL (SCRIPT_URL)</div><div class="value" id="set-script-url">-</div></div>
+        <div class="settings-row"><div class="label">Google Sheet เชื่อมต่ออยู่</div><div class="value"><a id="set-sheet-link" href="#" target="_blank" rel="noopener">เปิด Google Sheet ↗</a></div></div>
+        <div class="settings-row"><div class="label">ทดสอบการเชื่อมต่อ</div><div class="value"><button class="btn btn-ghost btn-sm" id="btn-test-connection">🔌 ทดสอบตอนนี้</button></div></div>
+        <div class="toast" id="test-connection-result"></div>
+        <div class="hint-note" style="margin-top:14px;">
+          ⚠️ <b>ข้อจำกัดด้านความปลอดภัย:</b> หน้านี้ป้องกันด้วยรหัสผ่านอย่างง่ายที่ส่งผ่าน URL (ไม่ใช่ระบบ auth เต็มรูปแบบ) เนื่องจากข้อจำกัดของ Google Apps Script web app เหมาะสำหรับใช้เป็นเครื่องมือภายในห้องเรียนเท่านั้น
+          ไม่ควรเปิดลิงก์หน้าแอดมินนี้ให้บุคคลภายนอกที่ไม่น่าไว้ใจเข้าถึง และควรเปลี่ยนค่า <code>ADMIN_KEY</code> ใน <code>Code.gs</code> จากค่าเริ่มต้นเสมอ
+        </div>
+      </section>
+      <section class="card">
+        <h2>📖 คำแนะนำการแก้ไขข้อมูลโดยตรง</h2>
+        <p class="lead">
+          นอกจากหน้านี้ ยังแก้ไขข้อมูลได้โดยตรงในชีต <code>VocabWords</code>, <code>FillBlanks</code>, <code>Registrations</code>, <code>Scores</code> ผ่าน Google Sheet
+          การเปลี่ยนแปลงจะมีผลกับเกมทันทีในการโหลดครั้งถัดไป ไม่ต้อง deploy โค้ดใหม่ — ยกเว้นถ้าแก้ไข <code>Code.gs</code> เอง ต้อง Deploy → Manage deployments → New version ทุกครั้ง
+        </p>
+      </section>
+    </div>
   </div>
-
-  <p style="text-align:center; font-size:.75rem; color:var(--ink-soft); margin-top:10px;">
-    ⚠️ หน้านี้ป้องกันด้วยรหัสผ่านอย่างง่ายเท่านั้น (ส่งผ่าน URL) เหมาะสำหรับใช้ในห้องเรียน ไม่ควรใช้เก็บข้อมูลสำคัญจริงจัง
-  </p>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script>
-/* ต้องตรงกับ SCRIPT_URL ในไฟล์ index.html */
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLHoJfl_apCjSRKp68-50FxawW-w0oB9BG0dfKMaFGQB4y3YmgtEgc91eC1lm8cIDk_g/exec";
-const CHUNK_SIZE = 8; // แถวยาว (ประโยค + คำตอบหลายแบบ + ภาษาไทย) ทำให้ URL ยาวได้ถึง ~6000 ตัวอักษรต่อ 8 แถว จึงคุมไว้ที่ 8 เพื่อไม่ให้ชน request-line limit ทั่วไป (~8KB)
+const CHUNK_SIZE = 8;
+const MODE_LABEL_TH = {mcq:'ทายความหมาย', fill:'เติมคำ', tf:'ถูก-ผิด', scramble:'เรียงคำ', sort:'จัดหมวด', match:'จับคู่', all:'เล่นทั้งหมด'};
+const CAT_LABEL = {A:'A คุณธรรม', B:'B ความฉลาด', C:'C เข้มแข็ง', D:'D สังคม', E:'E ด้านลบ', WF:'WF ทั่วไป'};
+const CAT_COLOR = {A:'#7ED957', B:'#5FC9F3', C:'#FFB100', D:'#FF8FA3', E:'#FF6B6B', WF:'#FFC93C'};
 
 let adminKey = '';
-let parsedRows = { words: [], blanks: [] };
-
+let cache = { words:[], blanks:[], regs:[], scores:[] };
 const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
 /* =====================================================================
-   JSONP helper — ทุก action (อ่านและเขียน) ผ่าน GET + JSONP เท่านั้น เพราะ
-   fetch() ไปยัง Apps Script web app ข้าม origin อ่าน response ไม่ได้จริง
+   JSONP — ทุก action (อ่านและเขียน) ผ่าน GET + JSONP เพราะ fetch() ข้าม
+   origin ไปยัง Apps Script web app อ่าน response ไม่ได้จริง
 ===================================================================== */
 function jsonp(params){
   return new Promise((resolve, reject)=>{
@@ -235,54 +406,449 @@ function jsonp(params){
     tag.src = `${SCRIPT_URL}?${qs}&callback=${cbName}&_t=${Date.now()}`;
     tag.onerror = ()=>{ if(!done){ cleanup(); reject(new Error('โหลดสคริปต์ไม่สำเร็จ')); } };
     document.body.appendChild(tag);
-    setTimeout(()=>{ if(!done){ cleanup(); reject(new Error('หมดเวลารอการตอบกลับ')); } }, 8000);
+    setTimeout(()=>{ if(!done){ cleanup(); reject(new Error('หมดเวลารอการตอบกลับ')); } }, 9000);
   });
+}
+function withKey(extra){ return Object.assign({ adminKey }, extra); }
+function fmtDate(v){
+  if(!v) return '-';
+  const d = new Date(v);
+  if(isNaN(d)) return String(v);
+  return d.toLocaleString('th-TH', { year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit' });
+}
+function toast(id, ok, msg){
+  const box = $(id);
+  box.classList.remove('ok','err'); box.classList.add('show', ok ? 'ok' : 'err');
+  box.textContent = msg;
 }
 
 /* =====================================================================
    GATE
 ===================================================================== */
-$('btn-unlock').addEventListener('click', async ()=>{
+$('btn-unlock').addEventListener('click', unlock);
+$('admin-key').addEventListener('keydown', (e)=>{ if(e.key === 'Enter') unlock(); });
+
+async function unlock(){
   const key = $('admin-key').value.trim();
   if(!key) return;
   $('btn-unlock').disabled = true; $('btn-unlock').textContent = '⏳ กำลังตรวจสอบ...';
+  $('gate-error').classList.add('hidden');
   try{
-    const data = await jsonp({ action:'admin_stats' });
+    const data = await jsonp({ action:'admin_stats', adminKey:key });
+    if(data.status !== 'ok'){
+      $('gate-error').textContent = data.message || 'รหัสผ่านไม่ถูกต้อง';
+      $('gate-error').classList.remove('hidden');
+      return;
+    }
     adminKey = key;
     $('gate').classList.add('hidden');
     $('main').classList.remove('hidden');
-    renderStats(data);
+    $('btn-logout').classList.remove('hidden');
+    renderOverview(data);
+    $('set-script-url').textContent = SCRIPT_URL;
+    $('set-sheet-link').href = data.sheetUrl || '#';
   }catch(err){
+    $('gate-error').textContent = 'เชื่อมต่อไม่สำเร็จ: ' + err.message;
     $('gate-error').classList.remove('hidden');
   }finally{
     $('btn-unlock').disabled = false; $('btn-unlock').textContent = '🔓 เข้าสู่ระบบ';
   }
-});
-
-function renderStats(data){
-  $('stat-words').textContent = data.words ?? '-';
-  $('stat-blanks').textContent = data.blanks ?? '-';
-  $('stat-reg').textContent = data.registrations ?? '-';
-  $('stat-scores').textContent = data.scores ?? '-';
 }
-$('btn-refresh-stats').addEventListener('click', async ()=>{
-  try{ renderStats(await jsonp({ action:'admin_stats' })); }catch(err){}
+$('btn-logout').addEventListener('click', ()=>{
+  adminKey = '';
+  $('main').classList.add('hidden');
+  $('btn-logout').classList.add('hidden');
+  $('gate').classList.remove('hidden');
+  $('admin-key').value = '';
 });
 
 /* =====================================================================
-   TABS
+   NAV TABS
 ===================================================================== */
-document.querySelectorAll('.tab-btn').forEach(btn=>{
+document.querySelectorAll('.nav-tab').forEach(btn=>{
   btn.addEventListener('click', ()=>{
-    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.tab-panel').forEach(p=>p.classList.add('hidden'));
+    document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.nav-panel').forEach(p=>p.classList.add('hidden'));
     btn.classList.add('active');
-    $('tab-' + btn.dataset.tab).classList.remove('hidden');
+    $('nav-' + btn.dataset.nav).classList.remove('hidden');
+    if(btn.dataset.nav === 'vocab' && !cache.words.length) loadWords();
+    if(btn.dataset.nav === 'vocab' && !cache.blanks.length) loadBlanks();
+    if(btn.dataset.nav === 'regs') loadRegs();
+    if(btn.dataset.nav === 'scores') loadScores();
+  });
+});
+document.querySelectorAll('.sub-tab[data-sub]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const group = btn.parentElement;
+    group.querySelectorAll('.sub-tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('#sub-words,#sub-blanks,#sub-upload').forEach(p=>p.classList.add('hidden'));
+    $('sub-' + btn.dataset.sub).classList.remove('hidden');
+  });
+});
+document.querySelectorAll('.sub-tab[data-uptab]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const group = btn.parentElement;
+    group.querySelectorAll('.sub-tab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('#up-words,#up-blanks').forEach(p=>p.classList.add('hidden'));
+    $(btn.dataset.uptab).classList.remove('hidden');
   });
 });
 
 /* =====================================================================
-   CSV / XLSX PARSING
+   OVERVIEW
+===================================================================== */
+function renderOverview(data){
+  $('ov-words').textContent = data.words ?? '-';
+  $('ov-blanks').textContent = data.blanks ?? '-';
+  $('ov-reg').textContent = data.registrations ?? '-';
+  $('ov-scores').textContent = data.scores ?? '-';
+  $('ov-avg').textContent = (data.avgPercent ?? 0) + '%';
+  $('ov-today-reg').textContent = data.todayRegistrations ?? 0;
+  $('ov-today-score').textContent = data.todayScores ?? 0;
+  $('ov-modes').textContent = Object.keys(MODE_LABEL_TH).length;
+
+  const modeBreakdown = data.modeBreakdown || {};
+  const maxCount = Math.max(1, ...Object.values(modeBreakdown));
+  const modeKeys = Object.keys(MODE_LABEL_TH).filter(k => modeBreakdown[k]);
+  $('mode-bars').innerHTML = modeKeys.length ? modeKeys.map(k => `
+    <div class="bar-row">
+      <div class="bar-label">${esc(MODE_LABEL_TH[k])}</div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round((modeBreakdown[k]/maxCount)*100)}%"></div></div>
+      <div class="bar-count">${modeBreakdown[k]}</div>
+    </div>`).join('') : '<p class="empty-note">ยังไม่มีข้อมูลการเล่น</p>';
+
+  const top = data.topPlayers || [];
+  $('top-players').innerHTML = top.length ? top.map((p,i)=>`
+    <div class="activity-item"><span class="who">${i+1}. ${esc(p.name)}</span><span>${p.percent}% · ${p.timeSpent}s</span></div>
+  `).join('') : '<p class="empty-note">ยังไม่มีข้อมูล</p>';
+
+  const rr = data.recentRegistrations || [];
+  $('recent-regs').innerHTML = rr.length ? rr.map(r=>`
+    <div class="activity-item"><span class="who">${esc(r.name)}</span><span class="when">${fmtDate(r.ts)}</span></div>
+  `).join('') : '<p class="empty-note">ยังไม่มีข้อมูล</p>';
+
+  const rs = data.recentScores || [];
+  $('recent-scores').innerHTML = rs.length ? rs.map(s=>`
+    <div class="activity-item"><span class="who">${esc(s.name)} (${s.percent}%)</span><span class="when">${MODE_LABEL_TH[s.mode]||s.mode||'-'}</span></div>
+  `).join('') : '<p class="empty-note">ยังไม่มีข้อมูล</p>';
+}
+$('btn-refresh-overview').addEventListener('click', async ()=>{
+  try{ renderOverview(await jsonp(withKey({ action:'admin_stats' }))); }catch(err){}
+});
+
+/* =====================================================================
+   VOCAB — WORDS TABLE
+===================================================================== */
+async function loadWords(){
+  $('table-words').innerHTML = '<tr><td class="empty-note">⏳ กำลังโหลด...</td></tr>';
+  try{
+    const data = await jsonp(withKey({ action:'admin_list_words' }));
+    cache.words = data.words || [];
+    renderWordsTable();
+  }catch(err){
+    $('table-words').innerHTML = `<tr><td class="empty-note">โหลดไม่สำเร็จ: ${esc(err.message)}</td></tr>`;
+  }
+}
+function renderWordsTable(){
+  const q = ($('search-words').value || '').toLowerCase();
+  const catFilter = $('filter-words-cat').value;
+  const rows = cache.words.filter(w =>
+    (!q || w.word.toLowerCase().includes(q) || w.meaning.toLowerCase().includes(q)) &&
+    (!catFilter || w.category === catFilter)
+  );
+  const table = $('table-words');
+  if(!rows.length){ table.innerHTML = '<tr><td class="empty-note">ไม่พบข้อมูล</td></tr>'; return; }
+  table.innerHTML = '<thead><tr><th>คำศัพท์</th><th>ความหมาย</th><th>หมวด</th><th></th></tr></thead><tbody>' +
+    rows.map(w => `
+      <tr data-row="${w.row}">
+        <td class="c-word">${esc(w.word)}</td>
+        <td class="c-meaning">${esc(w.meaning)}</td>
+        <td class="c-cat"><span class="cat-chip" style="background:${CAT_COLOR[w.category]||'#eee'}">${esc(w.category)}</span></td>
+        <td class="row-actions">
+          <button class="btn btn-ghost btn-sm act-edit">✏️</button>
+          <button class="btn btn-danger btn-sm act-del">🗑️</button>
+        </td>
+      </tr>`).join('') + '</tbody>';
+  table.querySelectorAll('.act-edit').forEach(b => b.addEventListener('click', (e)=> editWordRow(e.target.closest('tr'))));
+  table.querySelectorAll('.act-del').forEach(b => b.addEventListener('click', (e)=> deleteWordRow(e.target.closest('tr'))));
+}
+function editWordRow(tr){
+  const row = tr.dataset.row;
+  const w = cache.words.find(x => String(x.row) === row);
+  if(!w) return;
+  tr.querySelector('.c-word').innerHTML = `<input type="text" value="${esc(w.word)}" class="e-word">`;
+  tr.querySelector('.c-meaning').innerHTML = `<input type="text" value="${esc(w.meaning)}" class="e-meaning">`;
+  tr.querySelector('.c-cat').innerHTML = `<select class="e-cat">${Object.keys(CAT_LABEL).map(c=>`<option value="${c}" ${c===w.category?'selected':''}>${c}</option>`).join('')}</select>`;
+  tr.querySelector('td.row-actions').innerHTML = `<button class="btn btn-primary btn-sm act-save">💾</button><button class="btn btn-ghost btn-sm act-cancel">✖️</button>`;
+  tr.querySelector('.act-save').addEventListener('click', async ()=>{
+    const word = tr.querySelector('.e-word').value.trim();
+    const meaning = tr.querySelector('.e-meaning').value.trim();
+    const category = tr.querySelector('.e-cat').value;
+    if(!word || !meaning) return alert('กรอกคำและความหมายให้ครบ');
+    try{
+      const res = await jsonp(withKey({ action:'admin_update_word', row, word, meaning, category }));
+      if(res.status !== 'ok') return alert('บันทึกไม่สำเร็จ: ' + (res.message||''));
+      await loadWords();
+    }catch(err){ alert('บันทึกไม่สำเร็จ: ' + err.message); }
+  });
+  tr.querySelector('.act-cancel').addEventListener('click', renderWordsTable);
+}
+async function deleteWordRow(tr){
+  const row = tr.dataset.row;
+  const w = cache.words.find(x => String(x.row) === row);
+  if(!confirm(`ลบคำว่า "${w ? w.word : ''}" ใช่ไหม?`)) return;
+  try{
+    const res = await jsonp(withKey({ action:'admin_delete_word', row }));
+    if(res.status !== 'ok') return alert('ลบไม่สำเร็จ: ' + (res.message||''));
+    await loadWords();
+  }catch(err){ alert('ลบไม่สำเร็จ: ' + err.message); }
+}
+$('search-words').addEventListener('input', renderWordsTable);
+$('filter-words-cat').addEventListener('change', renderWordsTable);
+$('btn-reload-words').addEventListener('click', loadWords);
+$('btn-export-words').addEventListener('click', ()=> exportCSV('words_export.csv', cache.words, ['word','meaning','category']));
+$('btn-quick-add-word').addEventListener('click', async ()=>{
+  const word = $('qa-word').value.trim();
+  const meaning = $('qa-word-meaning').value.trim();
+  const category = $('qa-word-cat').value;
+  if(!word || !meaning) return alert('กรอกคำและความหมายให้ครบ');
+  try{
+    const res = await jsonp(withKey({ action:'admin_add_words', data: JSON.stringify([{word, meaning, category}]) }));
+    if(res.status !== 'ok') return alert('เพิ่มไม่สำเร็จ: ' + (res.message||''));
+    $('qa-word').value = ''; $('qa-word-meaning').value = '';
+    await loadWords();
+  }catch(err){ alert('เพิ่มไม่สำเร็จ: ' + err.message); }
+});
+
+/* =====================================================================
+   VOCAB — BLANKS TABLE
+===================================================================== */
+async function loadBlanks(){
+  $('table-blanks').innerHTML = '<tr><td class="empty-note">⏳ กำลังโหลด...</td></tr>';
+  try{
+    const data = await jsonp(withKey({ action:'admin_list_blanks' }));
+    cache.blanks = data.blanks || [];
+    renderBlanksTable();
+  }catch(err){
+    $('table-blanks').innerHTML = `<tr><td class="empty-note">โหลดไม่สำเร็จ: ${esc(err.message)}</td></tr>`;
+  }
+}
+function renderBlanksTable(){
+  const q = ($('search-blanks').value || '').toLowerCase();
+  const rows = cache.blanks.filter(b =>
+    !q || b.family.toLowerCase().includes(q) || b.sentence.toLowerCase().includes(q) || b.answers.toLowerCase().includes(q)
+  );
+  const table = $('table-blanks');
+  if(!rows.length){ table.innerHTML = '<tr><td class="empty-note">ไม่พบข้อมูล</td></tr>'; return; }
+  table.innerHTML = '<thead><tr><th>Family</th><th>ความหมาย</th><th>ประโยค</th><th>คำตอบ</th><th>POS</th><th></th></tr></thead><tbody>' +
+    rows.map(b => `
+      <tr data-row="${b.row}">
+        <td class="c-family">${esc(b.family)}</td>
+        <td class="c-meaning">${esc(b.meaning)}</td>
+        <td class="c-sentence">${esc(b.sentence)}</td>
+        <td class="c-answers">${esc(b.answers)}</td>
+        <td class="c-pos">${esc(b.pos)}</td>
+        <td class="row-actions">
+          <button class="btn btn-ghost btn-sm act-edit">✏️</button>
+          <button class="btn btn-danger btn-sm act-del">🗑️</button>
+        </td>
+      </tr>`).join('') + '</tbody>';
+  table.querySelectorAll('.act-edit').forEach(b => b.addEventListener('click', (e)=> editBlankRow(e.target.closest('tr'))));
+  table.querySelectorAll('.act-del').forEach(b => b.addEventListener('click', (e)=> deleteBlankRow(e.target.closest('tr'))));
+}
+function editBlankRow(tr){
+  const row = tr.dataset.row;
+  const b = cache.blanks.find(x => String(x.row) === row);
+  if(!b) return;
+  tr.querySelector('.c-family').innerHTML = `<input type="text" value="${esc(b.family)}" class="e-family">`;
+  tr.querySelector('.c-meaning').innerHTML = `<input type="text" value="${esc(b.meaning)}" class="e-meaning">`;
+  tr.querySelector('.c-sentence').innerHTML = `<input type="text" value="${esc(b.sentence)}" class="e-sentence">`;
+  tr.querySelector('.c-answers').innerHTML = `<input type="text" value="${esc(b.answers)}" class="e-answers">`;
+  tr.querySelector('.c-pos').innerHTML = `<select class="e-pos">${['adj','adv','n','v'].map(p=>`<option value="${p}" ${p===b.pos?'selected':''}>${p}</option>`).join('')}</select>`;
+  tr.querySelector('td.row-actions').innerHTML = `<button class="btn btn-primary btn-sm act-save">💾</button><button class="btn btn-ghost btn-sm act-cancel">✖️</button>`;
+  tr.querySelector('.act-save').addEventListener('click', async ()=>{
+    const family = tr.querySelector('.e-family').value.trim();
+    const meaning = tr.querySelector('.e-meaning').value.trim();
+    const sentence = tr.querySelector('.e-sentence').value.trim();
+    const answers = tr.querySelector('.e-answers').value.trim();
+    const pos = tr.querySelector('.e-pos').value;
+    if(!family || !sentence.includes('___') || !answers) return alert('ต้องกรอก family, ประโยคต้องมี ___, และคำตอบ');
+    try{
+      const res = await jsonp(withKey({ action:'admin_update_blank', row, family, meaning, sentence, answers, pos }));
+      if(res.status !== 'ok') return alert('บันทึกไม่สำเร็จ: ' + (res.message||''));
+      await loadBlanks();
+    }catch(err){ alert('บันทึกไม่สำเร็จ: ' + err.message); }
+  });
+  tr.querySelector('.act-cancel').addEventListener('click', renderBlanksTable);
+}
+async function deleteBlankRow(tr){
+  const row = tr.dataset.row;
+  const b = cache.blanks.find(x => String(x.row) === row);
+  if(!confirm(`ลบประโยคของ "${b ? b.family : ''}" ใช่ไหม?`)) return;
+  try{
+    const res = await jsonp(withKey({ action:'admin_delete_blank', row }));
+    if(res.status !== 'ok') return alert('ลบไม่สำเร็จ: ' + (res.message||''));
+    await loadBlanks();
+  }catch(err){ alert('ลบไม่สำเร็จ: ' + err.message); }
+}
+$('search-blanks').addEventListener('input', renderBlanksTable);
+$('btn-reload-blanks').addEventListener('click', loadBlanks);
+$('btn-export-blanks').addEventListener('click', ()=> exportCSV('blanks_export.csv', cache.blanks, ['family','meaning','sentence','answers','pos']));
+$('btn-quick-add-blank').addEventListener('click', async ()=>{
+  const family = $('qa-family').value.trim();
+  const meaning = $('qa-blank-meaning').value.trim();
+  const sentence = $('qa-sentence').value.trim();
+  const answers = $('qa-answers').value.trim();
+  const pos = $('qa-pos').value;
+  if(!family || !sentence.includes('___') || !answers) return alert('ต้องกรอก family, ประโยคต้องมี ___, และคำตอบ');
+  try{
+    const res = await jsonp(withKey({ action:'admin_add_blanks', data: JSON.stringify([{family, meaning, sentence, answers, pos}]) }));
+    if(res.status !== 'ok') return alert('เพิ่มไม่สำเร็จ: ' + (res.message||''));
+    $('qa-family').value=''; $('qa-blank-meaning').value=''; $('qa-sentence').value=''; $('qa-answers').value='';
+    await loadBlanks();
+  }catch(err){ alert('เพิ่มไม่สำเร็จ: ' + err.message); }
+});
+
+/* =====================================================================
+   REGISTRATIONS TABLE
+===================================================================== */
+async function loadRegs(){
+  $('table-regs').innerHTML = '<tr><td class="empty-note">⏳ กำลังโหลด...</td></tr>';
+  try{
+    const data = await jsonp(withKey({ action:'admin_list_registrations' }));
+    cache.regs = data.registrations || [];
+    renderRegsTable();
+  }catch(err){
+    $('table-regs').innerHTML = `<tr><td class="empty-note">โหลดไม่สำเร็จ: ${esc(err.message)}</td></tr>`;
+  }
+}
+function renderRegsTable(){
+  const q = ($('search-regs').value || '').toLowerCase();
+  const rows = cache.regs.filter(r =>
+    !q || String(r.name).toLowerCase().includes(q) || String(r.studentId).toLowerCase().includes(q) || String(r.email).toLowerCase().includes(q)
+  );
+  const table = $('table-regs');
+  if(!rows.length){ table.innerHTML = '<tr><td class="empty-note">ไม่พบข้อมูล</td></tr>'; return; }
+  table.innerHTML = '<thead><tr><th>เวลา</th><th>ชื่อ-สกุล</th><th>รหัสนักศึกษา</th><th>อีเมล</th><th></th></tr></thead><tbody>' +
+    rows.map(r => `
+      <tr data-row="${r.row}">
+        <td>${fmtDate(r.timestamp)}</td><td>${esc(r.name)}</td><td>${esc(r.studentId)}</td><td>${esc(r.email)}</td>
+        <td class="row-actions"><button class="btn btn-danger btn-sm act-del">🗑️</button></td>
+      </tr>`).join('') + '</tbody>';
+  table.querySelectorAll('.act-del').forEach(b => b.addEventListener('click', async (e)=>{
+    const tr = e.target.closest('tr'); const row = tr.dataset.row;
+    const r = cache.regs.find(x => String(x.row) === row);
+    if(!confirm(`ลบการลงทะเบียนของ "${r ? r.name : ''}" ใช่ไหม?`)) return;
+    try{
+      const res = await jsonp(withKey({ action:'admin_delete_registration', row }));
+      if(res.status !== 'ok') return alert('ลบไม่สำเร็จ: ' + (res.message||''));
+      await loadRegs();
+    }catch(err){ alert('ลบไม่สำเร็จ: ' + err.message); }
+  }));
+}
+$('search-regs').addEventListener('input', renderRegsTable);
+$('btn-reload-regs').addEventListener('click', loadRegs);
+$('btn-export-regs').addEventListener('click', ()=> exportCSV('registrations_export.csv',
+  cache.regs.map(r=>({timestamp:fmtDate(r.timestamp), name:r.name, studentId:r.studentId, email:r.email})),
+  ['timestamp','name','studentId','email']));
+
+/* =====================================================================
+   SCORES TABLE
+===================================================================== */
+async function loadScores(){
+  $('table-scores').innerHTML = '<tr><td class="empty-note">⏳ กำลังโหลด...</td></tr>';
+  try{
+    const data = await jsonp(withKey({ action:'admin_list_scores' }));
+    cache.scores = data.scores || [];
+    renderScoresTable();
+  }catch(err){
+    $('table-scores').innerHTML = `<tr><td class="empty-note">โหลดไม่สำเร็จ: ${esc(err.message)}</td></tr>`;
+  }
+}
+function renderScoresTable(){
+  const q = ($('search-scores').value || '').toLowerCase();
+  const modeFilter = $('filter-scores-mode').value;
+  const rows = cache.scores.filter(s =>
+    (!q || String(s.name).toLowerCase().includes(q) || String(s.studentId).toLowerCase().includes(q)) &&
+    (!modeFilter || s.mode === modeFilter)
+  );
+  const table = $('table-scores');
+  if(!rows.length){ table.innerHTML = '<tr><td class="empty-note">ไม่พบข้อมูล</td></tr>'; return; }
+  table.innerHTML = '<thead><tr><th>เวลา</th><th>ชื่อ-สกุล</th><th>รหัสนักศึกษา</th><th>โหมด</th><th>คะแนน</th><th>%</th><th>เวลาที่ใช้</th><th></th></tr></thead><tbody>' +
+    rows.map(s => `
+      <tr data-row="${s.row}">
+        <td>${fmtDate(s.timestamp)}</td><td>${esc(s.name)}</td><td>${esc(s.studentId)}</td>
+        <td>${esc(MODE_LABEL_TH[s.mode] || s.mode || '-')}</td><td>${s.score}/${s.total}</td><td>${s.percent}%</td><td>${s.timeSpent}s</td>
+        <td class="row-actions"><button class="btn btn-danger btn-sm act-del">🗑️</button></td>
+      </tr>`).join('') + '</tbody>';
+  table.querySelectorAll('.act-del').forEach(b => b.addEventListener('click', async (e)=>{
+    const tr = e.target.closest('tr'); const row = tr.dataset.row;
+    const s = cache.scores.find(x => String(x.row) === row);
+    if(!confirm(`ลบคะแนนของ "${s ? s.name : ''}" ใช่ไหม?`)) return;
+    try{
+      const res = await jsonp(withKey({ action:'admin_delete_score', row }));
+      if(res.status !== 'ok') return alert('ลบไม่สำเร็จ: ' + (res.message||''));
+      await loadScores();
+    }catch(err){ alert('ลบไม่สำเร็จ: ' + err.message); }
+  }));
+}
+$('search-scores').addEventListener('input', renderScoresTable);
+$('filter-scores-mode').addEventListener('change', renderScoresTable);
+$('btn-reload-scores').addEventListener('click', loadScores);
+$('btn-export-scores').addEventListener('click', ()=> exportCSV('scores_export.csv',
+  cache.scores.map(s=>({timestamp:fmtDate(s.timestamp), name:s.name, studentId:s.studentId, mode:MODE_LABEL_TH[s.mode]||s.mode, score:s.score, total:s.total, percent:s.percent, timeSpent:s.timeSpent})),
+  ['timestamp','name','studentId','mode','score','total','percent','timeSpent']));
+
+/* =====================================================================
+   SETTINGS
+===================================================================== */
+$('btn-test-connection').addEventListener('click', async ()=>{
+  try{
+    const res = await jsonp(withKey({ action:'admin_stats' }));
+    toast('test-connection-result', res.status === 'ok', res.status === 'ok' ? '✅ เชื่อมต่อสำเร็จ ระบบทำงานปกติ' : '❌ ' + (res.message||'เชื่อมต่อไม่สำเร็จ'));
+  }catch(err){
+    toast('test-connection-result', false, '❌ เชื่อมต่อไม่สำเร็จ: ' + err.message);
+  }
+});
+
+/* =====================================================================
+   CSV EXPORT (client-side, ข้อมูลที่โหลดมาแล้วในตาราง)
+===================================================================== */
+function exportCSV(filename, rows, cols){
+  if(!rows.length){ alert('ไม่มีข้อมูลให้ส่งออก'); return; }
+  const escCsv = (v)=>{
+    const s = String(v ?? '');
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s;
+  };
+  const lines = [cols.join(',')];
+  rows.forEach(r => lines.push(cols.map(c => escCsv(r[c])).join(',')));
+  const blob = new Blob(['﻿' + lines.join('\n')], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+function downloadTemplate(filename, csvContent){
+  const blob = new Blob(['﻿' + csvContent], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  URL.revokeObjectURL(url);
+}
+$('btn-template-words').addEventListener('click', ()=> downloadTemplate(
+  'words_template.csv', 'word,meaning,category\ngregarious,ชอบเข้าสังคม ชอบอยู่เป็นกลุ่ม,D\nmeticulous,พิถีพิถันมาก ละเอียดมาก,B\n'
+));
+$('btn-template-blanks').addEventListener('click', ()=> downloadTemplate(
+  'blanks_template.csv',
+  'family,meaning,sentence,answers,pos\ngregarious,ชอบเข้าสังคม ชอบอยู่เป็นกลุ่ม,She is very ___ and loves parties.,gregarious,adj\ngregarious,ชอบเข้าสังคม ชอบอยู่เป็นกลุ่ม,His ___ makes him popular at work.,gregariousness,n\n'
+));
+
+/* =====================================================================
+   CSV / XLSX PARSING (สำหรับอัปโหลดเป็นชุด)
 ===================================================================== */
 function parseCSV(text){
   const rows = [];
@@ -339,45 +905,24 @@ function parseFile(file){
   });
 }
 
-/* =====================================================================
-   WORDS TAB
-===================================================================== */
+let parsedRows = { words: [], blanks: [] };
 setupDropzone('dropzone-words', 'file-words', async (file)=>{
   const objs = await parseFile(file);
   parsedRows.words = objs.map(o => ({ word:o.word||'', meaning:o.meaning||o.meaning_th||'', category:(o.category||'WF').toUpperCase() }))
     .filter(r => r.word && r.meaning);
-  renderPreview('words', parsedRows.words, ['word','meaning','category']);
+  renderUploadPreview('words', parsedRows.words, ['word','meaning','category']);
 });
-$('btn-submit-words').addEventListener('click', ()=> submitRows('words'));
-$('btn-template-words').addEventListener('click', ()=> downloadTemplate(
-  'words_template.csv', 'word,meaning,category\ngregarious,ชอบเข้าสังคม ชอบอยู่เป็นกลุ่ม,D\nmeticulous,พิถีพิถันมาก ละเอียดมาก,B\n'
-));
+$('btn-submit-words').addEventListener('click', ()=> submitBulkRows('words'));
 
-/* =====================================================================
-   BLANKS TAB
-===================================================================== */
 setupDropzone('dropzone-blanks', 'file-blanks', async (file)=>{
   const objs = await parseFile(file);
   parsedRows.blanks = objs.map(o => ({
     family:o.family||'', meaning:o.meaning||o.meaning_th||'', sentence:o.sentence||'',
     answers:o.answers||o.answer||'', pos:(o.pos||'').toLowerCase()
   })).filter(r => r.family && r.sentence.includes('___') && r.answers);
-  renderPreview('blanks', parsedRows.blanks, ['family','meaning','sentence','answers','pos']);
+  renderUploadPreview('blanks', parsedRows.blanks, ['family','meaning','sentence','answers','pos']);
 });
-$('btn-submit-blanks').addEventListener('click', ()=> submitRows('blanks'));
-$('btn-template-blanks').addEventListener('click', ()=> downloadTemplate(
-  'blanks_template.csv',
-  'family,meaning,sentence,answers,pos\ngregarious,ชอบเข้าสังคม ชอบอยู่เป็นกลุ่ม,She is very ___ and loves parties.,gregarious,adj\ngregarious,ชอบเข้าสังคม ชอบอยู่เป็นกลุ่ม,His ___ makes him popular at work.,gregariousness,n\n'
-));
-
-function downloadTemplate(filename, csvContent){
-  const blob = new Blob(['﻿' + csvContent], {type:'text/csv;charset=utf-8;'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url; a.download = filename;
-  document.body.appendChild(a); a.click(); a.remove();
-  URL.revokeObjectURL(url);
-}
+$('btn-submit-blanks').addEventListener('click', ()=> submitBulkRows('blanks'));
 
 function setupDropzone(zoneId, inputId, onFile){
   const zone = $(zoneId), input = $(inputId);
@@ -392,14 +937,13 @@ function setupDropzone(zoneId, inputId, onFile){
     catch(err){ alert('อ่านไฟล์ไม่สำเร็จ: ' + err.message); }
   }
 }
-
-function renderPreview(kind, rows, cols){
+function renderUploadPreview(kind, rows, cols){
   const wrap = $(`preview-wrap-${kind}`), table = $(`preview-table-${kind}`);
   const submitBtn = $(`btn-submit-${kind}`);
   if(!rows.length){ wrap.classList.add('hidden'); submitBtn.classList.add('hidden'); return; }
   let html = '<thead><tr>' + cols.map(c=>`<th>${c}</th>`).join('') + '</tr></thead><tbody>';
   rows.slice(0,200).forEach(r=>{
-    html += '<tr>' + cols.map(c=>`<td>${(r[c]||'').toString().slice(0,80)}</td>`).join('') + '</tr>';
+    html += '<tr>' + cols.map(c=>`<td>${esc((r[c]||'').toString().slice(0,80))}</td>`).join('') + '</tr>';
   });
   html += '</tbody>';
   table.innerHTML = html;
@@ -407,13 +951,7 @@ function renderPreview(kind, rows, cols){
   submitBtn.classList.remove('hidden');
   submitBtn.textContent = `🚀 เพิ่มทั้งหมด ${rows.length} แถว`;
 }
-
-/* =====================================================================
-   CHUNKED SUBMIT — แบ่งส่งทีละก้อนผ่าน JSONP (ยิง fetch/POST จำนวนมากไม่ได้
-   เพราะ URL ยาวเกินไปถ้าส่งทีเดียวทั้งหมด และ Apps Script อ่าน response ของ
-   fetch() ข้าม origin ไม่ได้ตามที่อธิบายไว้ข้างบน)
-===================================================================== */
-async function submitRows(kind){
+async function submitBulkRows(kind){
   const rows = parsedRows[kind];
   if(!rows.length) return;
   const action = kind === 'words' ? 'admin_add_words' : 'admin_add_blanks';
@@ -434,16 +972,10 @@ async function submitRows(kind){
   for(let i=0; i<chunks.length; i++){
     label.textContent = `กำลังส่งชุดที่ ${i+1}/${chunks.length}...`;
     try{
-      const res = await jsonp({ action, adminKey, data: JSON.stringify(chunks[i]) });
-      if(res.status === 'ok'){
-        totalAdded += res.added || 0;
-        totalSkipped += res.skipped || 0;
-      } else {
-        hadError = true; errorMsg = res.message || 'ไม่ทราบสาเหตุ';
-      }
-    }catch(err){
-      hadError = true; errorMsg = err.message;
-    }
+      const res = await jsonp(withKey({ action, data: JSON.stringify(chunks[i]) }));
+      if(res.status === 'ok'){ totalAdded += res.added || 0; totalSkipped += res.skipped || 0; }
+      else { hadError = true; errorMsg = res.message || 'ไม่ทราบสาเหตุ'; }
+    }catch(err){ hadError = true; errorMsg = err.message; }
     bar.style.width = `${Math.round(((i+1)/chunks.length)*100)}%`;
   }
 
@@ -457,7 +989,7 @@ async function submitRows(kind){
     resultBox.classList.add('ok');
     resultBox.textContent = `✅ เพิ่มสำเร็จ ${totalAdded} แถว` + (totalSkipped ? ` (ข้าม ${totalSkipped} แถวที่ข้อมูลไม่ครบ)` : '') + (hadError ? ` — บางชุดมีปัญหา: ${errorMsg}` : '');
   }
-  renderStats(await jsonp({ action:'admin_stats' }).catch(()=>({})));
+  if(kind === 'words') loadWords(); else loadBlanks();
 }
 </script>
 </body>
