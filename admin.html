@@ -3,42 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔧 Word Wizard | ระบบจัดการแอดมิน</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%94%A7%3C/text%3E%3C/svg%3E">
+<title>🐱 Word Wizard | ระบบจัดการแอดมิน</title>
+<link rel="icon" type="image/png" href="cat_01_wave.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --yolk:#FFD166; --honey:#FFB100; --cream:#EAF7FB; --butter:#DDF3EA;
-  --pink:#FF9EC0; --pink-deep:#FF6FA0; --sky:#5AC8F2; --leaf:#6FDCA0; --leaf-deep:#3FC488;
-  --berry:#FF6B6B; --ink:#1F4959; --ink-soft:#6C93A3; --white:#FFFFFF;
-  --radius:22px; --shadow-pop:0 16px 32px rgba(31,73,89,.16);
-  --shadow-pop-sm:0 8px 18px rgba(31,73,89,.13);
+  --yolk:#FFCC33; --honey:#F4A100; --cream:#FFF3D6; --butter:#FFE7B8;
+  --pink:#FF8FC2; --pink-deep:#F5468C; --sky:#3FC6C1; --leaf:#4FCB8D; --leaf-deep:#2FA873;
+  --berry:#EF4A3D; --ink:#2A2118; --ink-soft:#8C7F6D; --white:#FFFFFF;
+  --radius:22px; --shadow-pop:0 16px 32px rgba(42,33,24,.16);
+  --shadow-pop-sm:0 8px 18px rgba(42,33,24,.13);
 }
 *{box-sizing:border-box; margin:0; padding:0;}
 html,body{height:100%;}
 body{
   font-family:'Sarabun',sans-serif;
   min-height:100vh;
-  background:linear-gradient(180deg, #BFEAFB 0%, #D3F3E7 55%, #E4F8ED 100%);
+  background-color:#FFF3D6;
+  background-image:radial-gradient(rgba(42,33,24,.07) 1.6px, transparent 1.6px);
+  background-size:24px 24px;
   background-attachment:fixed;
   color:var(--ink);
 }
 #app{max-width:1180px; margin:0 auto; padding:20px 16px 60px;}
 .hidden{display:none !important;}
 
-.topbar{display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:10px; background:rgba(255,255,255,.8); border-radius:999px; padding:10px 20px; box-shadow:var(--shadow-pop-sm); backdrop-filter:blur(8px);}
+.topbar{display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:10px; background:rgba(255,255,255,.92); border:2px solid rgba(42,33,24,.10); border-radius:999px; padding:10px 20px; box-shadow:var(--shadow-pop-sm);}
 .brand{display:flex; align-items:center; gap:10px; font-family:'Sarabun',sans-serif; font-weight:700; font-size:1.4rem;}
 .brand .logo{font-size:1.8rem;}
 .topbar-actions{display:flex; gap:8px; flex-wrap:wrap;}
 .link-btn{font-size:.82rem; color:var(--ink); text-decoration:none; background:var(--white); padding:6px 14px; border-radius:999px; box-shadow:var(--shadow-pop-sm); font-weight:600; cursor:pointer; font-family:'Sarabun',sans-serif; border:none;}
 
-.card{ background:rgba(255,255,255,.94); border-radius:var(--radius); padding:24px 22px; box-shadow:var(--shadow-pop); margin-bottom:16px; backdrop-filter:blur(6px); }
+.card{ background:#fff; border:2px solid rgba(42,33,24,.10); border-radius:var(--radius); padding:24px 22px; box-shadow:var(--shadow-pop); margin-bottom:16px; }
 h1{font-family:'Sarabun',sans-serif; font-size:1.6rem; font-weight:800; margin-bottom:8px;}
 h2{font-family:'Sarabun',sans-serif; font-size:1.2rem; font-weight:700; margin-bottom:10px; display:flex; align-items:center; gap:8px;}
 p.lead{color:var(--ink-soft); font-size:.9rem; line-height:1.6; margin-bottom:14px;}
-.badge{display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg,#FFE3A3,var(--yolk)); padding:5px 14px; border-radius:999px; font-size:.72rem; font-weight:700; margin-bottom:10px; color:#7A4E00;}
+.badge{display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg,#FFE3A3,var(--yolk)); border:2px solid rgba(42,33,24,.14); padding:5px 14px; border-radius:999px; font-size:.72rem; font-weight:700; margin-bottom:10px; color:#7A4E00;}
 
 .field{margin-bottom:14px;}
 .field label{display:block; font-size:.82rem; font-weight:600; margin-bottom:6px;}
@@ -46,7 +48,7 @@ p.lead{color:var(--ink-soft); font-size:.9rem; line-height:1.6; margin-bottom:14
   width:100%; padding:11px 13px; border-radius:12px; border:2px solid transparent;
   background:var(--cream); font-family:'Sarabun',sans-serif; font-size:.95rem; outline:none;
 }
-.field input:focus, .field select:focus, .field textarea:focus{border-color:var(--sky); background:#fff; box-shadow:0 0 0 4px rgba(90,200,242,.18);}
+.field input:focus, .field select:focus, .field textarea:focus{border-color:var(--sky); background:#fff; box-shadow:0 0 0 4px rgba(63,198,193,.18);}
 
 .btn{
   appearance:none; cursor:pointer; font-family:'Sarabun',sans-serif; font-weight:700;
@@ -54,7 +56,7 @@ p.lead{color:var(--ink-soft); font-size:.9rem; line-height:1.6; margin-bottom:14
   transition:transform .12s ease; display:inline-flex; align-items:center; gap:6px;
 }
 .btn:active{transform:translateY(2px); box-shadow:none !important;}
-.btn-primary{background:linear-gradient(135deg,var(--sky),var(--leaf)); color:#fff; box-shadow:var(--shadow-pop-sm);}
+.btn-primary{background:linear-gradient(135deg,var(--honey),var(--berry)); color:#fff; box-shadow:var(--shadow-pop-sm);}
 .btn-ghost{background:var(--white); color:var(--ink); box-shadow:var(--shadow-pop-sm);}
 .btn-danger{background:var(--berry); color:#fff; box-shadow:var(--shadow-pop-sm);}
 .btn-sm{padding:6px 12px; font-size:.78rem; border-radius:10px;}
@@ -66,12 +68,12 @@ p.lead{color:var(--ink-soft); font-size:.9rem; line-height:1.6; margin-bottom:14
   font-family:'Sarabun',sans-serif; font-weight:700; padding:11px 18px; border-radius:16px; border:none;
   background:var(--white); cursor:pointer; font-size:.95rem; box-shadow:var(--shadow-pop-sm);
 }
-.nav-tab.active{background:linear-gradient(135deg,var(--sky),var(--leaf)); color:#fff;}
+.nav-tab.active{background:linear-gradient(135deg,var(--honey),var(--berry)); color:#fff;}
 .nav-panel.hidden{display:none;}
 
 .sub-tabs{display:flex; gap:8px; margin-bottom:14px; flex-wrap:wrap;}
 .sub-tab{font-family:'Sarabun',sans-serif; font-weight:700; padding:8px 16px; border-radius:999px; border:none; background:var(--cream); cursor:pointer; font-size:.85rem;}
-.sub-tab.active{background:linear-gradient(135deg,var(--sky),var(--leaf)); color:#fff; box-shadow:var(--shadow-pop-sm);}
+.sub-tab.active{background:linear-gradient(135deg,var(--honey),var(--berry)); color:#fff; box-shadow:var(--shadow-pop-sm);}
 .sub-panel.hidden{display:none;}
 
 /* ============ Stat cards ============ */
@@ -100,7 +102,7 @@ p.lead{color:var(--ink-soft); font-size:.9rem; line-height:1.6; margin-bottom:14
 .table-toolbar{display:flex; gap:10px; margin-bottom:12px; flex-wrap:wrap; align-items:center;}
 .table-toolbar input[type=text]{flex:1; min-width:180px; padding:10px 14px; border-radius:12px; border:2px solid transparent; background:var(--cream); font-family:'Sarabun',sans-serif;}
 .table-toolbar select{padding:10px 14px; border-radius:12px; border:2px solid transparent; background:var(--cream); font-family:'Sarabun',sans-serif;}
-.table-wrap{max-height:460px; overflow:auto; border-radius:16px; box-shadow:inset 0 0 0 1px rgba(31,73,89,.08);}
+.table-wrap{max-height:460px; overflow:auto; border-radius:16px; box-shadow:inset 0 0 0 1px rgba(42,33,24,.08);}
 table.datatable{width:100%; border-collapse:collapse; font-size:.83rem;}
 table.datatable th{background:var(--cream); color:var(--ink); font-weight:700; padding:9px 10px; text-align:left; position:sticky; top:0; white-space:nowrap;}
 table.datatable td{padding:7px 10px; border-bottom:1px solid var(--cream); vertical-align:middle;}
@@ -119,7 +121,7 @@ table.datatable input, table.datatable select{width:100%; padding:5px 7px; borde
 .dropzone .ic{font-size:1.8rem; margin-bottom:4px;}
 .dropzone small{display:block; color:var(--ink-soft); margin-top:4px;}
 
-.preview-wrap{max-height:280px; overflow:auto; border-radius:14px; margin-bottom:14px; box-shadow:inset 0 0 0 1px rgba(31,73,89,.08);}
+.preview-wrap{max-height:280px; overflow:auto; border-radius:14px; margin-bottom:14px; box-shadow:inset 0 0 0 1px rgba(42,33,24,.08);}
 .progress-wrap{margin:14px 0; display:none;}
 .progress-wrap.show{display:block;}
 .progressbar{height:14px; background:var(--cream); border-radius:999px; overflow:hidden;}
@@ -149,9 +151,9 @@ code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85e
 <div id="app">
 
   <div class="topbar">
-    <div class="brand"><span class="logo">🔧</span> Word Wizard — ระบบจัดการแอดมิน</div>
+    <div class="brand"><span class="logo">🐱</span> Word Wizard — ระบบจัดการแอดมิน</div>
     <div class="topbar-actions">
-      <a class="link-btn" href="index.html">🦫 กลับไปหน้าเกม</a>
+      <a class="link-btn" href="index.html">🐱 กลับไปหน้าเกม</a>
       <button class="link-btn hidden" id="btn-logout">🚪 ออกจากระบบ</button>
     </div>
   </div>
