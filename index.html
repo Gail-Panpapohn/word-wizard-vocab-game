@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🦫 Word Wizard | Advanced Vocabulary Guessing Game</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A6%AB%3C/text%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="assets/mascot/capybara_03.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;500;600;700;800&family=Kanit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -45,7 +45,7 @@ body{
 /* ---------- top bar ---------- */
 .topbar{display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; flex-wrap:wrap; gap:10px; background:rgba(255,255,255,.8); border-radius:999px; padding:10px 20px; box-shadow:var(--shadow-pop-sm); backdrop-filter:blur(8px);}
 .brand{display:flex; align-items:center; gap:9px; font-family:'Mali',cursive; font-weight:700; font-size:1.35rem; color:var(--ink);}
-.brand .logo{font-size:1.9rem; filter:drop-shadow(0 3px 5px rgba(31,73,89,.25));}
+.brand .logo{height:34px; width:auto; filter:drop-shadow(0 3px 5px rgba(31,73,89,.25));}
 .player-chip{display:flex; align-items:center; gap:8px; background:var(--cream); padding:5px 16px 5px 6px; border-radius:999px; font-size:.86rem; font-weight:600;}
 .player-chip .av{width:30px; height:30px; border-radius:50%; background:linear-gradient(135deg,var(--pink),var(--sky)); display:flex; align-items:center; justify-content:center; font-size:.92rem; font-weight:800; color:#fff;}
 
@@ -70,12 +70,12 @@ p.lead{color:var(--ink-soft); font-size:.98rem; line-height:1.65; margin-bottom:
 .hero-art{position:relative; display:flex; justify-content:center; align-items:flex-end; margin:-4px 0 16px; height:110px;}
 .hero-hill{position:absolute; bottom:-8px; width:180px; height:76px; background:linear-gradient(180deg,var(--leaf),var(--leaf-deep)); border-radius:50%;}
 .hero-ring{position:absolute; bottom:10px; width:64px; height:64px; border-radius:50%; border:8px solid var(--pink); border-top-color:var(--yolk); opacity:.5;}
-.hero-bee{position:relative; z-index:1; font-size:60px; animation:beeFloat 3s ease-in-out infinite; filter:drop-shadow(0 10px 12px rgba(31,73,89,.28));}
+.hero-bee{position:relative; z-index:1; height:100px; width:auto; animation:beeFloat 3s ease-in-out infinite; filter:drop-shadow(0 10px 12px rgba(31,73,89,.28));}
 @keyframes beeFloat{0%,100%{transform:translateY(0) rotate(-3deg);} 50%{transform:translateY(-9px) rotate(3deg);}}
 
 /* ---------- tip bubble ---------- */
 .tip-bubble{display:flex; align-items:flex-start; gap:10px; background:var(--cream); border-radius:20px; padding:12px 16px; margin-bottom:18px;}
-.tip-bubble .tb-ic{font-size:1.4rem; flex-shrink:0;}
+.tip-bubble .tb-ic{height:34px; width:auto; flex-shrink:0;}
 .tip-bubble .tb-text{font-size:.85rem; color:var(--ink-soft); line-height:1.55; font-weight:500;}
 .tip-bubble .tb-text b{color:var(--ink); font-weight:700;}
 
@@ -235,7 +235,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
 <div id="app">
 
   <div class="topbar">
-    <div class="brand"><span class="logo">🦫</span> Word Wizard</div>
+    <div class="brand"><img class="logo" src="assets/mascot/capybara_03.png" alt="Capybara mascot"> Word Wizard</div>
     <div id="playerChip" class="player-chip hidden"></div>
   </div>
 
@@ -251,13 +251,13 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
     <div class="hero-art" aria-hidden="true">
       <div class="hero-hill"></div>
       <div class="hero-ring"></div>
-      <div class="hero-bee">🦫</div>
+      <img class="hero-bee" src="assets/mascot/capybara_01.png" alt="">
     </div>
     <div class="badge">📝 Register before you play</div>
     <h1>Welcome to Word Wizard! 🍯✨</h1>
     <p class="lead">Test 60+ Advanced Vocabulary words across 6 adorable mini-games — fill in your details before you start, and your score will be saved to Google Sheets automatically.</p>
     <div class="tip-bubble">
-      <span class="tb-ic">🦫</span>
+      <img class="tb-ic" src="assets/mascot/capybara_03.png" alt="">
       <span class="tb-text"><b>Capybara's tip:</b> Pick any game mode you like on the next screen, or hit "Play All" to climb the leaderboard 🏆</span>
     </div>
 
@@ -284,7 +284,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
   <section id="screen-menu" class="card hidden">
     <div class="hero-art" aria-hidden="true" style="height:88px; margin-bottom:4px;">
       <div class="hero-hill" style="width:150px; height:60px;"></div>
-      <div class="hero-bee" style="font-size:46px;">🦫</div>
+      <img class="hero-bee" style="height:76px;" src="assets/mascot/capybara_12.png" alt="">
     </div>
     <div class="badge">🎮 Choose a Game Mode</div>
     <h1 id="menu-greet">Ready to play?</h1>
