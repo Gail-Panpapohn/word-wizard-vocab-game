@@ -149,6 +149,34 @@ code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85e
 .settings-row:last-child{border-bottom:none;}
 .settings-row .label{font-weight:600; font-size:.88rem;}
 .settings-row .value{font-size:.82rem; color:var(--ink-soft); word-break:break-all; text-align:right;}
+
+/* ============ Global search ============ */
+.gsearch-wrap{flex:1; min-width:160px; max-width:420px;}
+.gsearch-wrap input{width:100%; padding:9px 14px; border-radius:999px; border:2px solid rgba(42,33,24,.10); background:var(--cream); font-family:'Sarabun',sans-serif; font-size:.85rem; outline:none;}
+.gsearch-wrap input:focus{border-color:var(--sky); background:#fff;}
+
+/* ============ Bulk select + pagination ============ */
+.bulk-bar{display:none; align-items:center; gap:10px; background:var(--butter); border-radius:12px; padding:8px 14px; margin-bottom:10px; font-size:.85rem; font-weight:600;}
+.bulk-bar.show{display:flex;}
+table.datatable input[type=checkbox]{width:auto; padding:0; cursor:pointer;}
+.pager{display:flex; align-items:center; justify-content:center; gap:6px; margin-top:12px; flex-wrap:wrap;}
+.pager button{
+  font-family:'Sarabun',sans-serif; font-weight:600; padding:6px 12px; border-radius:10px; border:none;
+  background:var(--cream); cursor:pointer; font-size:.82rem;
+}
+.pager button.active{background:linear-gradient(135deg,var(--honey),var(--berry)); color:#fff;}
+.pager button:disabled{opacity:.4; cursor:not-allowed;}
+.pager .pg-info{font-size:.78rem; color:var(--ink-soft); margin:0 6px;}
+
+/* ============ Charts ============ */
+.chart-wrap{position:relative; height:220px; margin-bottom:6px;}
+.chart-wrap.tall{height:260px;}
+.hardest-item{display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px dashed var(--butter); font-size:.82rem;}
+.hardest-item:last-child{border-bottom:none;}
+.hardest-item .hw-word{font-weight:700; flex-shrink:0; min-width:100px;}
+.hardest-item .hw-bar{flex:1; height:10px; background:var(--cream); border-radius:999px; overflow:hidden;}
+.hardest-item .hw-bar > div{height:100%; background:linear-gradient(90deg,var(--berry),var(--honey));}
+.hardest-item .hw-pct{font-weight:700; width:44px; text-align:right; flex-shrink:0; color:var(--berry);}
 </style>
 </head>
 <body>
@@ -156,6 +184,9 @@ code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85e
 
   <div class="topbar">
     <div class="brand"><img class="logo" src="cat_01_wave.png" alt="Cat mascot"> Word Wizard — ระบบจัดการแอดมิน</div>
+    <div class="gsearch-wrap hidden" id="gsearch-wrap">
+      <input type="text" id="gsearch" placeholder="🔍 ค้นหาทุกที่: คำศัพท์, ชื่อ, รหัสนักศึกษา...">
+    </div>
     <div class="topbar-actions">
       <a class="link-btn" href="index.html"><img class="ic-img-sm" src="cat_01_wave.png" alt=""> กลับไปหน้าเกม</a>
       <button class="link-btn hidden" id="btn-logout">🚪 ออกจากระบบ</button>
@@ -207,11 +238,24 @@ code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85e
       <div class="mini-grid">
         <section class="card">
           <h2><img class="ic-img" src="cat_13_jump.png" alt=""> สัดส่วนโหมดที่เล่น</h2>
-          <div id="mode-bars"><p class="empty-note">ยังไม่มีข้อมูล</p></div>
+          <div class="chart-wrap"><canvas id="chart-modes"></canvas></div>
+          <p class="empty-note hidden" id="mode-bars-empty">ยังไม่มีข้อมูล</p>
         </section>
         <section class="card">
           <h2><img class="ic-img" src="cat_14_certificate.png" alt=""> Top 5 ผู้เล่น</h2>
           <div id="top-players"><p class="empty-note">ยังไม่มีข้อมูล</p></div>
+        </section>
+      </div>
+
+      <div class="mini-grid">
+        <section class="card">
+          <h2><img class="ic-img" src="cat_09_writing.png" alt=""> แนวโน้มกิจกรรมรายวัน (14 วันล่าสุด)</h2>
+          <div class="chart-wrap tall"><canvas id="chart-trend"></canvas></div>
+        </section>
+        <section class="card">
+          <h2>😿 คำศัพท์ที่ยากที่สุด</h2>
+          <p class="lead" style="margin-bottom:8px; font-size:.78rem;">อิงจากคำที่นักเรียนตอบผิดบ่อยที่สุด (ต้องมีข้อมูลอย่างน้อย 3 ครั้ง/คำ)</p>
+          <div id="hardest-words"><p class="empty-note">ยังไม่มีข้อมูลเพียงพอ — ต้องเล่นสักพักก่อน</p></div>
         </section>
       </div>
 
@@ -258,7 +302,9 @@ code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85e
             <button class="btn btn-ghost btn-sm" id="btn-export-words">⬇️ ส่งออก CSV</button>
             <button class="btn btn-ghost btn-sm" id="btn-reload-words">🔄</button>
           </div>
+          <div class="bulk-bar" id="bulk-bar-words"><span id="bulk-count-words">เลือก 0 รายการ</span><button class="btn btn-danger btn-sm" id="btn-bulk-del-words">🗑️ ลบที่เลือกทั้งหมด</button></div>
           <div class="table-wrap"><table class="datatable" id="table-words"></table></div>
+          <div class="pager" id="pager-words"></div>
         </div>
 
         <!-- SUB: BLANKS TABLE -->
@@ -279,7 +325,9 @@ code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85e
             <button class="btn btn-ghost btn-sm" id="btn-export-blanks">⬇️ ส่งออก CSV</button>
             <button class="btn btn-ghost btn-sm" id="btn-reload-blanks">🔄</button>
           </div>
+          <div class="bulk-bar" id="bulk-bar-blanks"><span id="bulk-count-blanks">เลือก 0 รายการ</span><button class="btn btn-danger btn-sm" id="btn-bulk-del-blanks">🗑️ ลบที่เลือกทั้งหมด</button></div>
           <div class="table-wrap"><table class="datatable" id="table-blanks"></table></div>
+          <div class="pager" id="pager-blanks"></div>
         </div>
 
         <!-- SUB: BULK UPLOAD -->
@@ -339,7 +387,9 @@ code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85e
           <button class="btn btn-ghost btn-sm" id="btn-export-regs">⬇️ ส่งออก CSV</button>
           <button class="btn btn-ghost btn-sm" id="btn-reload-regs">🔄</button>
         </div>
+        <div class="bulk-bar" id="bulk-bar-regs"><span id="bulk-count-regs">เลือก 0 รายการ</span><button class="btn btn-danger btn-sm" id="btn-bulk-del-regs">🗑️ ลบที่เลือกทั้งหมด</button></div>
         <div class="table-wrap"><table class="datatable" id="table-regs"></table></div>
+        <div class="pager" id="pager-regs"></div>
       </section>
     </div>
 
@@ -357,7 +407,9 @@ code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85e
           <button class="btn btn-ghost btn-sm" id="btn-export-scores">⬇️ ส่งออก CSV</button>
           <button class="btn btn-ghost btn-sm" id="btn-reload-scores">🔄</button>
         </div>
+        <div class="bulk-bar" id="bulk-bar-scores"><span id="bulk-count-scores">เลือก 0 รายการ</span><button class="btn btn-danger btn-sm" id="btn-bulk-del-scores">🗑️ ลบที่เลือกทั้งหมด</button></div>
         <div class="table-wrap"><table class="datatable" id="table-scores"></table></div>
+        <div class="pager" id="pager-scores"></div>
       </section>
     </div>
 
@@ -369,6 +421,12 @@ code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85e
         <div class="settings-row"><div class="label">Google Sheet เชื่อมต่ออยู่</div><div class="value"><a id="set-sheet-link" href="#" target="_blank" rel="noopener">เปิด Google Sheet ↗</a></div></div>
         <div class="settings-row"><div class="label">ทดสอบการเชื่อมต่อ</div><div class="value"><button class="btn btn-ghost btn-sm" id="btn-test-connection">🔌 ทดสอบตอนนี้</button></div></div>
         <div class="toast" id="test-connection-result"></div>
+        <div class="settings-row"><div class="label">📧 อีเมลสรุปรายสัปดาห์ (ทุกวันจันทร์ 8 โมง)</div><div class="value" id="set-digest-email">-</div></div>
+        <div class="settings-row"><div class="label">ส่งอีเมลสรุปทดสอบตอนนี้</div><div class="value"><button class="btn btn-ghost btn-sm" id="btn-test-digest">📨 ส่งทดสอบ</button></div></div>
+        <div class="toast" id="test-digest-result"></div>
+        <div class="hint-note" style="margin-top:10px;">
+          ตั้งค่าอีเมลได้ที่ตัวแปร <code>DIGEST_EMAIL</code> ในไฟล์ <code>Code.gs</code> — ระบบจะติดตั้ง trigger รายสัปดาห์ให้อัตโนมัติตอนแอดมิน login ครั้งแรกหลังอัปเดตโค้ด (ต้อง Deploy เวอร์ชันใหม่ก่อน และอาจต้อง Authorize สิทธิ์เพิ่มเติมสำหรับการส่งอีเมล)
+        </div>
         <div class="hint-note" style="margin-top:14px;">
           ⚠️ <b>ข้อจำกัดด้านความปลอดภัย:</b> หน้านี้ป้องกันด้วยรหัสผ่านอย่างง่ายที่ส่งผ่าน URL (ไม่ใช่ระบบ auth เต็มรูปแบบ) เนื่องจากข้อจำกัดของ Google Apps Script web app เหมาะสำหรับใช้เป็นเครื่องมือภายในห้องเรียนเท่านั้น
           ไม่ควรเปิดลิงก์หน้าแอดมินนี้ให้บุคคลภายนอกที่ไม่น่าไว้ใจเข้าถึง และควรเปลี่ยนค่า <code>ADMIN_KEY</code> ใน <code>Code.gs</code> จากค่าเริ่มต้นเสมอ
@@ -386,6 +444,7 @@ code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85e
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLHoJfl_apCjSRKp68-50FxawW-w0oB9BG0dfKMaFGQB4y3YmgtEgc91eC1lm8cIDk_g/exec";
 const CHUNK_SIZE = 8;
@@ -430,6 +489,112 @@ function toast(id, ok, msg){
 }
 
 /* =====================================================================
+   PAGINATION + BULK SELECTION — ระบบกลางใช้ร่วมกันทั้ง 4 ตาราง
+===================================================================== */
+const PAGE_SIZE = 15;
+let pageState = { words:1, blanks:1, regs:1, scores:1 };
+let selState = { words:new Set(), blanks:new Set(), regs:new Set(), scores:new Set() };
+let chartModes = null, chartTrend = null;
+
+function paginateRows(rows, key){
+  const totalPages = Math.max(1, Math.ceil(rows.length / PAGE_SIZE));
+  if(pageState[key] > totalPages) pageState[key] = totalPages;
+  if(pageState[key] < 1) pageState[key] = 1;
+  const start = (pageState[key]-1) * PAGE_SIZE;
+  return { pageRows: rows.slice(start, start + PAGE_SIZE), totalPages };
+}
+const RENDER_FNS = { words: ()=>renderWordsTable(), blanks: ()=>renderBlanksTable(), regs: ()=>renderRegsTable(), scores: ()=>renderScoresTable() };
+function renderPager(key, totalPages){
+  const el = $('pager-' + key);
+  if(!el) return;
+  if(totalPages <= 1){ el.innerHTML=''; return; }
+  const cur = pageState[key];
+  el.innerHTML = `<button ${cur<=1?'disabled':''} data-pg="prev">‹ ก่อนหน้า</button><span class="pg-info">หน้า ${cur} / ${totalPages}</span><button ${cur>=totalPages?'disabled':''} data-pg="next">ถัดไป ›</button>`;
+  const prevBtn = el.querySelector('[data-pg="prev"]');
+  const nextBtn = el.querySelector('[data-pg="next"]');
+  if(prevBtn) prevBtn.addEventListener('click', ()=>{ pageState[key]--; RENDER_FNS[key](); });
+  if(nextBtn) nextBtn.addEventListener('click', ()=>{ pageState[key]++; RENDER_FNS[key](); });
+}
+function updateBulkBar(key){
+  const n = selState[key].size;
+  const bar = $('bulk-bar-' + key);
+  if(!bar) return;
+  $('bulk-count-' + key).textContent = `เลือก ${n} รายการ`;
+  bar.classList.toggle('show', n > 0);
+}
+function wireSelection(tableId, key){
+  const table = $(tableId);
+  const selAll = table.querySelector('.sel-all');
+  if(selAll){
+    selAll.addEventListener('change', ()=>{
+      table.querySelectorAll('.sel-row').forEach(cb=>{
+        cb.checked = selAll.checked;
+        if(selAll.checked) selState[key].add(cb.value); else selState[key].delete(cb.value);
+      });
+      updateBulkBar(key);
+    });
+  }
+  table.querySelectorAll('.sel-row').forEach(cb=>{
+    cb.addEventListener('change', ()=>{
+      if(cb.checked) selState[key].add(cb.value); else selState[key].delete(cb.value);
+      updateBulkBar(key);
+    });
+  });
+  updateBulkBar(key);
+}
+async function bulkDelete(key, action, loadFn){
+  const rows = Array.from(selState[key]);
+  if(!rows.length) return;
+  if(!confirm(`ลบ ${rows.length} รายการที่เลือกใช่ไหม? การกระทำนี้ย้อนกลับไม่ได้`)) return;
+  try{
+    const res = await jsonp(withKey({ action, rows: JSON.stringify(rows) }));
+    if(res.status !== 'ok') return alert('ลบไม่สำเร็จ: ' + (res.message||''));
+    selState[key].clear();
+    await loadFn();
+  }catch(err){ alert('ลบไม่สำเร็จ: ' + err.message); }
+}
+
+/* =====================================================================
+   GLOBAL SEARCH — ค้นหาข้ามทุกแท็บจากช่องเดียวใน topbar
+===================================================================== */
+async function globalSearch(q){
+  const ql = q.toLowerCase();
+  if(!cache.words.length) await loadWords();
+  if(!cache.blanks.length) await loadBlanks();
+  if(!cache.regs.length) await loadRegs();
+  if(!cache.scores.length) await loadScores();
+
+  if(cache.words.some(w=> w.word.toLowerCase().includes(ql) || w.meaning.toLowerCase().includes(ql))){
+    document.querySelector('.nav-tab[data-nav="vocab"]').click();
+    document.querySelector('.sub-tab[data-sub="words"]').click();
+    $('search-words').value = q; pageState.words = 1; renderWordsTable();
+    return;
+  }
+  if(cache.blanks.some(b=> b.family.toLowerCase().includes(ql) || b.sentence.toLowerCase().includes(ql) || b.answers.toLowerCase().includes(ql))){
+    document.querySelector('.nav-tab[data-nav="vocab"]').click();
+    document.querySelector('.sub-tab[data-sub="blanks"]').click();
+    $('search-blanks').value = q; pageState.blanks = 1; renderBlanksTable();
+    return;
+  }
+  if(cache.regs.some(r=> String(r.name).toLowerCase().includes(ql) || String(r.studentId).toLowerCase().includes(ql) || String(r.email).toLowerCase().includes(ql))){
+    document.querySelector('.nav-tab[data-nav="regs"]').click();
+    $('search-regs').value = q; pageState.regs = 1; renderRegsTable();
+    return;
+  }
+  if(cache.scores.some(s=> String(s.name).toLowerCase().includes(ql) || String(s.studentId).toLowerCase().includes(ql))){
+    document.querySelector('.nav-tab[data-nav="scores"]').click();
+    $('search-scores').value = q; pageState.scores = 1; renderScoresTable();
+    return;
+  }
+  alert('ไม่พบผลลัพธ์สำหรับ "' + q + '"');
+}
+$('gsearch').addEventListener('keydown', (e)=>{
+  if(e.key !== 'Enter') return;
+  const q = $('gsearch').value.trim();
+  if(q) globalSearch(q);
+});
+
+/* =====================================================================
    GATE
 ===================================================================== */
 $('btn-unlock').addEventListener('click', unlock);
@@ -451,9 +616,13 @@ async function unlock(){
     $('gate').classList.add('hidden');
     $('main').classList.remove('hidden');
     $('btn-logout').classList.remove('hidden');
+    $('gsearch-wrap').classList.remove('hidden');
     renderOverview(data);
+    ensureTrendChart();
+    loadHardestWords();
     $('set-script-url').textContent = SCRIPT_URL;
     $('set-sheet-link').href = data.sheetUrl || '#';
+    $('set-digest-email').textContent = data.digestEmailConfigured ? data.digestEmail : 'ยังไม่ได้ตั้งค่า (ว่างอยู่ใน Code.gs)';
   }catch(err){
     $('gate-error').textContent = 'เชื่อมต่อไม่สำเร็จ: ' + err.message;
     $('gate-error').classList.remove('hidden');
@@ -516,15 +685,7 @@ function renderOverview(data){
   $('ov-today-score').textContent = data.todayScores ?? 0;
   $('ov-modes').textContent = Object.keys(MODE_LABEL_TH).length;
 
-  const modeBreakdown = data.modeBreakdown || {};
-  const maxCount = Math.max(1, ...Object.values(modeBreakdown));
-  const modeKeys = Object.keys(MODE_LABEL_TH).filter(k => modeBreakdown[k]);
-  $('mode-bars').innerHTML = modeKeys.length ? modeKeys.map(k => `
-    <div class="bar-row">
-      <div class="bar-label">${esc(MODE_LABEL_TH[k])}</div>
-      <div class="bar-track"><div class="bar-fill" style="width:${Math.round((modeBreakdown[k]/maxCount)*100)}%"></div></div>
-      <div class="bar-count">${modeBreakdown[k]}</div>
-    </div>`).join('') : '<p class="empty-note">ยังไม่มีข้อมูลการเล่น</p>';
+  renderModeChart(data.modeBreakdown || {});
 
   const top = data.topPlayers || [];
   $('top-players').innerHTML = top.length ? top.map((p,i)=>`
@@ -542,8 +703,110 @@ function renderOverview(data){
   `).join('') : '<p class="empty-note">ยังไม่มีข้อมูล</p>';
 }
 $('btn-refresh-overview').addEventListener('click', async ()=>{
-  try{ renderOverview(await jsonp(withKey({ action:'admin_stats' }))); }catch(err){}
+  try{
+    renderOverview(await jsonp(withKey({ action:'admin_stats' })));
+    await ensureTrendChart();
+    await loadHardestWords();
+  }catch(err){}
 });
+
+/* =====================================================================
+   CHARTS (Chart.js) — สัดส่วนโหมด (โดนัท) + แนวโน้มรายวัน (เส้น)
+===================================================================== */
+function renderModeChart(modeBreakdown){
+  const modeKeys = Object.keys(MODE_LABEL_TH).filter(k => modeBreakdown[k]);
+  const empty = $('mode-bars-empty');
+  if(!modeKeys.length){
+    if(chartModes){ chartModes.destroy(); chartModes = null; }
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+  const labels = modeKeys.map(k => MODE_LABEL_TH[k]);
+  const values = modeKeys.map(k => modeBreakdown[k]);
+  const colors = ['#F5468C','#FFCC33','#F4A100','#4FCB8D','#3FC6C1','#8C7F6D','#EF4A3D'];
+  if(chartModes){
+    chartModes.data.labels = labels;
+    chartModes.data.datasets[0].data = values;
+    chartModes.update();
+    return;
+  }
+  chartModes = new Chart($('chart-modes').getContext('2d'), {
+    type: 'doughnut',
+    data: { labels, datasets: [{ data: values, backgroundColor: colors, borderWidth: 2, borderColor: '#fff' }] },
+    options: {
+      maintainAspectRatio: false,
+      plugins: { legend: { position: 'bottom', labels: { font: { family: 'Sarabun' }, boxWidth: 12, padding: 10 } } },
+      cutout: '58%'
+    }
+  });
+}
+function dateKey(d){
+  const y = d.getFullYear(), m = String(d.getMonth()+1).padStart(2,'0'), day = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${day}`;
+}
+async function ensureTrendChart(){
+  if(!cache.scores.length) await loadScores();
+  renderTrendChart();
+}
+function renderTrendChart(){
+  const today = new Date(); today.setHours(0,0,0,0);
+  const days = [];
+  const counts = {};
+  for(let i=13; i>=0; i--){
+    const d = new Date(today); d.setDate(d.getDate()-i);
+    const key = dateKey(d);
+    days.push(key); counts[key] = 0;
+  }
+  cache.scores.forEach(s=>{
+    const d = new Date(s.timestamp);
+    if(isNaN(d)) return;
+    d.setHours(0,0,0,0);
+    const key = dateKey(d);
+    if(key in counts) counts[key]++;
+  });
+  const labels = days.map(k => k.slice(5));
+  const values = days.map(k => counts[k]);
+  if(chartTrend){
+    chartTrend.data.labels = labels;
+    chartTrend.data.datasets[0].data = values;
+    chartTrend.update();
+    return;
+  }
+  chartTrend = new Chart($('chart-trend').getContext('2d'), {
+    type: 'line',
+    data: { labels, datasets: [{
+      label: 'จำนวนครั้งที่เล่นจบ', data: values,
+      borderColor: '#3FC6C1', backgroundColor: 'rgba(63,198,193,.15)',
+      fill: true, tension: .3, pointRadius: 3, pointBackgroundColor: '#3FC6C1'
+    }]},
+    options: {
+      maintainAspectRatio: false,
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
+      plugins: { legend: { display: false } }
+    }
+  });
+}
+
+/* =====================================================================
+   คำศัพท์ที่ยากที่สุด (จาก QuestionLog)
+===================================================================== */
+async function loadHardestWords(){
+  try{
+    const data = await jsonp(withKey({ action:'admin_word_difficulty' }));
+    renderHardestWords(data.hardest || []);
+  }catch(err){ /* เงียบไว้ ไม่ใช่ข้อมูลสำคัญขั้นวิกฤต */ }
+}
+function renderHardestWords(list){
+  const box = $('hardest-words');
+  if(!list.length){ box.innerHTML = '<p class="empty-note">ยังไม่มีข้อมูลเพียงพอ — ต้องเล่นสักพักก่อน</p>'; return; }
+  box.innerHTML = list.map(w => `
+    <div class="hardest-item">
+      <span class="hw-word">${esc(w.word)}</span>
+      <div class="hw-bar"><div style="width:${Math.round(100-w.percent)}%"></div></div>
+      <span class="hw-pct">${Math.round(100-w.percent)}% ผิด</span>
+    </div>`).join('');
+}
 
 /* =====================================================================
    VOCAB — WORDS TABLE
@@ -553,6 +816,7 @@ async function loadWords(){
   try{
     const data = await jsonp(withKey({ action:'admin_list_words' }));
     cache.words = data.words || [];
+    selState.words.clear();
     renderWordsTable();
   }catch(err){
     $('table-words').innerHTML = `<tr><td class="empty-note">โหลดไม่สำเร็จ: ${esc(err.message)}</td></tr>`;
@@ -561,15 +825,17 @@ async function loadWords(){
 function renderWordsTable(){
   const q = ($('search-words').value || '').toLowerCase();
   const catFilter = $('filter-words-cat').value;
-  const rows = cache.words.filter(w =>
+  const filtered = cache.words.filter(w =>
     (!q || w.word.toLowerCase().includes(q) || w.meaning.toLowerCase().includes(q)) &&
     (!catFilter || w.category === catFilter)
   );
   const table = $('table-words');
-  if(!rows.length){ table.innerHTML = '<tr><td class="empty-note">ไม่พบข้อมูล</td></tr>'; return; }
-  table.innerHTML = '<thead><tr><th>คำศัพท์</th><th>ความหมาย</th><th>หมวด</th><th></th></tr></thead><tbody>' +
-    rows.map(w => `
+  if(!filtered.length){ table.innerHTML = '<tr><td class="empty-note">ไม่พบข้อมูล</td></tr>'; $('pager-words').innerHTML=''; return; }
+  const { pageRows, totalPages } = paginateRows(filtered, 'words');
+  table.innerHTML = '<thead><tr><th style="width:30px;"><input type="checkbox" class="sel-all"></th><th>คำศัพท์</th><th>ความหมาย</th><th>หมวด</th><th></th></tr></thead><tbody>' +
+    pageRows.map(w => `
       <tr data-row="${w.row}">
+        <td><input type="checkbox" class="sel-row" value="${w.row}" ${selState.words.has(String(w.row))?'checked':''}></td>
         <td class="c-word">${esc(w.word)}</td>
         <td class="c-meaning">${esc(w.meaning)}</td>
         <td class="c-cat"><span class="cat-chip" style="background:${CAT_COLOR[w.category]||'#eee'}">${esc(w.category)}</span></td>
@@ -580,6 +846,8 @@ function renderWordsTable(){
       </tr>`).join('') + '</tbody>';
   table.querySelectorAll('.act-edit').forEach(b => b.addEventListener('click', (e)=> editWordRow(e.target.closest('tr'))));
   table.querySelectorAll('.act-del').forEach(b => b.addEventListener('click', (e)=> deleteWordRow(e.target.closest('tr'))));
+  wireSelection('table-words', 'words');
+  renderPager('words', totalPages);
 }
 function editWordRow(tr){
   const row = tr.dataset.row;
@@ -612,10 +880,11 @@ async function deleteWordRow(tr){
     await loadWords();
   }catch(err){ alert('ลบไม่สำเร็จ: ' + err.message); }
 }
-$('search-words').addEventListener('input', renderWordsTable);
-$('filter-words-cat').addEventListener('change', renderWordsTable);
+$('search-words').addEventListener('input', ()=>{ pageState.words = 1; renderWordsTable(); });
+$('filter-words-cat').addEventListener('change', ()=>{ pageState.words = 1; renderWordsTable(); });
 $('btn-reload-words').addEventListener('click', loadWords);
 $('btn-export-words').addEventListener('click', ()=> exportCSV('words_export.csv', cache.words, ['word','meaning','category']));
+$('btn-bulk-del-words').addEventListener('click', ()=> bulkDelete('words', 'admin_bulk_delete_word', loadWords));
 $('btn-quick-add-word').addEventListener('click', async ()=>{
   const word = $('qa-word').value.trim();
   const meaning = $('qa-word-meaning').value.trim();
@@ -637,6 +906,7 @@ async function loadBlanks(){
   try{
     const data = await jsonp(withKey({ action:'admin_list_blanks' }));
     cache.blanks = data.blanks || [];
+    selState.blanks.clear();
     renderBlanksTable();
   }catch(err){
     $('table-blanks').innerHTML = `<tr><td class="empty-note">โหลดไม่สำเร็จ: ${esc(err.message)}</td></tr>`;
@@ -644,14 +914,16 @@ async function loadBlanks(){
 }
 function renderBlanksTable(){
   const q = ($('search-blanks').value || '').toLowerCase();
-  const rows = cache.blanks.filter(b =>
+  const filtered = cache.blanks.filter(b =>
     !q || b.family.toLowerCase().includes(q) || b.sentence.toLowerCase().includes(q) || b.answers.toLowerCase().includes(q)
   );
   const table = $('table-blanks');
-  if(!rows.length){ table.innerHTML = '<tr><td class="empty-note">ไม่พบข้อมูล</td></tr>'; return; }
-  table.innerHTML = '<thead><tr><th>Family</th><th>ความหมาย</th><th>ประโยค</th><th>คำตอบ</th><th>POS</th><th></th></tr></thead><tbody>' +
-    rows.map(b => `
+  if(!filtered.length){ table.innerHTML = '<tr><td class="empty-note">ไม่พบข้อมูล</td></tr>'; $('pager-blanks').innerHTML=''; return; }
+  const { pageRows, totalPages } = paginateRows(filtered, 'blanks');
+  table.innerHTML = '<thead><tr><th style="width:30px;"><input type="checkbox" class="sel-all"></th><th>Family</th><th>ความหมาย</th><th>ประโยค</th><th>คำตอบ</th><th>POS</th><th></th></tr></thead><tbody>' +
+    pageRows.map(b => `
       <tr data-row="${b.row}">
+        <td><input type="checkbox" class="sel-row" value="${b.row}" ${selState.blanks.has(String(b.row))?'checked':''}></td>
         <td class="c-family">${esc(b.family)}</td>
         <td class="c-meaning">${esc(b.meaning)}</td>
         <td class="c-sentence">${esc(b.sentence)}</td>
@@ -664,6 +936,8 @@ function renderBlanksTable(){
       </tr>`).join('') + '</tbody>';
   table.querySelectorAll('.act-edit').forEach(b => b.addEventListener('click', (e)=> editBlankRow(e.target.closest('tr'))));
   table.querySelectorAll('.act-del').forEach(b => b.addEventListener('click', (e)=> deleteBlankRow(e.target.closest('tr'))));
+  wireSelection('table-blanks', 'blanks');
+  renderPager('blanks', totalPages);
 }
 function editBlankRow(tr){
   const row = tr.dataset.row;
@@ -700,9 +974,10 @@ async function deleteBlankRow(tr){
     await loadBlanks();
   }catch(err){ alert('ลบไม่สำเร็จ: ' + err.message); }
 }
-$('search-blanks').addEventListener('input', renderBlanksTable);
+$('search-blanks').addEventListener('input', ()=>{ pageState.blanks = 1; renderBlanksTable(); });
 $('btn-reload-blanks').addEventListener('click', loadBlanks);
 $('btn-export-blanks').addEventListener('click', ()=> exportCSV('blanks_export.csv', cache.blanks, ['family','meaning','sentence','answers','pos']));
+$('btn-bulk-del-blanks').addEventListener('click', ()=> bulkDelete('blanks', 'admin_bulk_delete_blank', loadBlanks));
 $('btn-quick-add-blank').addEventListener('click', async ()=>{
   const family = $('qa-family').value.trim();
   const meaning = $('qa-blank-meaning').value.trim();
@@ -726,6 +1001,7 @@ async function loadRegs(){
   try{
     const data = await jsonp(withKey({ action:'admin_list_registrations' }));
     cache.regs = data.registrations || [];
+    selState.regs.clear();
     renderRegsTable();
   }catch(err){
     $('table-regs').innerHTML = `<tr><td class="empty-note">โหลดไม่สำเร็จ: ${esc(err.message)}</td></tr>`;
@@ -733,14 +1009,16 @@ async function loadRegs(){
 }
 function renderRegsTable(){
   const q = ($('search-regs').value || '').toLowerCase();
-  const rows = cache.regs.filter(r =>
+  const filtered = cache.regs.filter(r =>
     !q || String(r.name).toLowerCase().includes(q) || String(r.studentId).toLowerCase().includes(q) || String(r.email).toLowerCase().includes(q)
   );
   const table = $('table-regs');
-  if(!rows.length){ table.innerHTML = '<tr><td class="empty-note">ไม่พบข้อมูล</td></tr>'; return; }
-  table.innerHTML = '<thead><tr><th>เวลา</th><th>ชื่อ-สกุล</th><th>รหัสนักศึกษา</th><th>อีเมล</th><th></th></tr></thead><tbody>' +
-    rows.map(r => `
+  if(!filtered.length){ table.innerHTML = '<tr><td class="empty-note">ไม่พบข้อมูล</td></tr>'; $('pager-regs').innerHTML=''; return; }
+  const { pageRows, totalPages } = paginateRows(filtered, 'regs');
+  table.innerHTML = '<thead><tr><th style="width:30px;"><input type="checkbox" class="sel-all"></th><th>เวลา</th><th>ชื่อ-สกุล</th><th>รหัสนักศึกษา</th><th>อีเมล</th><th></th></tr></thead><tbody>' +
+    pageRows.map(r => `
       <tr data-row="${r.row}">
+        <td><input type="checkbox" class="sel-row" value="${r.row}" ${selState.regs.has(String(r.row))?'checked':''}></td>
         <td>${fmtDate(r.timestamp)}</td><td>${esc(r.name)}</td><td>${esc(r.studentId)}</td><td>${esc(r.email)}</td>
         <td class="row-actions"><button class="btn btn-danger btn-sm act-del">🗑️</button></td>
       </tr>`).join('') + '</tbody>';
@@ -754,12 +1032,15 @@ function renderRegsTable(){
       await loadRegs();
     }catch(err){ alert('ลบไม่สำเร็จ: ' + err.message); }
   }));
+  wireSelection('table-regs', 'regs');
+  renderPager('regs', totalPages);
 }
-$('search-regs').addEventListener('input', renderRegsTable);
+$('search-regs').addEventListener('input', ()=>{ pageState.regs = 1; renderRegsTable(); });
 $('btn-reload-regs').addEventListener('click', loadRegs);
 $('btn-export-regs').addEventListener('click', ()=> exportCSV('registrations_export.csv',
   cache.regs.map(r=>({timestamp:fmtDate(r.timestamp), name:r.name, studentId:r.studentId, email:r.email})),
   ['timestamp','name','studentId','email']));
+$('btn-bulk-del-regs').addEventListener('click', ()=> bulkDelete('regs', 'admin_bulk_delete_registration', loadRegs));
 
 /* =====================================================================
    SCORES TABLE
@@ -769,6 +1050,7 @@ async function loadScores(){
   try{
     const data = await jsonp(withKey({ action:'admin_list_scores' }));
     cache.scores = data.scores || [];
+    selState.scores.clear();
     renderScoresTable();
   }catch(err){
     $('table-scores').innerHTML = `<tr><td class="empty-note">โหลดไม่สำเร็จ: ${esc(err.message)}</td></tr>`;
@@ -777,15 +1059,17 @@ async function loadScores(){
 function renderScoresTable(){
   const q = ($('search-scores').value || '').toLowerCase();
   const modeFilter = $('filter-scores-mode').value;
-  const rows = cache.scores.filter(s =>
+  const filtered = cache.scores.filter(s =>
     (!q || String(s.name).toLowerCase().includes(q) || String(s.studentId).toLowerCase().includes(q)) &&
     (!modeFilter || s.mode === modeFilter)
   );
   const table = $('table-scores');
-  if(!rows.length){ table.innerHTML = '<tr><td class="empty-note">ไม่พบข้อมูล</td></tr>'; return; }
-  table.innerHTML = '<thead><tr><th>เวลา</th><th>ชื่อ-สกุล</th><th>รหัสนักศึกษา</th><th>โหมด</th><th>คะแนน</th><th>%</th><th>เวลาที่ใช้</th><th></th></tr></thead><tbody>' +
-    rows.map(s => `
+  if(!filtered.length){ table.innerHTML = '<tr><td class="empty-note">ไม่พบข้อมูล</td></tr>'; $('pager-scores').innerHTML=''; return; }
+  const { pageRows, totalPages } = paginateRows(filtered, 'scores');
+  table.innerHTML = '<thead><tr><th style="width:30px;"><input type="checkbox" class="sel-all"></th><th>เวลา</th><th>ชื่อ-สกุล</th><th>รหัสนักศึกษา</th><th>โหมด</th><th>คะแนน</th><th>%</th><th>เวลาที่ใช้</th><th></th></tr></thead><tbody>' +
+    pageRows.map(s => `
       <tr data-row="${s.row}">
+        <td><input type="checkbox" class="sel-row" value="${s.row}" ${selState.scores.has(String(s.row))?'checked':''}></td>
         <td>${fmtDate(s.timestamp)}</td><td>${esc(s.name)}</td><td>${esc(s.studentId)}</td>
         <td>${esc(MODE_LABEL_TH[s.mode] || s.mode || '-')}</td><td>${s.score}/${s.total}</td><td>${s.percent}%</td><td>${s.timeSpent}s</td>
         <td class="row-actions"><button class="btn btn-danger btn-sm act-del">🗑️</button></td>
@@ -800,13 +1084,16 @@ function renderScoresTable(){
       await loadScores();
     }catch(err){ alert('ลบไม่สำเร็จ: ' + err.message); }
   }));
+  wireSelection('table-scores', 'scores');
+  renderPager('scores', totalPages);
 }
-$('search-scores').addEventListener('input', renderScoresTable);
-$('filter-scores-mode').addEventListener('change', renderScoresTable);
+$('search-scores').addEventListener('input', ()=>{ pageState.scores = 1; renderScoresTable(); });
+$('filter-scores-mode').addEventListener('change', ()=>{ pageState.scores = 1; renderScoresTable(); });
 $('btn-reload-scores').addEventListener('click', loadScores);
 $('btn-export-scores').addEventListener('click', ()=> exportCSV('scores_export.csv',
   cache.scores.map(s=>({timestamp:fmtDate(s.timestamp), name:s.name, studentId:s.studentId, mode:MODE_LABEL_TH[s.mode]||s.mode, score:s.score, total:s.total, percent:s.percent, timeSpent:s.timeSpent})),
   ['timestamp','name','studentId','mode','score','total','percent','timeSpent']));
+$('btn-bulk-del-scores').addEventListener('click', ()=> bulkDelete('scores', 'admin_bulk_delete_score', loadScores));
 
 /* =====================================================================
    SETTINGS
@@ -817,6 +1104,17 @@ $('btn-test-connection').addEventListener('click', async ()=>{
     toast('test-connection-result', res.status === 'ok', res.status === 'ok' ? '✅ เชื่อมต่อสำเร็จ ระบบทำงานปกติ' : '❌ ' + (res.message||'เชื่อมต่อไม่สำเร็จ'));
   }catch(err){
     toast('test-connection-result', false, '❌ เชื่อมต่อไม่สำเร็จ: ' + err.message);
+  }
+});
+$('btn-test-digest').addEventListener('click', async ()=>{
+  $('btn-test-digest').disabled = true;
+  try{
+    const res = await jsonp(withKey({ action:'admin_send_test_digest' }));
+    toast('test-digest-result', res.status === 'ok', res.status === 'ok' ? ('✅ ' + res.message) : ('❌ ' + (res.message||'ส่งไม่สำเร็จ')));
+  }catch(err){
+    toast('test-digest-result', false, '❌ ส่งไม่สำเร็จ: ' + err.message);
+  }finally{
+    $('btn-test-digest').disabled = false;
   }
 });
 

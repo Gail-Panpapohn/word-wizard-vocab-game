@@ -558,7 +558,7 @@ let scramblePool = [];
    STATE
 ===================================================================== */
 let player = null;
-let session = { correct:0, total:0, startTime:0, playAll:false, queue:[], queueIdx:0 };
+let session = { correct:0, total:0, startTime:0, playAll:false, queue:[], queueIdx:0, log:[] };
 let mcqState = {}, fillState = {}, matchState = {}, tfState = {}, scrambleState = {}, sortState = {};
 
 const $ = (id)=>document.getElementById(id);
@@ -680,7 +680,7 @@ $('btn-again').addEventListener('click', ()=>{
 $('btn-leaderboard').addEventListener('click', showResultLeaderboardOnly);
 
 function startPlayAll(){
-  session = { correct:0, total:0, startTime:Date.now(), playAll:true, queue:['mcq','fill','tf','scramble','sort','match'], queueIdx:0, mode:'all' };
+  session = { correct:0, total:0, startTime:Date.now(), playAll:true, queue:['mcq','fill','tf','scramble','sort','match'], queueIdx:0, mode:'all', log:[] };
   runNextInQueue();
 }
 function runNextInQueue(){
@@ -701,7 +701,7 @@ function nextStepOrFinish(solo){
    MODE 1: MCQ — ทายความหมาย
 ===================================================================== */
 function startMCQ(n, solo){
-  if(solo) session = { correct:0, total:0, startTime:Date.now(), playAll:false, queue:[], queueIdx:0, mode:'mcq' };
+  if(solo) session = { correct:0, total:0, startTime:Date.now(), playAll:false, queue:[], queueIdx:0, mode:'mcq', log:[] };
   const qs = sample(meaningPool, n);
   mcqState = { qs, i:0, streak:0, solo };
   show('screen-mcq');
@@ -725,13 +725,14 @@ function renderMCQ(){
   opts.forEach(o=>{
     const b = document.createElement('button');
     b.className='opt'; b.textContent=o.th;
-    b.addEventListener('click', ()=> answerMCQ(b, o.th===q.th));
+    b.addEventListener('click', ()=> answerMCQ(b, o.th===q.th, q.en));
     box.appendChild(b);
   });
 }
-function answerMCQ(btn, isCorrect){
+function answerMCQ(btn, isCorrect, word){
   document.querySelectorAll('#mcq-options .opt').forEach(o=>o.disabled=true);
   session.total++; mcqState.i++;
+  session.log.push({word, correct:isCorrect});
   if(isCorrect){
     btn.classList.add('correct'); session.correct++; mcqState.streak++;
     playTone(true);
@@ -750,7 +751,7 @@ function answerMCQ(btn, isCorrect){
    MODE 2: FILL — เติมคำในช่องว่าง
 ===================================================================== */
 function startFill(n, solo){
-  if(solo) session = { correct:0, total:0, startTime:Date.now(), playAll:false, queue:[], queueIdx:0, mode:'fill' };
+  if(solo) session = { correct:0, total:0, startTime:Date.now(), playAll:false, queue:[], queueIdx:0, mode:'fill', log:[] };
   const qs = sample(allBlanks, n);
   fillState = { qs, i:0, streak:0, solo };
   show('screen-fill');
@@ -784,6 +785,7 @@ function renderFill(){
 function answerFill(btn, isCorrect, q, chosen){
   document.querySelectorAll('#fill-options .opt').forEach(o=>o.disabled=true);
   session.total++; fillState.i++;
+  session.log.push({word:q.family||q.a[0], correct:isCorrect});
   $('fill-sentence').innerHTML = q.s.replace('___', `<span class="blank">${q.a[0]}</span>`);
   if(isCorrect){
     btn.classList.add('correct'); session.correct++; fillState.streak++;
@@ -803,7 +805,7 @@ function answerFill(btn, isCorrect, q, chosen){
    MODE 3: TRUE/FALSE — ถูกหรือผิด
 ===================================================================== */
 function startTF(n, solo){
-  if(solo) session = { correct:0, total:0, startTime:Date.now(), playAll:false, queue:[], queueIdx:0, mode:'tf' };
+  if(solo) session = { correct:0, total:0, startTime:Date.now(), playAll:false, queue:[], queueIdx:0, mode:'tf', log:[] };
   const qs = sample(meaningPool, n);
   tfState = { qs, i:0, streak:0, solo };
   show('screen-tf');
@@ -829,13 +831,14 @@ function renderTF(){
 
   const trueBtn = $('tf-btn-true'), falseBtn = $('tf-btn-false');
   trueBtn.disabled = false; falseBtn.disabled = false;
-  trueBtn.onclick = ()=> answerTF(isTrueStatement, true);
-  falseBtn.onclick = ()=> answerTF(isTrueStatement, false);
+  trueBtn.onclick = ()=> answerTF(isTrueStatement, true, q.en);
+  falseBtn.onclick = ()=> answerTF(isTrueStatement, false, q.en);
 }
-function answerTF(isTrueStatement, userSaidTrue){
+function answerTF(isTrueStatement, userSaidTrue, word){
   $('tf-btn-true').disabled = true; $('tf-btn-false').disabled = true;
   session.total++; tfState.i++;
   const correct = (isTrueStatement === userSaidTrue);
+  session.log.push({word, correct});
   if(correct){
     session.correct++; tfState.streak++;
     playTone(true);
@@ -862,7 +865,7 @@ function shuffleWord(word){
   return letters;
 }
 function startScramble(n, solo){
-  if(solo) session = { correct:0, total:0, startTime:Date.now(), playAll:false, queue:[], queueIdx:0, mode:'scramble' };
+  if(solo) session = { correct:0, total:0, startTime:Date.now(), playAll:false, queue:[], queueIdx:0, mode:'scramble', log:[] };
   const qs = sample(scramblePool, n);
   scrambleState = { qs, i:0, streak:0, solo };
   show('screen-scramble');
@@ -899,6 +902,7 @@ function submitScramble(){
   input.disabled = true;
   session.total++; scrambleState.i++;
   const isCorrect = userAnswer === q.en.toLowerCase();
+  session.log.push({word:q.en, correct:isCorrect});
   if(isCorrect){
     session.correct++; scrambleState.streak++;
     playTone(true);
@@ -919,7 +923,7 @@ $('scramble-input').addEventListener('keydown', (e)=>{ if(e.key==='Enter') submi
    MODE 5: SORT — จัดหมวดหมู่
 ===================================================================== */
 function startSort(n, solo){
-  if(solo) session = { correct:0, total:0, startTime:Date.now(), playAll:false, queue:[], queueIdx:0, mode:'sort' };
+  if(solo) session = { correct:0, total:0, startTime:Date.now(), playAll:false, queue:[], queueIdx:0, mode:'sort', log:[] };
   const qs = sample(characterWords, n);
   sortState = { qs, i:0, streak:0, solo };
   show('screen-sort');
@@ -946,6 +950,7 @@ function renderSort(){
 function answerSort(btn, isCorrect, q){
   document.querySelectorAll('#sort-options .sort-opt').forEach(o=>o.disabled=true);
   session.total++; sortState.i++;
+  session.log.push({word:q.en, correct:isCorrect});
   if(isCorrect){
     btn.classList.add('correct'); session.correct++; sortState.streak++;
     playTone(true);
@@ -964,7 +969,7 @@ function answerSort(btn, isCorrect, q){
    MODE 6: MATCH — จับคู่คำศัพท์
 ===================================================================== */
 function startMatch(pairCount, solo){
-  if(solo) session = { correct:0, total:0, startTime:Date.now(), playAll:false, queue:[], queueIdx:0, mode:'match' };
+  if(solo) session = { correct:0, total:0, startTime:Date.now(), playAll:false, queue:[], queueIdx:0, mode:'match', log:[] };
   const words = sample(meaningPool, pairCount);
   let cards = [];
   words.forEach((w,idx)=>{
@@ -1004,7 +1009,9 @@ function flipCard(idx){
     const [a,b] = matchState.flipped;
     const ca = matchState.cards[a], cb = matchState.cards[b];
     session.total++;
-    if(ca.key===cb.key && ca.type!==cb.type){
+    const isMatchCorrect = ca.key===cb.key && ca.type!==cb.type;
+    session.log.push({word: ca.type==='en' ? ca.label : cb.label, correct:isMatchCorrect});
+    if(isMatchCorrect){
       session.correct++;
       matchState.matched.add(a); matchState.matched.add(b);
       matchState.found++;
@@ -1065,7 +1072,7 @@ function finishSession(){
   show('screen-result');
   if(pct>=60) launchConfetti();
 
-  postToSheet({ action:'score', name:player.name, studentId:player.sid, score:session.correct, total:session.total, percent:pct, timeSpent, mode:session.mode||'' })
+  postToSheet({ action:'score', name:player.name, studentId:player.sid, score:session.correct, total:session.total, percent:pct, timeSpent, mode:session.mode||'', questions:session.log||[] })
     .then(()=>{ $('result-sub').textContent='Score saved successfully ✅'; loadLeaderboard(); })
     .catch(()=>{ $('result-sub').textContent = SCRIPT_URL.includes('PASTE_') ? 'Google Sheet not set up yet (see setup guide)' : 'Failed to save score, please try again later'; });
 }
