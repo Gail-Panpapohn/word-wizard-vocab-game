@@ -82,10 +82,10 @@ p.lead{color:var(--ink-soft); font-size:.98rem; line-height:1.65; margin-bottom:
 /* คนละอันกับ .hero-art ด้านบน — ใช้กรอบวงกลมคงที่แทน "เนินหญ้า" เพราะรูปแมวแต่ละอารมณ์
    มีสัดส่วน/ขนาดไม่เท่ากัน (บางรูปเป็นหน้าเต็มตัว บางรูปครึ่งตัว) ถ้าใช้เนินแบบเดิมหัว/เท้าจะโผล่ทะลุกรอบ
    วงกลมนี้ + max-height/max-width บนรูป ทำให้แมวทุกโพสสเกลพอดีอยู่ในกรอบเสมอ ไม่ทะลุ */
-.pet-avatar-wrap{position:relative; display:flex; justify-content:center; align-items:center; height:104px; margin:-4px 0 6px;}
+.pet-avatar-wrap{position:relative; display:flex; justify-content:center; align-items:center; height:120px; margin:-4px 0 6px;}
 .pet-avatar-badge{
   position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
-  width:112px; height:112px; border-radius:50%;
+  width:128px; height:128px; border-radius:50%;
   background:linear-gradient(180deg,var(--leaf),var(--leaf-deep));
   box-shadow:var(--shadow-pop-sm), inset 0 -8px 14px rgba(42,33,24,.12), inset 0 6px 10px rgba(255,255,255,.28);
 }
@@ -94,7 +94,7 @@ p.lead{color:var(--ink-soft); font-size:.98rem; line-height:1.65; margin-bottom:
   border:4px solid #fff; box-shadow:var(--shadow-pop-sm); opacity:.95;
 }
 .pet-cat-avatar-img{
-  position:relative; z-index:1; max-height:86px; max-width:86px; width:auto; height:auto;
+  position:relative; z-index:1; max-height:98px; max-width:98px; width:auto; height:auto;
   animation:beeFloat 3s ease-in-out infinite;
   filter:drop-shadow(0 6px 8px rgba(42,33,24,.25));
 }
