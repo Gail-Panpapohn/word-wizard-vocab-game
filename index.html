@@ -78,6 +78,30 @@ p.lead{color:var(--ink-soft); font-size:.98rem; line-height:1.65; margin-bottom:
 .hero-bee{position:relative; z-index:1; height:100px; width:auto; animation:beeFloat 3s ease-in-out infinite; filter:drop-shadow(0 10px 12px rgba(42,33,24,.28));}
 @keyframes beeFloat{0%,100%{transform:translateY(0) rotate(-3deg);} 50%{transform:translateY(-9px) rotate(3deg);}}
 
+/* ---------- pet avatar badge (mood-cycling cat inside the pet-widget) ---------- */
+/* คนละอันกับ .hero-art ด้านบน — ใช้กรอบวงกลมคงที่แทน "เนินหญ้า" เพราะรูปแมวแต่ละอารมณ์
+   มีสัดส่วน/ขนาดไม่เท่ากัน (บางรูปเป็นหน้าเต็มตัว บางรูปครึ่งตัว) ถ้าใช้เนินแบบเดิมหัว/เท้าจะโผล่ทะลุกรอบ
+   วงกลมนี้ + max-height/max-width บนรูป ทำให้แมวทุกโพสสเกลพอดีอยู่ในกรอบเสมอ ไม่ทะลุ */
+.pet-avatar-wrap{position:relative; display:flex; justify-content:center; align-items:center; height:104px; margin:-4px 0 6px;}
+.pet-avatar-badge{
+  position:absolute; top:50%; left:50%; transform:translate(-50%,-50%);
+  width:112px; height:112px; border-radius:50%;
+  background:linear-gradient(180deg,var(--leaf),var(--leaf-deep));
+  box-shadow:var(--shadow-pop-sm), inset 0 -8px 14px rgba(42,33,24,.12), inset 0 6px 10px rgba(255,255,255,.28);
+}
+.pet-avatar-badge::after{
+  content:''; position:absolute; inset:-5px; border-radius:50%;
+  border:4px solid #fff; box-shadow:var(--shadow-pop-sm); opacity:.95;
+}
+.pet-cat-avatar-img{
+  position:relative; z-index:1; max-height:86px; max-width:86px; width:auto; height:auto;
+  animation:beeFloat 3s ease-in-out infinite;
+  filter:drop-shadow(0 6px 8px rgba(42,33,24,.25));
+}
+body[data-pet-theme="sunset"] .pet-avatar-badge{background:linear-gradient(180deg,#FF8FC2,#F5468C);}
+body[data-pet-theme="ocean"] .pet-avatar-badge{background:linear-gradient(180deg,#3FC6C1,#1F7A76);}
+body[data-pet-theme="royal"] .pet-avatar-badge{background:linear-gradient(180deg,#B98CE8,#6C3FB8);}
+
 /* ---------- tip bubble ---------- */
 .tip-bubble{display:flex; align-items:flex-start; gap:10px; background:var(--cream); border-radius:20px; padding:12px 16px; margin-bottom:18px;}
 .tip-bubble .tb-ic{height:34px; width:auto; flex-shrink:0;}
@@ -118,9 +142,6 @@ p.lead{color:var(--ink-soft); font-size:.98rem; line-height:1.65; margin-bottom:
 .pet-swatch[data-theme="ocean"]{background:linear-gradient(135deg,#3FC6C1,#1F7A76);}
 .pet-swatch[data-theme="royal"]{background:linear-gradient(135deg,#B98CE8,#6C3FB8);}
 
-body[data-pet-theme="sunset"] .hero-hill{background:linear-gradient(180deg,#FF8FC2,#F5468C);}
-body[data-pet-theme="ocean"] .hero-hill{background:linear-gradient(180deg,#3FC6C1,#1F7A76);}
-body[data-pet-theme="royal"] .hero-hill{background:linear-gradient(180deg,#B98CE8,#6C3FB8);}
 
 /* ---------- pet challenge / leaderboard action buttons ---------- */
 .pet-actions-row{display:flex; gap:10px; margin-top:10px;}
@@ -378,9 +399,9 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
 
   <!-- ===================== SCREEN: MENU ===================== -->
   <section id="screen-menu" class="card hidden">
-    <div class="hero-art" aria-hidden="true" style="height:88px; margin-bottom:4px;">
-      <div class="hero-hill" style="width:150px; height:60px;"></div>
-      <img class="hero-bee" id="pet-cat-img" style="height:76px;" src="cat_02_shy.png" alt="Your cat">
+    <div class="pet-avatar-wrap">
+      <div class="pet-avatar-badge"></div>
+      <img class="pet-cat-avatar-img" id="pet-cat-img" src="cat_02_shy.png" alt="Your cat">
     </div>
 
     <div class="pet-widget">
@@ -1348,7 +1369,7 @@ function loadPetState(attempt){
   setTimeout(retryOrGiveUp, 4500);
 }
 function tossFishAnimation(){
-  const hero = document.querySelector('#screen-menu .hero-art');
+  const hero = document.querySelector('#screen-menu .pet-avatar-wrap');
   const btn = $('btn-feed-cat');
   if(!hero || !btn) return;
   const heroRect = hero.getBoundingClientRect();
