@@ -99,6 +99,61 @@ p.lead{color:var(--ink-soft); font-size:.98rem; line-height:1.65; margin-bottom:
 .pet-feed-btn:active{transform:translateY(2px); box-shadow:none;}
 .pet-feed-btn:disabled{opacity:.45; cursor:not-allowed;}
 
+/* ---------- pet level badge ---------- */
+.pet-level-row{display:flex; align-items:center; gap:8px; margin-bottom:10px;}
+.pet-level-badge{display:inline-flex; align-items:center; gap:6px; background:#fff; padding:5px 12px; border-radius:999px; font-size:.78rem; font-weight:700; box-shadow:var(--shadow-pop-sm); color:var(--ink); white-space:nowrap;}
+.pet-level-track{flex:1; height:8px; background:var(--butter); border-radius:999px; overflow:hidden;}
+.pet-level-track > div{height:100%; width:0%; background:linear-gradient(90deg,var(--sky),var(--leaf)); border-radius:999px; transition:width .4s ease;}
+.pet-level-next{font-size:.7rem; color:var(--ink-soft); font-weight:600; white-space:nowrap;}
+
+/* ---------- pet room theme swatches ---------- */
+.pet-theme-row{display:flex; align-items:center; gap:8px; margin:10px 0;}
+.pet-theme-label{font-size:.78rem; font-weight:700; color:var(--ink-soft);}
+.pet-swatch{width:26px; height:26px; border-radius:50%; border:3px solid transparent; cursor:pointer; position:relative; box-shadow:var(--shadow-pop-sm); transition:.15s; flex-shrink:0;}
+.pet-swatch.active{border-color:var(--ink); transform:scale(1.14);}
+.pet-swatch.locked{cursor:not-allowed; opacity:.5;}
+.pet-swatch.locked::after{content:'🔒'; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:.62rem;}
+.pet-swatch[data-theme="default"]{background:linear-gradient(135deg,var(--leaf),var(--leaf-deep));}
+.pet-swatch[data-theme="sunset"]{background:linear-gradient(135deg,#FF8FC2,#F5468C);}
+.pet-swatch[data-theme="ocean"]{background:linear-gradient(135deg,#3FC6C1,#1F7A76);}
+.pet-swatch[data-theme="royal"]{background:linear-gradient(135deg,#B98CE8,#6C3FB8);}
+
+body[data-pet-theme="sunset"] .hero-hill{background:linear-gradient(180deg,#FF8FC2,#F5468C);}
+body[data-pet-theme="ocean"] .hero-hill{background:linear-gradient(180deg,#3FC6C1,#1F7A76);}
+body[data-pet-theme="royal"] .hero-hill{background:linear-gradient(180deg,#B98CE8,#6C3FB8);}
+
+/* ---------- pet challenge / leaderboard action buttons ---------- */
+.pet-actions-row{display:flex; gap:10px; margin-top:10px;}
+.btn-ghost-sm{
+  appearance:none; cursor:pointer; font-family:'Sarabun',sans-serif; font-weight:700; border:none;
+  border-radius:999px; padding:9px 14px; font-size:.78rem; background:#fff; color:var(--ink); flex:1;
+  box-shadow:var(--shadow-pop-sm); transition:transform .12s ease;
+}
+.btn-ghost-sm:active{transform:translateY(2px); box-shadow:none;}
+
+/* ---------- pet mini leaderboard ---------- */
+.pet-lb-list{list-style:none; margin-top:8px; padding:0; display:flex; flex-direction:column; gap:6px;}
+.pet-lb-list li{display:flex; align-items:center; gap:8px; background:#fff; border-radius:12px; padding:7px 10px; font-size:.8rem; font-weight:600; box-shadow:var(--shadow-pop-sm);}
+.pet-lb-list .nm{flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+.pet-lb-list .st{color:var(--ink-soft); font-weight:700; white-space:nowrap;}
+
+/* ---------- pet modal overlay (level-up + Cat's Challenge) ---------- */
+.pet-modal-overlay{position:fixed; inset:0; background:rgba(42,33,24,.55); display:flex; align-items:center; justify-content:center; z-index:60; padding:20px;}
+.pet-modal-overlay.hidden{display:none !important;}
+.pet-modal{background:#fff; border-radius:24px; padding:26px 24px; max-width:380px; width:100%; text-align:center; box-shadow:var(--shadow-pop); animation:popIn .35s cubic-bezier(.34,1.56,.64,1) both;}
+.pet-modal img.pm-icon{height:84px; width:auto; margin-bottom:10px; filter:drop-shadow(0 8px 10px rgba(42,33,24,.25));}
+.pet-modal h2{margin-bottom:6px;}
+.pet-modal p{color:var(--ink-soft); font-size:.9rem; line-height:1.5; margin-bottom:16px; font-weight:500;}
+.pet-modal .opt-grid{margin-bottom:14px;}
+
+/* ---------- feed toss animation ---------- */
+.pet-toss-fish{position:absolute; font-size:1.6rem; pointer-events:none; z-index:5; animation:tossFish .7s ease-in forwards;}
+@keyframes tossFish{
+  0%{transform:translate(0,0) rotate(0deg) scale(1); opacity:1;}
+  60%{transform:translate(var(--tx,0px),calc(var(--ty,0px) - 40px)) rotate(200deg) scale(1.15); opacity:1;}
+  100%{transform:translate(var(--tx,0px),var(--ty,0px)) rotate(340deg) scale(.4); opacity:0;}
+}
+
 /* ---------- form ---------- */
 .field{margin-bottom:16px;}
 .field label{display:block; font-size:.88rem; font-weight:600; margin-bottom:6px; color:var(--ink);}
@@ -252,6 +307,26 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
 <body>
 <canvas id="confetti-canvas"></canvas>
 <iframe name="ww-sink" style="display:none" title="data sink"></iframe>
+
+<div class="pet-modal-overlay hidden" id="pet-levelup-overlay">
+  <div class="pet-modal">
+    <img class="pm-icon" src="cat_14_certificate.png" alt="">
+    <h2 id="pet-levelup-title">Level Up!</h2>
+    <p id="pet-levelup-text"></p>
+    <button class="btn btn-primary" id="btn-levelup-close">Yay! 🎉</button>
+  </div>
+</div>
+
+<div class="pet-modal-overlay hidden" id="pet-challenge-overlay">
+  <div class="pet-modal">
+    <img class="pm-icon" src="cat_08_thinking.png" alt="">
+    <h2>Cat's Challenge</h2>
+    <p id="pet-challenge-word">What does this word mean?</p>
+    <div class="opt-grid" id="pet-challenge-options"></div>
+    <p class="hidden" id="pet-challenge-feedback" style="font-weight:700;"></p>
+    <button class="btn btn-ghost hidden" id="btn-challenge-close">Close</button>
+  </div>
+</div>
 <div class="sky-decor" aria-hidden="true"><div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div></div>
 <div id="app">
 
@@ -315,8 +390,29 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
           <div class="pet-stat">🔥 <span id="pet-streak">0</span> day streak</div>
         </div>
       </div>
+
+      <div class="pet-level-row">
+        <span class="pet-level-badge" id="pet-level-badge">🐾 New Friend</span>
+        <div class="pet-level-track"><div id="pet-level-fill"></div></div>
+        <span class="pet-level-next" id="pet-level-next"></span>
+      </div>
+
       <p class="pet-status" id="pet-status-text">Loading your cat's mood...</p>
       <button class="pet-feed-btn" id="btn-feed-cat" disabled>🍖 Feed your cat</button>
+
+      <div class="pet-theme-row">
+        <span class="pet-theme-label">Room:</span>
+        <div class="pet-swatch" data-theme="default" title="Meadow (default)"></div>
+        <div class="pet-swatch" data-theme="sunset" title="Sunset room — unlock at 100 lifetime fish"></div>
+        <div class="pet-swatch" data-theme="ocean" title="Ocean room — unlock at 250 lifetime fish"></div>
+        <div class="pet-swatch" data-theme="royal" title="Royal room — unlock at 500 lifetime fish"></div>
+      </div>
+
+      <div class="pet-actions-row">
+        <button class="btn-ghost-sm" id="btn-pet-challenge">🎯 Cat's Challenge (+5 🐟)</button>
+        <button class="btn-ghost-sm" id="btn-pet-leaderboard">🏆 Cat Care Ranking</button>
+      </div>
+      <ul class="pet-lb-list hidden" id="pet-lb-list"></ul>
     </div>
 
     <div class="badge"><img class="ic-img" src="cat_07_cheer.png" alt=""> Choose a Game Mode</div>
@@ -1192,7 +1288,7 @@ function postToSheet(payload){
    ความหิวคำนวณจากเวลาจริงที่ผ่านไปตั้งแต่ป้อนครั้งล่าสุด (lastFedAt) ฝั่ง client ล้วนๆ
    ไม่ต้องมี cron ฝั่งเซิร์ฟเวอร์ — แค่เทียบเวลาทุกครั้งที่เปิดหน้าเมนู
 ===================================================================== */
-let petState = { fish:0, lastFedAt:'', streak:0, lastFeedDate:'', feedCost:8 };
+let petState = { fish:0, lastFedAt:'', streak:0, lastFeedDate:'', feedCost:8, totalFishEarned:0, theme:'default' };
 
 function hoursSinceFed(){
   if(!petState.lastFedAt) return Infinity;
@@ -1240,8 +1336,8 @@ function loadPetState(attempt){
   window[cbName] = (data)=>{
     done = true; cleanup();
     if(data && data.status === 'ok'){
-      petState = { fish:data.fish||0, lastFedAt:data.lastFedAt||'', streak:data.streak||0, lastFeedDate:data.lastFeedDate||'', feedCost:data.feedCost||8 };
-      renderPetWidget();
+      petState = { fish:data.fish||0, lastFedAt:data.lastFedAt||'', streak:data.streak||0, lastFeedDate:data.lastFeedDate||'', feedCost:data.feedCost||8, totalFishEarned:data.totalFishEarned||0, theme:data.theme||'default' };
+      renderPetWidget(); renderPetLevel(); renderPetTheme();
     }
   };
   const tag = document.createElement('script');
@@ -1251,8 +1347,29 @@ function loadPetState(attempt){
   document.body.appendChild(tag);
   setTimeout(retryOrGiveUp, 4500);
 }
+function tossFishAnimation(){
+  const hero = document.querySelector('#screen-menu .hero-art');
+  const btn = $('btn-feed-cat');
+  if(!hero || !btn) return;
+  const heroRect = hero.getBoundingClientRect();
+  const btnRect = btn.getBoundingClientRect();
+  const fish = document.createElement('span');
+  fish.className = 'pet-toss-fish';
+  fish.textContent = '🐟';
+  const startX = btnRect.left + btnRect.width/2 - heroRect.left;
+  const startY = btnRect.top + btnRect.height/2 - heroRect.top;
+  const endX = heroRect.width/2;
+  const endY = heroRect.height/2;
+  fish.style.left = startX + 'px';
+  fish.style.top = startY + 'px';
+  fish.style.setProperty('--tx', (endX - startX) + 'px');
+  fish.style.setProperty('--ty', (endY - startY) + 'px');
+  hero.appendChild(fish);
+  setTimeout(()=> fish.remove(), 750);
+}
 function feedCat(){
   if(!player || petState.fish < petState.feedCost) return;
+  tossFishAnimation();
   const btn = $('btn-feed-cat');
   btn.disabled = true;
   btn.textContent = '🍖 Feeding...';
@@ -1261,8 +1378,8 @@ function feedCat(){
   window[cbName] = (data)=>{
     cleanup();
     if(data && data.status === 'ok'){
-      petState = { fish:data.fish||0, lastFedAt:data.lastFedAt||'', streak:data.streak||0, lastFeedDate:data.lastFeedDate||'', feedCost:data.feedCost||8 };
-      renderPetWidget();
+      petState = { fish:data.fish||0, lastFedAt:data.lastFedAt||'', streak:data.streak||0, lastFeedDate:data.lastFeedDate||'', feedCost:data.feedCost||8, totalFishEarned:data.totalFishEarned||0, theme:data.theme||'default' };
+      renderPetWidget(); renderPetLevel(); renderPetTheme();
     } else {
       alert(data && data.message ? data.message : 'Could not feed the cat, please try again.');
       renderPetWidget();
@@ -1276,6 +1393,195 @@ function feedCat(){
   setTimeout(()=>{ if(window[cbName]){ cleanup(); renderPetWidget(); } }, 9000);
 }
 $('btn-feed-cat').addEventListener('click', feedCat);
+
+/* =====================================================================
+   PET TIER 2/3 — ระดับ (Level), ธีมห้อง, Cat's Challenge, กระดานเลี้ยงแมว
+===================================================================== */
+const PET_LEVELS = [
+  { min:0,   title:'New Friend',           emoji:'🐾' },
+  { min:50,  title:'Regular Visitor',      emoji:'🌟' },
+  { min:150, title:'Best Buddy',           emoji:'💛' },
+  { min:300, title:'Cat Whisperer',        emoji:'👑' },
+  { min:600, title:'Legendary Cat Parent', emoji:'🏆' }
+];
+const PET_THEME_COSTS = { default:0, sunset:100, ocean:250, royal:500 };
+let lastKnownLevelIdx = null;
+
+function petLevelInfo(total){
+  let idx = 0;
+  for(let i=0;i<PET_LEVELS.length;i++){ if(total >= PET_LEVELS[i].min) idx = i; }
+  return { idx, cur:PET_LEVELS[idx], next:PET_LEVELS[idx+1] || null };
+}
+function renderPetLevel(){
+  const total = petState.totalFishEarned || 0;
+  const { idx, cur, next } = petLevelInfo(total);
+  $('pet-level-badge').textContent = `${cur.emoji} ${cur.title}`;
+  if(next){
+    const span = next.min - cur.min;
+    const pct = Math.min(100, Math.max(0, Math.round(((total - cur.min) / span) * 100)));
+    $('pet-level-fill').style.width = pct + '%';
+    $('pet-level-next').textContent = `${next.min - total} 🐟 to ${next.title}`;
+  } else {
+    $('pet-level-fill').style.width = '100%';
+    $('pet-level-next').textContent = 'Max level!';
+  }
+  if(lastKnownLevelIdx !== null && idx > lastKnownLevelIdx) showLevelUp(cur);
+  lastKnownLevelIdx = idx;
+}
+function showLevelUp(levelInfo){
+  $('pet-levelup-title').textContent = `Level Up! ${levelInfo.emoji} ${levelInfo.title}`;
+  $('pet-levelup-text').textContent = `Your cat is proud of you! Keep answering questions and feeding it to reach the next level.`;
+  $('pet-levelup-overlay').classList.remove('hidden');
+  launchConfetti();
+}
+$('btn-levelup-close').addEventListener('click', ()=> $('pet-levelup-overlay').classList.add('hidden'));
+
+function renderPetTheme(){
+  const total = petState.totalFishEarned || 0;
+  const active = petState.theme || 'default';
+  document.body.setAttribute('data-pet-theme', active);
+  document.querySelectorAll('.pet-swatch').forEach(el=>{
+    const theme = el.dataset.theme;
+    const cost = PET_THEME_COSTS[theme] || 0;
+    el.classList.toggle('active', theme === active);
+    el.classList.toggle('locked', total < cost);
+  });
+}
+document.querySelectorAll('.pet-swatch').forEach(el=>{
+  el.addEventListener('click', ()=> setPetTheme(el.dataset.theme));
+});
+function setPetTheme(theme){
+  if(!player) return;
+  const cost = PET_THEME_COSTS[theme] || 0;
+  if((petState.totalFishEarned||0) < cost){
+    alert(`Unlock this room at ${cost} 🐟 lifetime fish — keep playing to earn more!`);
+    return;
+  }
+  const cbName = 'wwThemeCb_' + Date.now();
+  const cleanup = ()=>{ delete window[cbName]; if(tag.parentNode) tag.remove(); };
+  window[cbName] = (data)=>{
+    cleanup();
+    if(data && data.status === 'ok'){
+      petState.theme = data.theme;
+      renderPetTheme();
+    } else {
+      alert(data && data.message ? data.message : 'Could not change room theme.');
+    }
+  };
+  const tag = document.createElement('script');
+  const sep = SCRIPT_URL.includes('?') ? '&' : '?';
+  tag.src = `${SCRIPT_URL}${sep}action=pet_set_theme&studentId=${encodeURIComponent(player.sid)}&theme=${encodeURIComponent(theme)}&callback=${cbName}&_t=${Date.now()}`;
+  tag.onerror = ()=>{ cleanup(); alert('Connection failed, please try again.'); };
+  document.body.appendChild(tag);
+  setTimeout(()=>{ if(window[cbName]) cleanup(); }, 9000);
+}
+
+/* ---- Cat's Challenge: personalized weak-word bonus quiz ---- */
+function openChallenge(){
+  if(!player) return;
+  $('pet-challenge-word').textContent = "Fetching a question from your cat...";
+  $('pet-challenge-options').innerHTML = '';
+  $('pet-challenge-feedback').className = 'hidden';
+  $('btn-challenge-close').classList.add('hidden');
+  $('pet-challenge-overlay').classList.remove('hidden');
+  const cbName = 'wwChalCb_' + Date.now();
+  const cleanup = ()=>{ delete window[cbName]; if(tag.parentNode) tag.remove(); };
+  window[cbName] = (data)=>{
+    cleanup();
+    if(data && data.status === 'ok' && data.word){
+      renderChallengeQuestion(data.word);
+    } else {
+      $('pet-challenge-word').textContent = data && data.message ? data.message : 'No challenge available right now — play a round first!';
+      $('btn-challenge-close').classList.remove('hidden');
+    }
+  };
+  const tag = document.createElement('script');
+  const sep = SCRIPT_URL.includes('?') ? '&' : '?';
+  tag.src = `${SCRIPT_URL}${sep}action=pet_challenge_word&studentId=${encodeURIComponent(player.sid)}&callback=${cbName}&_t=${Date.now()}`;
+  tag.onerror = ()=>{ cleanup(); $('pet-challenge-word').textContent = 'Connection failed, please try again.'; $('btn-challenge-close').classList.remove('hidden'); };
+  document.body.appendChild(tag);
+  setTimeout(()=>{ if(window[cbName]){ cleanup(); $('pet-challenge-word').textContent='Connection timed out, please try again.'; $('btn-challenge-close').classList.remove('hidden'); } }, 9000);
+}
+function renderChallengeQuestion(word){
+  const match = meaningPool.find(x=> x.en.toLowerCase() === word.toLowerCase());
+  if(!match){
+    $('pet-challenge-word').textContent = `Could not load the meaning for "${word}" — try again later.`;
+    $('btn-challenge-close').classList.remove('hidden');
+    return;
+  }
+  $('pet-challenge-word').textContent = `What does "${match.en}" mean?`;
+  let distractors = meaningPool.filter(x=>x.en!==match.en && x.cat===match.cat);
+  if(distractors.length<3) distractors = meaningPool.filter(x=>x.en!==match.en);
+  const opts = shuffle([match, ...sample(distractors,3)]);
+  const box = $('pet-challenge-options'); box.innerHTML='';
+  opts.forEach(o=>{
+    const b = document.createElement('button');
+    b.className='opt'; b.textContent=o.th;
+    b.addEventListener('click', ()=> answerChallenge(b, o.th===match.th));
+    box.appendChild(b);
+  });
+}
+function answerChallenge(btn, isCorrect){
+  document.querySelectorAll('#pet-challenge-options .opt').forEach(o=>o.disabled=true);
+  btn.classList.add(isCorrect ? 'correct' : 'wrong');
+  const fb = $('pet-challenge-feedback');
+  fb.className = '';
+  fb.textContent = isCorrect ? '✅ Correct! +5 🐟 for your cat' : '❌ Not quite — no bonus fish this time, try again later!';
+  $('btn-challenge-close').classList.remove('hidden');
+  if(!player) return;
+  const cbName = 'wwChalRewCb_' + Date.now();
+  const cleanup = ()=>{ delete window[cbName]; if(tag.parentNode) tag.remove(); };
+  window[cbName] = (data)=>{
+    cleanup();
+    if(data && data.status === 'ok'){
+      if(typeof data.fish === 'number') petState.fish = data.fish;
+      if(typeof data.totalFishEarned === 'number') petState.totalFishEarned = data.totalFishEarned;
+      renderPetWidget(); renderPetLevel(); renderPetTheme();
+      if(isCorrect) launchConfetti();
+    }
+  };
+  const tag = document.createElement('script');
+  const sep = SCRIPT_URL.includes('?') ? '&' : '?';
+  tag.src = `${SCRIPT_URL}${sep}action=pet_challenge_reward&studentId=${encodeURIComponent(player.sid)}&correct=${isCorrect}&name=${encodeURIComponent(player.name||'')}&callback=${cbName}&_t=${Date.now()}`;
+  tag.onerror = cleanup;
+  document.body.appendChild(tag);
+  setTimeout(()=>{ if(window[cbName]) cleanup(); }, 9000);
+}
+$('btn-pet-challenge').addEventListener('click', openChallenge);
+$('btn-challenge-close').addEventListener('click', ()=> $('pet-challenge-overlay').classList.add('hidden'));
+
+/* ---- Cat care leaderboard: ranked by feeding streak ---- */
+function loadPetLeaderboard(){
+  const list = $('pet-lb-list');
+  if(!list.classList.contains('hidden')){ list.classList.add('hidden'); return; }
+  list.innerHTML = '<li>Loading...</li>';
+  list.classList.remove('hidden');
+  const cbName = 'wwPetLbCb_' + Date.now();
+  const cleanup = ()=>{ delete window[cbName]; if(tag.parentNode) tag.remove(); };
+  window[cbName] = (data)=>{
+    cleanup();
+    if(data && data.status === 'ok' && data.leaderboard){
+      renderPetLeaderboard(data.leaderboard);
+    } else {
+      list.innerHTML = '<li>Could not load ranking right now.</li>';
+    }
+  };
+  const tag = document.createElement('script');
+  const sep = SCRIPT_URL.includes('?') ? '&' : '?';
+  tag.src = `${SCRIPT_URL}${sep}action=pet_leaderboard&callback=${cbName}&_t=${Date.now()}`;
+  tag.onerror = ()=>{ cleanup(); list.innerHTML = '<li>Connection failed.</li>'; };
+  document.body.appendChild(tag);
+  setTimeout(()=>{ if(window[cbName]){ cleanup(); list.innerHTML = '<li>Connection timed out.</li>'; } }, 9000);
+}
+function renderPetLeaderboard(rows){
+  const list = $('pet-lb-list');
+  if(!rows.length){ list.innerHTML = '<li>No one has fed their cat yet — be the first! 🐟</li>'; return; }
+  const medals = ['🥇','🥈','🥉'];
+  list.innerHTML = rows.map((r,i)=>
+    `<li><span class="rank">${medals[i]||('#'+(i+1))}</span><span class="nm">${r.name}</span><span class="st">🔥 ${r.streak}d</span></li>`
+  ).join('');
+}
+$('btn-pet-leaderboard').addEventListener('click', loadPetLeaderboard);
 
 /* =====================================================================
    CONFETTI
