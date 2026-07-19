@@ -65,6 +65,9 @@ h1{font-family:'Mali',cursive; font-size:2rem; font-weight:800; line-height:1.3;
 h2{font-family:'Mali',cursive; font-size:1.5rem; font-weight:700; margin-bottom:10px; color:var(--ink);}
 p.lead{color:var(--ink-soft); font-size:.98rem; line-height:1.65; margin-bottom:18px;}
 .badge{display:inline-flex; align-items:center; gap:6px; background:linear-gradient(135deg,#FFE3A3,var(--yolk)); padding:6px 16px; border-radius:999px; font-size:.8rem; font-weight:700; margin-bottom:14px; color:#7A4E00; box-shadow:var(--shadow-pop-sm);}
+.ic-img{height:22px; width:auto; vertical-align:middle; display:inline-block;}
+.btn .ic-img{height:24px;}
+.hud .stat .ic-img{height:20px;}
 
 /* ---------- hero mascot art ---------- */
 .hero-art{position:relative; display:flex; justify-content:center; align-items:flex-end; margin:-4px 0 16px; height:110px;}
@@ -116,7 +119,8 @@ p.lead{color:var(--ink-soft); font-size:.98rem; line-height:1.65; margin-bottom:
 }
 .mode-card:hover{transform:translateY(-4px); box-shadow:var(--shadow-pop); background:#fff;}
 .mode-card:active{transform:translateY(0); box-shadow:var(--shadow-pop-sm);}
-.mode-card .ic{font-size:2.1rem; margin-bottom:6px; display:block;}
+.mode-card .ic{margin-bottom:6px; display:block;}
+.mode-card .ic img{height:44px; width:auto;}
 .mode-card h3{font-family:'Mali',cursive; font-size:1.12rem; margin-bottom:4px; font-weight:700;}
 .mode-card span{font-size:.8rem; color:var(--ink-soft); line-height:1.5;}
 .mode-card.all{grid-column:1/-1; background:linear-gradient(135deg, #FFE29A, var(--pink));}
@@ -241,7 +245,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
 
   <!-- ===================== SCREEN: LOADING ===================== -->
   <section id="screen-loading" class="card hidden">
-    <div class="badge">🍯 Getting things ready</div>
+    <div class="badge"><img class="ic-img" src="capybara_07.png" alt=""> Getting things ready</div>
     <h1>Loading vocabulary...</h1>
     <p class="lead">Just a moment, fetching the latest words from Google Sheets 🦫✨</p>
   </section>
@@ -253,7 +257,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
       <div class="hero-ring"></div>
       <img class="hero-bee" src="capybara_01.png" alt="">
     </div>
-    <div class="badge">📝 Register before you play</div>
+    <div class="badge"><img class="ic-img" src="capybara_02.png" alt=""> Register before you play</div>
     <h1>Welcome to Word Wizard! 🍯✨</h1>
     <p class="lead">Test 60+ Advanced Vocabulary words across 6 adorable mini-games — fill in your details before you start, and your score will be saved to Google Sheets automatically.</p>
     <div class="tip-bubble">
@@ -277,7 +281,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
       <div class="err">Please enter a valid email address</div>
     </div>
 
-    <button class="btn btn-primary" id="btn-register">🚀 Start Playing</button>
+    <button class="btn btn-primary" id="btn-register"><img class="ic-img" src="capybara_17.png" alt=""> Start Playing</button>
   </section>
 
   <!-- ===================== SCREEN: MENU ===================== -->
@@ -286,55 +290,55 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
       <div class="hero-hill" style="width:150px; height:60px;"></div>
       <img class="hero-bee" style="height:76px;" src="capybara_12.png" alt="">
     </div>
-    <div class="badge">🎮 Choose a Game Mode</div>
+    <div class="badge"><img class="ic-img" src="capybara_12.png" alt=""> Choose a Game Mode</div>
     <h1 id="menu-greet">Ready to play?</h1>
     <p class="lead">Each mode randomly picks 10 questions from the full word bank. Play any single mode, or clear them all to climb the leaderboard 🏆</p>
 
     <div class="mode-grid">
       <div class="mode-card all" data-mode="all">
-        <span class="ic">🌟</span>
+        <span class="ic"><img src="capybara_19.png" alt=""></span>
         <h3>Play All (Recommended)</h3>
         <span>All modes back-to-back — total score counts for the leaderboard</span>
       </div>
       <div class="mode-card" data-mode="mcq">
-        <span class="ic">🎯</span>
+        <span class="ic"><img src="capybara_03.png" alt=""></span>
         <h3>Guess the Meaning</h3>
         <span>Choose the correct Thai meaning</span>
       </div>
       <div class="mode-card" data-mode="fill">
-        <span class="ic">✍️</span>
+        <span class="ic"><img src="capybara_04.png" alt=""></span>
         <h3>Fill in the Blank</h3>
         <span>Pick the word form (adj/adv/n/v) that fits the sentence</span>
       </div>
       <div class="mode-card" data-mode="tf">
-        <span class="ic">✅</span>
+        <span class="ic"><img src="capybara_09.png" alt=""></span>
         <h3>True or False</h3>
         <span>See a word-meaning pair and decide if it's a match</span>
       </div>
       <div class="mode-card" data-mode="scramble">
-        <span class="ic">🔤</span>
+        <span class="ic"><img src="capybara_15.png" alt=""></span>
         <h3>Word Scramble</h3>
         <span>Read the meaning hint, then unscramble the letters</span>
       </div>
       <div class="mode-card" data-mode="sort">
-        <span class="ic">🗂️</span>
+        <span class="ic"><img src="capybara_08.png" alt=""></span>
         <h3>Sort by Category</h3>
         <span>Decide which trait category this word belongs to</span>
       </div>
       <div class="mode-card" data-mode="match">
-        <span class="ic">🧩</span>
+        <span class="ic"><img src="capybara_20.png" alt=""></span>
         <h3>Memory Match</h3>
         <span>Match English words with their meanings against the clock</span>
       </div>
     </div>
 
-    <button class="btn btn-ghost" id="btn-leaderboard">🏆 View Leaderboard</button>
+    <button class="btn btn-ghost" id="btn-leaderboard"><img class="ic-img" src="capybara_01.png" alt=""> View Leaderboard</button>
   </section>
 
   <!-- ===================== SCREEN: MCQ ===================== -->
   <section id="screen-mcq" class="card hidden">
     <div class="hud">
-      <div class="stat">🎯 Guess the Meaning</div>
+      <div class="stat"><img class="ic-img" src="capybara_03.png" alt=""> Guess the Meaning</div>
       <div class="stat" id="mcq-count">1/10</div>
       <div class="stat">🔥 <span id="mcq-streak">0</span></div>
     </div>
@@ -348,7 +352,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
   <!-- ===================== SCREEN: FILL ===================== -->
   <section id="screen-fill" class="card hidden">
     <div class="hud">
-      <div class="stat">✍️ Fill in the Blank</div>
+      <div class="stat"><img class="ic-img" src="capybara_04.png" alt=""> Fill in the Blank</div>
       <div class="stat" id="fill-count">1/10</div>
       <div class="stat">🔥 <span id="fill-streak">0</span></div>
     </div>
@@ -362,7 +366,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
   <!-- ===================== SCREEN: TRUE/FALSE ===================== -->
   <section id="screen-tf" class="card hidden">
     <div class="hud">
-      <div class="stat">✅ True or False</div>
+      <div class="stat"><img class="ic-img" src="capybara_09.png" alt=""> True or False</div>
       <div class="stat" id="tf-count">1/10</div>
       <div class="stat">🔥 <span id="tf-streak">0</span></div>
     </div>
@@ -383,7 +387,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
   <!-- ===================== SCREEN: SCRAMBLE ===================== -->
   <section id="screen-scramble" class="card hidden">
     <div class="hud">
-      <div class="stat">🔤 Word Scramble</div>
+      <div class="stat"><img class="ic-img" src="capybara_15.png" alt=""> Word Scramble</div>
       <div class="stat" id="scramble-count">1/10</div>
       <div class="stat">🔥 <span id="scramble-streak">0</span></div>
     </div>
@@ -398,7 +402,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
   <!-- ===================== SCREEN: SORT ===================== -->
   <section id="screen-sort" class="card hidden">
     <div class="hud">
-      <div class="stat">🗂️ Sort by Category</div>
+      <div class="stat"><img class="ic-img" src="capybara_08.png" alt=""> Sort by Category</div>
       <div class="stat" id="sort-count">1/10</div>
       <div class="stat">🔥 <span id="sort-streak">0</span></div>
     </div>
@@ -412,7 +416,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
   <!-- ===================== SCREEN: MATCH ===================== -->
   <section id="screen-match" class="card hidden">
     <div class="hud">
-      <div class="stat">🧩 Memory Match</div>
+      <div class="stat"><img class="ic-img" src="capybara_20.png" alt=""> Memory Match</div>
       <div class="stat">✅ <span id="match-found">0</span>/<span id="match-total">8</span></div>
       <div class="stat">⏱️ <span id="match-timer">0</span>s</div>
     </div>
@@ -422,7 +426,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
 
   <!-- ===================== SCREEN: RESULT ===================== -->
   <section id="screen-result" class="card hidden">
-    <div class="badge" id="result-badge">🏁 Results</div>
+    <div class="badge" id="result-badge"><img class="ic-img" src="capybara_18.png" alt=""> Results</div>
     <h1 id="result-title">Great job!</h1>
     <div class="stars" id="result-stars">⭐⭐⭐</div>
 
@@ -446,14 +450,14 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
     <p class="lead" id="result-sub" style="margin-bottom:8px;">Saving your score...</p>
 
     <div id="leaderboard-box" class="hidden">
-      <h2>🏆 Leaderboard (Top 10)</h2>
+      <h2><img class="ic-img" src="capybara_01.png" alt=""> Leaderboard (Top 10)</h2>
       <table class="lb-table"><thead><tr><th>#</th><th>Name</th><th>Score</th><th>Time</th></tr></thead>
       <tbody id="lb-body"></tbody></table>
     </div>
 
     <div class="btn-row" style="margin-top:20px;">
-      <button class="btn btn-ghost" id="btn-again">🔁 Play Again</button>
-      <button class="btn btn-primary" id="btn-menu">🏠 Back to Menu</button>
+      <button class="btn btn-ghost" id="btn-again"><img class="ic-img" src="capybara_11.png" alt=""> Play Again</button>
+      <button class="btn btn-primary" id="btn-menu"><img class="ic-img" src="capybara_16.png" alt=""> Back to Menu</button>
     </div>
   </section>
 
