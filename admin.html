@@ -446,7 +446,7 @@ table.datatable input[type=checkbox]{width:auto; padding:0; cursor:pointer;}
 <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwZIUsjr1-9mUPHnLYYdASwYJvLvu2FMnHEFFixP9tap0Tyhadl-FzUqubtXOVKVXeleQ/exec";
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLHoJfl_apCjSRKp68-50FxawW-w0oB9BG0dfKMaFGQB4y3YmgtEgc91eC1lm8cIDk_g/exec";
 const CHUNK_SIZE = 8;
 const MODE_LABEL_TH = {mcq:'ทายความหมาย', fill:'เติมคำ', tf:'ถูก-ผิด', scramble:'เรียงคำ', sort:'จัดหมวด', match:'จับคู่', all:'เล่นทั้งหมด'};
 const CAT_LABEL = {A:'A คุณธรรม', B:'B ความฉลาด', C:'C เข้มแข็ง', D:'D สังคม', E:'E ด้านลบ', WF:'WF ทั่วไป'};
@@ -460,8 +460,13 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&
 /* =====================================================================
    JSONP — ทุก action (อ่านและเขียน) ผ่าน GET + JSONP เพราะ fetch() ข้าม
    origin ไปยัง Apps Script web app อ่าน response ไม่ได้จริง
+
+   มี retry อัตโนมัติ (สูงสุด 3 ครั้ง) เพราะ Apps Script's redirect hop ไปยัง
+   script.googleusercontent.com บางครั้ง 403/โหลดไม่สำเร็จภายใต้ load ชั่วคราว —
+   ลองใหม่พร้อม callback name ใหม่มักจะสำเร็จในครั้งถัดไปแทบทุกครั้ง
+   (ใช้แนวคิดเดียวกับ loadLeaderboard/loadVocabAndStart ในหน้าเกม)
 ===================================================================== */
-function jsonp(params){
+function jsonpOnce_(params){
   return new Promise((resolve, reject)=>{
     const cbName = 'wwAdminCb_' + Date.now() + '_' + Math.floor(Math.random()*100000);
     let done = false;
@@ -474,6 +479,16 @@ function jsonp(params){
     document.body.appendChild(tag);
     setTimeout(()=>{ if(!done){ cleanup(); reject(new Error('หมดเวลารอการตอบกลับ')); } }, 9000);
   });
+}
+async function jsonp(params, attempt){
+  attempt = attempt || 1;
+  try{
+    return await jsonpOnce_(params);
+  }catch(err){
+    if(attempt >= 3) throw err;
+    await new Promise(r => setTimeout(r, 700 * attempt));
+    return jsonp(params, attempt + 1);
+  }
 }
 function withKey(extra){ return Object.assign({ adminKey }, extra); }
 function fmtDate(v){
