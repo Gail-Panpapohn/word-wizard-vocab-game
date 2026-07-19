@@ -84,6 +84,21 @@ p.lead{color:var(--ink-soft); font-size:.98rem; line-height:1.65; margin-bottom:
 .tip-bubble .tb-text{font-size:.85rem; color:var(--ink-soft); line-height:1.55; font-weight:500;}
 .tip-bubble .tb-text b{color:var(--ink); font-weight:700;}
 
+/* ---------- pet care widget ---------- */
+.pet-widget{background:var(--cream); border:2px solid rgba(42,33,24,.08); border-radius:20px; padding:14px 16px; margin-bottom:16px;}
+.pet-widget .pet-top{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px; flex-wrap:wrap;}
+.pet-widget .pet-stats{display:flex; gap:10px; flex-wrap:wrap;}
+.pet-stat{display:flex; align-items:center; gap:5px; background:#fff; padding:5px 12px; border-radius:999px; font-size:.85rem; font-weight:700; box-shadow:var(--shadow-pop-sm);}
+.pet-status{font-size:.82rem; color:var(--ink-soft); font-weight:600; margin-bottom:10px;}
+.pet-feed-btn{
+  appearance:none; cursor:pointer; font-family:'Sarabun',sans-serif; font-weight:700; border:none;
+  border-radius:999px; padding:11px 18px; font-size:.92rem; width:100%;
+  background:linear-gradient(135deg,var(--honey),var(--berry)); color:#fff; box-shadow:var(--shadow-pop-sm);
+  transition:transform .12s ease;
+}
+.pet-feed-btn:active{transform:translateY(2px); box-shadow:none;}
+.pet-feed-btn:disabled{opacity:.45; cursor:not-allowed;}
+
 /* ---------- form ---------- */
 .field{margin-bottom:16px;}
 .field label{display:block; font-size:.88rem; font-weight:600; margin-bottom:6px; color:var(--ink);}
@@ -290,11 +305,23 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
   <section id="screen-menu" class="card hidden">
     <div class="hero-art" aria-hidden="true" style="height:88px; margin-bottom:4px;">
       <div class="hero-hill" style="width:150px; height:60px;"></div>
-      <img class="hero-bee" style="height:76px;" src="cat_07_cheer.png" alt="">
+      <img class="hero-bee" id="pet-cat-img" style="height:76px;" src="cat_02_shy.png" alt="Your cat">
     </div>
+
+    <div class="pet-widget">
+      <div class="pet-top">
+        <div class="pet-stats">
+          <div class="pet-stat">🐟 <span id="pet-fish">0</span></div>
+          <div class="pet-stat">🔥 <span id="pet-streak">0</span> day streak</div>
+        </div>
+      </div>
+      <p class="pet-status" id="pet-status-text">Loading your cat's mood...</p>
+      <button class="pet-feed-btn" id="btn-feed-cat" disabled>🍖 Feed your cat</button>
+    </div>
+
     <div class="badge"><img class="ic-img" src="cat_07_cheer.png" alt=""> Choose a Game Mode</div>
     <h1 id="menu-greet">Ready to play?</h1>
-    <p class="lead">Each mode randomly picks 10 questions from the full word bank. Play any single mode, or clear them all to climb the leaderboard 🏆</p>
+    <p class="lead">Each mode randomly picks 10 questions from the full word bank. Play any single mode, or clear them all to climb the leaderboard 🏆 Answer correctly to earn fish for your cat!</p>
 
     <div class="mode-grid">
       <div class="mode-card all" data-mode="all">
@@ -588,6 +615,7 @@ $('btn-register').addEventListener('click', ()=>{
   renderPlayerChip();
   $('menu-greet').textContent = `Ready to go, ${firstName(name)}? 🚀`;
   show('screen-menu');
+  loadPetState();
 });
 
 function firstName(n){ return n.split(' ')[0]; }
@@ -650,6 +678,7 @@ function afterVocabReady(){
     renderPlayerChip();
     $('menu-greet').textContent = `Welcome back, ${firstName(player.name)}! 🎉`;
     show('screen-menu');
+    loadPetState();
   } else {
     show('screen-register');
   }
@@ -673,9 +702,9 @@ document.querySelectorAll('.mode-card').forEach(card=>{
     else if(mode==='match'){ startMatch(10, true); }
   });
 });
-$('btn-menu').addEventListener('click', ()=> show('screen-menu'));
+$('btn-menu').addEventListener('click', ()=>{ show('screen-menu'); loadPetState(); });
 $('btn-again').addEventListener('click', ()=>{
-  if(session.playAll) startPlayAll(); else show('screen-menu');
+  if(session.playAll) startPlayAll(); else { show('screen-menu'); loadPetState(); }
 });
 $('btn-leaderboard').addEventListener('click', showResultLeaderboardOnly);
 
@@ -1157,6 +1186,96 @@ function postToSheet(payload){
     }catch(err){ resolve({status:'error'}); }
   });
 }
+
+/* =====================================================================
+   PET CARE — เลี้ยงแมว: ได้ปลาจากตอบถูก, ป้อนอาหารเพื่อลดความหิว, นับวันเลี้ยงต่อเนื่อง
+   ความหิวคำนวณจากเวลาจริงที่ผ่านไปตั้งแต่ป้อนครั้งล่าสุด (lastFedAt) ฝั่ง client ล้วนๆ
+   ไม่ต้องมี cron ฝั่งเซิร์ฟเวอร์ — แค่เทียบเวลาทุกครั้งที่เปิดหน้าเมนู
+===================================================================== */
+let petState = { fish:0, lastFedAt:'', streak:0, lastFeedDate:'', feedCost:8 };
+
+function hoursSinceFed(){
+  if(!petState.lastFedAt) return Infinity;
+  const d = new Date(petState.lastFedAt);
+  if(isNaN(d)) return Infinity;
+  return (Date.now() - d.getTime()) / 3600000;
+}
+function petMoodImage(hrs){
+  if(hrs === Infinity) return 'cat_02_shy.png';
+  if(hrs < 6) return 'cat_10_heart_hug.png';
+  if(hrs < 16) return 'cat_01_wave.png';
+  if(hrs < 30) return 'cat_11_praying.png';
+  return 'cat_03_sleepy.png';
+}
+function petMoodText(hrs){
+  if(hrs === Infinity) return "Your cat hasn't been fed yet — earn some fish and feed it for the first time!";
+  if(hrs < 6) return 'Full and happy! 😻';
+  if(hrs < 16) return 'Feeling good 🙂';
+  if(hrs < 30) return 'Getting hungry... 🥺 time for a snack';
+  return 'Very hungry! Please feed me 😿';
+}
+function renderPetWidget(){
+  const hrs = hoursSinceFed();
+  const img = $('pet-cat-img');
+  if(img) img.src = petMoodImage(hrs);
+  $('pet-fish').textContent = petState.fish;
+  $('pet-streak').textContent = petState.streak;
+  $('pet-status-text').textContent = petMoodText(hrs);
+  const btn = $('btn-feed-cat');
+  const canFeed = petState.fish >= petState.feedCost;
+  btn.disabled = !canFeed;
+  btn.textContent = canFeed ? `🍖 Feed your cat (${petState.feedCost} 🐟)` : `🍖 Need ${petState.feedCost} 🐟 to feed`;
+}
+function loadPetState(attempt){
+  attempt = attempt || 1;
+  if(SCRIPT_URL.includes('PASTE_') || !player) return;
+  const cbName = 'wwPetCb_' + Date.now() + '_' + attempt;
+  let done = false;
+  const cleanup = ()=>{ delete window[cbName]; if(tag.parentNode) tag.remove(); };
+  const retryOrGiveUp = ()=>{
+    if(done) return;
+    cleanup();
+    if(attempt < 4) setTimeout(()=> loadPetState(attempt+1), 900*attempt);
+  };
+  window[cbName] = (data)=>{
+    done = true; cleanup();
+    if(data && data.status === 'ok'){
+      petState = { fish:data.fish||0, lastFedAt:data.lastFedAt||'', streak:data.streak||0, lastFeedDate:data.lastFeedDate||'', feedCost:data.feedCost||8 };
+      renderPetWidget();
+    }
+  };
+  const tag = document.createElement('script');
+  const sep = SCRIPT_URL.includes('?') ? '&' : '?';
+  tag.src = `${SCRIPT_URL}${sep}action=pet_state&studentId=${encodeURIComponent(player.sid)}&callback=${cbName}&_t=${Date.now()}`;
+  tag.onerror = retryOrGiveUp;
+  document.body.appendChild(tag);
+  setTimeout(retryOrGiveUp, 4500);
+}
+function feedCat(){
+  if(!player || petState.fish < petState.feedCost) return;
+  const btn = $('btn-feed-cat');
+  btn.disabled = true;
+  btn.textContent = '🍖 Feeding...';
+  const cbName = 'wwFeedCb_' + Date.now();
+  const cleanup = ()=>{ delete window[cbName]; if(tag.parentNode) tag.remove(); };
+  window[cbName] = (data)=>{
+    cleanup();
+    if(data && data.status === 'ok'){
+      petState = { fish:data.fish||0, lastFedAt:data.lastFedAt||'', streak:data.streak||0, lastFeedDate:data.lastFeedDate||'', feedCost:data.feedCost||8 };
+      renderPetWidget();
+    } else {
+      alert(data && data.message ? data.message : 'Could not feed the cat, please try again.');
+      renderPetWidget();
+    }
+  };
+  const tag = document.createElement('script');
+  const sep = SCRIPT_URL.includes('?') ? '&' : '?';
+  tag.src = `${SCRIPT_URL}${sep}action=pet_feed&studentId=${encodeURIComponent(player.sid)}&callback=${cbName}&_t=${Date.now()}`;
+  tag.onerror = ()=>{ cleanup(); alert('Connection failed, please try again.'); renderPetWidget(); };
+  document.body.appendChild(tag);
+  setTimeout(()=>{ if(window[cbName]){ cleanup(); renderPetWidget(); } }, 9000);
+}
+$('btn-feed-cat').addEventListener('click', feedCat);
 
 /* =====================================================================
    CONFETTI
