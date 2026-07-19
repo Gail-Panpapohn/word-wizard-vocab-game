@@ -32,9 +32,13 @@ body{
 
 .topbar{display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; flex-wrap:wrap; gap:10px; background:rgba(255,255,255,.92); border:2px solid rgba(42,33,24,.10); border-radius:999px; padding:10px 20px; box-shadow:var(--shadow-pop-sm);}
 .brand{display:flex; align-items:center; gap:10px; font-family:'Sarabun',sans-serif; font-weight:700; font-size:1.4rem;}
-.brand .logo{font-size:1.8rem;}
+.brand .logo{height:32px; width:auto; filter:drop-shadow(0 3px 5px rgba(42,33,24,.25));}
 .topbar-actions{display:flex; gap:8px; flex-wrap:wrap;}
-.link-btn{font-size:.82rem; color:var(--ink); text-decoration:none; background:var(--white); padding:6px 14px; border-radius:999px; box-shadow:var(--shadow-pop-sm); font-weight:600; cursor:pointer; font-family:'Sarabun',sans-serif; border:none;}
+.link-btn{font-size:.82rem; color:var(--ink); text-decoration:none; background:var(--white); padding:6px 14px; border-radius:999px; box-shadow:var(--shadow-pop-sm); font-weight:600; cursor:pointer; font-family:'Sarabun',sans-serif; border:none; display:inline-flex; align-items:center; gap:6px;}
+.ic-img{height:20px; width:auto; vertical-align:middle; display:inline-block;}
+.ic-img-sm{height:16px; width:auto; vertical-align:middle; display:inline-block;}
+.ic-img-hero{height:70px; width:auto; display:block; margin:0 auto 10px; filter:drop-shadow(0 8px 10px rgba(42,33,24,.22));}
+.nav-tab .ic-img, .sub-tab .ic-img{margin-right:2px;}
 
 .card{ background:#fff; border:2px solid rgba(42,33,24,.10); border-radius:var(--radius); padding:24px 22px; box-shadow:var(--shadow-pop); margin-bottom:16px; }
 h1{font-family:'Sarabun',sans-serif; font-size:1.6rem; font-weight:800; margin-bottom:8px;}
@@ -151,15 +155,16 @@ code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85e
 <div id="app">
 
   <div class="topbar">
-    <div class="brand"><span class="logo">🐱</span> Word Wizard — ระบบจัดการแอดมิน</div>
+    <div class="brand"><img class="logo" src="cat_01_wave.png" alt="Cat mascot"> Word Wizard — ระบบจัดการแอดมิน</div>
     <div class="topbar-actions">
-      <a class="link-btn" href="index.html">🐱 กลับไปหน้าเกม</a>
+      <a class="link-btn" href="index.html"><img class="ic-img-sm" src="cat_01_wave.png" alt=""> กลับไปหน้าเกม</a>
       <button class="link-btn hidden" id="btn-logout">🚪 ออกจากระบบ</button>
     </div>
   </div>
 
   <!-- ===================== GATE ===================== -->
   <section id="gate" class="card">
+    <img class="ic-img-hero" src="cat_02_shy.png" alt="">
     <div class="badge">🔐 สำหรับแอดมินเท่านั้น</div>
     <h1>ใส่รหัสผ่านแอดมิน</h1>
     <p class="lead">รหัสผ่านนี้ตั้งไว้ในไฟล์ Code.gs (ตัวแปร <code>ADMIN_KEY</code>) — ถ้ายังไม่เคยตั้ง ให้เปิดไฟล์ดูค่าเริ่มต้น หรือขอจากผู้ที่ตั้งค่าระบบให้</p>
@@ -175,17 +180,17 @@ code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85e
   <div id="main" class="hidden">
 
     <div class="nav-tabs">
-      <button class="nav-tab active" data-nav="overview">📊 ภาพรวม</button>
-      <button class="nav-tab" data-nav="vocab">📚 คลังคำศัพท์</button>
-      <button class="nav-tab" data-nav="regs">📝 ผู้ลงทะเบียน</button>
-      <button class="nav-tab" data-nav="scores">🏆 คะแนน</button>
-      <button class="nav-tab" data-nav="settings">⚙️ ตั้งค่า</button>
+      <button class="nav-tab active" data-nav="overview"><img class="ic-img" src="cat_08_thinking.png" alt=""> ภาพรวม</button>
+      <button class="nav-tab" data-nav="vocab"><img class="ic-img" src="cat_04_reading.png" alt=""> คลังคำศัพท์</button>
+      <button class="nav-tab" data-nav="regs"><img class="ic-img" src="cat_09_writing.png" alt=""> ผู้ลงทะเบียน</button>
+      <button class="nav-tab" data-nav="scores"><img class="ic-img" src="cat_14_certificate.png" alt=""> คะแนน</button>
+      <button class="nav-tab" data-nav="settings"><img class="ic-img" src="cat_15_watering.png" alt=""> ตั้งค่า</button>
     </div>
 
     <!-- ============ OVERVIEW ============ -->
     <div class="nav-panel" id="nav-overview">
       <section class="card">
-        <h2>📊 ภาพรวมระบบ</h2>
+        <h2><img class="ic-img" src="cat_08_thinking.png" alt=""> ภาพรวมระบบ</h2>
         <div class="stat-grid" id="ov-stat-grid">
           <div class="stat-box accent"><b id="ov-words">-</b><span>คำศัพท์</span></div>
           <div class="stat-box accent"><b id="ov-blanks">-</b><span>ประโยคเติมคำ</span></div>
@@ -201,22 +206,22 @@ code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85e
 
       <div class="mini-grid">
         <section class="card">
-          <h2>🎮 สัดส่วนโหมดที่เล่น</h2>
+          <h2><img class="ic-img" src="cat_13_jump.png" alt=""> สัดส่วนโหมดที่เล่น</h2>
           <div id="mode-bars"><p class="empty-note">ยังไม่มีข้อมูล</p></div>
         </section>
         <section class="card">
-          <h2>🏆 Top 5 ผู้เล่น</h2>
+          <h2><img class="ic-img" src="cat_14_certificate.png" alt=""> Top 5 ผู้เล่น</h2>
           <div id="top-players"><p class="empty-note">ยังไม่มีข้อมูล</p></div>
         </section>
       </div>
 
       <div class="mini-grid">
         <section class="card">
-          <h2>🕐 ลงทะเบียนล่าสุด</h2>
+          <h2><img class="ic-img" src="cat_09_writing.png" alt=""> ลงทะเบียนล่าสุด</h2>
           <div id="recent-regs"><p class="empty-note">ยังไม่มีข้อมูล</p></div>
         </section>
         <section class="card">
-          <h2>🕐 เล่นจบล่าสุด</h2>
+          <h2><img class="ic-img" src="cat_14_certificate.png" alt=""> เล่นจบล่าสุด</h2>
           <div id="recent-scores"><p class="empty-note">ยังไม่มีข้อมูล</p></div>
         </section>
       </div>
@@ -226,14 +231,14 @@ code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85e
     <div class="nav-panel hidden" id="nav-vocab">
       <section class="card">
         <div class="sub-tabs">
-          <button class="sub-tab active" data-sub="words">🎯 คำศัพท์ทั่วไป</button>
-          <button class="sub-tab" data-sub="blanks">✍️ ประโยคเติมคำ</button>
-          <button class="sub-tab" data-sub="upload">📥 อัปโหลดเป็นชุด (CSV/Excel)</button>
+          <button class="sub-tab active" data-sub="words"><img class="ic-img-sm" src="cat_04_reading.png" alt=""> คำศัพท์ทั่วไป</button>
+          <button class="sub-tab" data-sub="blanks"><img class="ic-img-sm" src="cat_09_writing.png" alt=""> ประโยคเติมคำ</button>
+          <button class="sub-tab" data-sub="upload"><img class="ic-img-sm" src="cat_01_wave.png" alt=""> อัปโหลดเป็นชุด (CSV/Excel)</button>
         </div>
 
         <!-- SUB: WORDS TABLE -->
         <div class="sub-panel" id="sub-words">
-          <h2>🎯 คำศัพท์ทั่วไป (VocabWords)</h2>
+          <h2><img class="ic-img" src="cat_04_reading.png" alt=""> คำศัพท์ทั่วไป (VocabWords)</h2>
           <div class="quick-add-row">
             <input type="text" id="qa-word" placeholder="คำศัพท์ (word)">
             <input type="text" id="qa-word-meaning" placeholder="ความหมาย (ไทย)">
@@ -258,7 +263,7 @@ code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85e
 
         <!-- SUB: BLANKS TABLE -->
         <div class="sub-panel hidden" id="sub-blanks">
-          <h2>✍️ ประโยคเติมคำ (FillBlanks)</h2>
+          <h2><img class="ic-img" src="cat_09_writing.png" alt=""> ประโยคเติมคำ (FillBlanks)</h2>
           <div class="quick-add-blank">
             <input type="text" id="qa-family" placeholder="family (เช่น validate)">
             <input type="text" id="qa-blank-meaning" placeholder="ความหมาย (ไทย)">
@@ -280,8 +285,8 @@ code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85e
         <!-- SUB: BULK UPLOAD -->
         <div class="sub-panel hidden" id="sub-upload">
           <div class="sub-tabs" style="margin-bottom:14px;">
-            <button class="sub-tab active" data-uptab="up-words">🎯 อัปโหลดคำศัพท์</button>
-            <button class="sub-tab" data-uptab="up-blanks">✍️ อัปโหลดประโยคเติมคำ</button>
+            <button class="sub-tab active" data-uptab="up-words"><img class="ic-img-sm" src="cat_04_reading.png" alt=""> อัปโหลดคำศัพท์</button>
+            <button class="sub-tab" data-uptab="up-blanks"><img class="ic-img-sm" src="cat_09_writing.png" alt=""> อัปโหลดประโยคเติมคำ</button>
           </div>
 
           <div class="sub-panel" id="up-words">
@@ -328,7 +333,7 @@ code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85e
     <!-- ============ REGISTRATIONS ============ -->
     <div class="nav-panel hidden" id="nav-regs">
       <section class="card">
-        <h2>📝 รายชื่อผู้ลงทะเบียน</h2>
+        <h2><img class="ic-img" src="cat_09_writing.png" alt=""> รายชื่อผู้ลงทะเบียน</h2>
         <div class="table-toolbar">
           <input type="text" id="search-regs" placeholder="🔍 ค้นหาชื่อ, รหัสนักศึกษา, หรืออีเมล...">
           <button class="btn btn-ghost btn-sm" id="btn-export-regs">⬇️ ส่งออก CSV</button>
@@ -341,7 +346,7 @@ code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85e
     <!-- ============ SCORES ============ -->
     <div class="nav-panel hidden" id="nav-scores">
       <section class="card">
-        <h2>🏆 ประวัติคะแนนทั้งหมด</h2>
+        <h2><img class="ic-img" src="cat_14_certificate.png" alt=""> ประวัติคะแนนทั้งหมด</h2>
         <div class="table-toolbar">
           <input type="text" id="search-scores" placeholder="🔍 ค้นหาชื่อ หรือรหัสนักศึกษา...">
           <select id="filter-scores-mode">
@@ -359,7 +364,7 @@ code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85e
     <!-- ============ SETTINGS ============ -->
     <div class="nav-panel hidden" id="nav-settings">
       <section class="card">
-        <h2>⚙️ ตั้งค่าและข้อมูลระบบ</h2>
+        <h2><img class="ic-img" src="cat_15_watering.png" alt=""> ตั้งค่าและข้อมูลระบบ</h2>
         <div class="settings-row"><div class="label">Apps Script URL (SCRIPT_URL)</div><div class="value" id="set-script-url">-</div></div>
         <div class="settings-row"><div class="label">Google Sheet เชื่อมต่ออยู่</div><div class="value"><a id="set-sheet-link" href="#" target="_blank" rel="noopener">เปิด Google Sheet ↗</a></div></div>
         <div class="settings-row"><div class="label">ทดสอบการเชื่อมต่อ</div><div class="value"><button class="btn btn-ghost btn-sm" id="btn-test-connection">🔌 ทดสอบตอนนี้</button></div></div>
@@ -370,7 +375,7 @@ code{background:var(--cream); padding:2px 6px; border-radius:6px; font-size:.85e
         </div>
       </section>
       <section class="card">
-        <h2>📖 คำแนะนำการแก้ไขข้อมูลโดยตรง</h2>
+        <h2><img class="ic-img" src="cat_04_reading.png" alt=""> คำแนะนำการแก้ไขข้อมูลโดยตรง</h2>
         <p class="lead">
           นอกจากหน้านี้ ยังแก้ไขข้อมูลได้โดยตรงในชีต <code>VocabWords</code>, <code>FillBlanks</code>, <code>Registrations</code>, <code>Scores</code> ผ่าน Google Sheet
           การเปลี่ยนแปลงจะมีผลกับเกมทันทีในการโหลดครั้งถัดไป ไม่ต้อง deploy โค้ดใหม่ — ยกเว้นถ้าแก้ไข <code>Code.gs</code> เอง ต้อง Deploy → Manage deployments → New version ทุกครั้ง
