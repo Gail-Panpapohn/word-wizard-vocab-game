@@ -249,7 +249,7 @@ footer{text-align:center; color:var(--ink-soft); font-size:.75rem; margin-top:28
   <section id="screen-loading" class="card hidden">
     <div class="badge"><img class="ic-img" src="cat_03_sleepy.png" alt=""> Getting things ready</div>
     <h1>Loading vocabulary...</h1>
-    <p class="lead">Just a moment, fetching the latest words from Google Sheets 🐱✨</p>
+    <p class="lead">Just a moment, fetching the latest words</p>
   </section>
 
   <!-- ===================== SCREEN: REGISTER ===================== -->
@@ -1074,7 +1074,7 @@ function finishSession(){
 
   postToSheet({ action:'score', name:player.name, studentId:player.sid, score:session.correct, total:session.total, percent:pct, timeSpent, mode:session.mode||'', questions:session.log||[] })
     .then(()=>{ $('result-sub').textContent='Score saved successfully ✅'; loadLeaderboard(); })
-    .catch(()=>{ $('result-sub').textContent = SCRIPT_URL.includes('PASTE_') ? 'Google Sheet not set up yet (see setup guide)' : 'Failed to save score, please try again later'; });
+    .catch(()=>{ $('result-sub').textContent = SCRIPT_URL.includes('PASTE_') ? 'GSDB not set up yet (see setup guide)' : 'Failed to save score, please try again later'; });
 }
 
 function showResultLeaderboardOnly(){
